@@ -1,1 +1,0 @@
-# LFP-Group-18-DIGA3002A
