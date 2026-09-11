@@ -8,6 +8,10 @@ public class PlayerControls : MonoBehaviour
     private Vector2 moveInput;
     private int facingDirection = 1;
 
+    [Header("Fishing Variables")]
+    public FishingManager fishingManager;
+
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -36,5 +40,20 @@ public class PlayerControls : MonoBehaviour
     {
         moveInput = context.ReadValue<Vector2>();
         Debug.Log($"OnMovement fired: {moveInput}");
+    }
+
+
+
+    public void OnInteract(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            fishingManager.InteractPressed();
+        }
+
+        if (context.canceled)
+        {
+            fishingManager.InteractReleased();
+        }
     }
 }
