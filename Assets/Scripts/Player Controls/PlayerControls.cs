@@ -38,8 +38,11 @@ public class PlayerControls : MonoBehaviour
 
     public void OnMovement(InputAction.CallbackContext context)
     {
-        moveInput = context.ReadValue<Vector2>();
-       // Debug.Log($"OnMovement fired: {moveInput}");
+        if (fishingManager.busyFishing == false)
+        {
+            moveInput = context.ReadValue<Vector2>();
+
+        }
     }
 
 

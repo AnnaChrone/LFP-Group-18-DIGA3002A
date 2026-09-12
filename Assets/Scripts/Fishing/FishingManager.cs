@@ -6,6 +6,7 @@ public class FishingManager : MonoBehaviour
 
     [Header("Fishing Range")]
     public bool inFishingRange = false;
+    public bool busyFishing = false;
 
     [Header("Casting")]
     public float minimumBiteTime = 2f;
@@ -48,7 +49,16 @@ public class FishingManager : MonoBehaviour
     [Header("Reeling")]
     public bool isReeling = false;
 
+    [Header("Bobber")]
+    public GameObject Bobber;
+    public Transform BobberStart;
+    public Transform BobberEnd;
+    public float bobberDipAmount = 0.5f;
 
+    private void Start()
+    {
+        Bobber.SetActive(false);
+    }
     private void Update()
     {
         if (currentState == FishingState.WaitingForFish)
@@ -90,10 +100,12 @@ public class FishingManager : MonoBehaviour
         if (currentState == FishingState.NotFishing)
         {
             SitDown();
+            busyFishing = true;
         }
         else if (currentState == FishingState.Sitting)
         {
             StandUp();
+            busyFishing = false;
         }
         else if (currentState == FishingState.WaitingForFish)
         {
@@ -151,7 +163,8 @@ public class FishingManager : MonoBehaviour
     private void Cast()
     {
         currentState = FishingState.Casting;
-
+        Bobber.transform.position = BobberStart.position; //places bobber back where it starts from
+        Bobber.SetActive(true);
         Debug.Log("Cast!");
 
         StartWaitingForFish();
@@ -187,7 +200,12 @@ public class FishingManager : MonoBehaviour
         currentState = FishingState.FishHooked;
 
         Debug.Log("FISH HOOKED!");
-
+        Bobber.transform.Translate(
+            0f,
+            -bobberDipAmount,
+            0f,
+            Space.World
+        );
         fishDistance = maximumFishDistance; //gives the distance the fish is from being reeled in
         rodTension = 0f; 
         isReeling = false;
@@ -230,6 +248,8 @@ public class FishingManager : MonoBehaviour
 
         CheckRodTension(); 
         CheckFishDistance();
+        UpdateBobberPosition();
+
     }
 
     private void UpdateResistance()
@@ -301,6 +321,26 @@ public class FishingManager : MonoBehaviour
         Debug.Log("Not reeling | Distance: " + fishDistance + " | Tension: " + rodTension);
     }
 
+    private void UpdateBobberPosition()
+    {
+        // 0 = fish is at maximum distance
+        // 1 = fish is fully reeled in
+        float reelPercentage =
+            1f - (fishDistance / maximumFishDistance);
+
+        float newX = Mathf.Lerp(
+            BobberStart.position.x,
+            BobberEnd.position.x,
+            reelPercentage
+        );
+
+        Bobber.transform.position = new Vector3(
+            newX,
+            Bobber.transform.position.y,
+            Bobber.transform.position.z
+        );
+    }
+
     private void CheckRodTension()
     {
         if (rodTension >= maximumRodTension)
@@ -359,7 +399,7 @@ public class FishingManager : MonoBehaviour
     private void FinishWithdrawing()
     {
         currentState = FishingState.Sitting;
-
+        Bobber.SetActive(false);
         Debug.Log("Line withdrawn");
     }
 }
