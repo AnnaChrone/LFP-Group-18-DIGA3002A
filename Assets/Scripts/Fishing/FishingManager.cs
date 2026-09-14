@@ -377,7 +377,8 @@ public class FishingManager : MonoBehaviour
         rodTension = 0f;
         Debug.Log("Fish was caught!!!!!!!!!!");
         //ADD CAUGHT FISH TO INV HERE
-
+        //Once i know how darryn is doing the inv, i can impliment here
+        //Thinking maybe i store all the fish types (and then later i can add a blocker for some depending on bait)
         currentState = FishingState.Withdrawing;
         FinishWithdrawing();
 
