@@ -38,22 +38,42 @@ public class PlayerControls : MonoBehaviour
 
     public void OnMovement(InputAction.CallbackContext context)
     {
-        moveInput = context.ReadValue<Vector2>();
-        Debug.Log($"OnMovement fired: {moveInput}");
-    }
+        if (fishingManager.busyFishing == false)
+        {
+            moveInput = context.ReadValue<Vector2>();
 
+        }
+    }
 
 
     public void OnInteract(InputAction.CallbackContext context)
     {
+        if (!fishingManager.inFishingRange)
+        {
+            return;
+        }
+
         if (context.started)
         {
             fishingManager.InteractPressed();
         }
+    }
+
+    public void OnFish(InputAction.CallbackContext context)
+    {
+        if (!fishingManager.inFishingRange)
+        {
+            return;
+        }
+
+        if (context.started)
+        {
+            fishingManager.FishPressed();
+        }
 
         if (context.canceled)
         {
-            fishingManager.InteractReleased();
+            fishingManager.FishReleased();
         }
     }
 }
