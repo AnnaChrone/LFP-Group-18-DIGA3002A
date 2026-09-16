@@ -11,7 +11,7 @@ public class FishingUI : MonoBehaviour
     public GameObject fishingBars;
 
     [Header("UI Bars")]
-    public Slider fishDistanceBar;
+    public Slider fishDistanceBar; 
     public Slider rodTensionBar;
     public Slider resistanceBar;
 
