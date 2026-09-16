@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b7e2133668fe7340ad1216bdb8e8e39, type: 3}
+  m_Name: Bait_Standard
+  m_EditorClassIdentifier: Assembly-CSharp::Sushi.Data.BaitData
+  displayName: Standard Bait
+  icon: {fileID: -1405847841753543399, guid: e75a340ca55492b4d8eb70e0d48b8f1c, type: 3}
+  price: 0
+  ownedFromStart: 1
+  table:
+  - item: {fileID: 11400000, guid: 0e7f019abecba294fadd3d379f725530, type: 2}
+    odds: 1
+  - item: {fileID: 11400000, guid: 7cd3ff561c9b158429637bb0c806498b, type: 2}
+    odds: 1
+  - item: {fileID: 11400000, guid: c138376bc7307ee418d1bdc72cee994e, type: 2}
+    odds: 1
+  - item: {fileID: 11400000, guid: 1e00797979e7c0e408de310e285b8172, type: 2}
+    odds: 1
+  - item: {fileID: 11400000, guid: 8f36faa83af6e4749a9de766e847b473, type: 2}
+    odds: 1
