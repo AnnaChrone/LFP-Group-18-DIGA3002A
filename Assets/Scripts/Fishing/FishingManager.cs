@@ -1,8 +1,14 @@
 using UnityEngine;
+using Sushi.Fishing;
 
 public class FishingManager : MonoBehaviour
 {
     public FishingState currentState = FishingState.NotFishing;
+
+    // Optional. Leave empty and this script behaves exactly as before,
+    // so fishing stays testable in isolation on its own branch.
+    [Header("Inventory")]
+    public FishingCatchHandler catchHandler;
 
     [Header("Fishing Range")]
     public bool inFishingRange = false;
@@ -14,27 +20,27 @@ public class FishingManager : MonoBehaviour
 
     private float biteTimer;
 
-    [Header("Fish")] 
+    [Header("Fish")]
     public float maximumFishDistance = 100f;  //as far as the fish can be before the line breaks
-    public float fishDistance = 80f; 
-    public float fishPullSpeed = 5f; 
+    public float fishDistance = 80f;
+    public float fishPullSpeed = 5f;
 
-    [Header("Fish Resistance")] 
-    public float minimumResistance = 0.2f; 
-    public float maximumResistance = 1f; 
+    [Header("Fish Resistance")]
+    public float minimumResistance = 0.2f;
+    public float maximumResistance = 1f;
 
-    public float currentResistance; 
-    private float targetResistance; 
+    public float currentResistance;
+    private float targetResistance;
 
-    public float minimumResistanceChangeTime = 0.5f; 
-    public float maximumResistanceChangeTime = 2f; 
+    public float minimumResistanceChangeTime = 0.5f;
+    public float maximumResistanceChangeTime = 2f;
 
     private float resistanceChangeTimer;
 
-    [Header("Rod")] 
-    public float maximumRodTension = 50f; 
-    public float rodTension = 0f; 
-    public float reelSpeed = 10f; 
+    [Header("Rod")]
+    public float maximumRodTension = 50f;
+    public float rodTension = 0f;
+    public float reelSpeed = 10f;
     public float rodRecoverySpeed = 12f;
     public float resistanceTensionMultiplier = 25f;
 
@@ -55,10 +61,16 @@ public class FishingManager : MonoBehaviour
     public Transform BobberEnd;
     public float bobberDipAmount = 0.5f;
 
+    // Fight telemetry. Prototype 1 ignores these; Milestone 2's fish
+    // quality system reads them to decide how heavy the catch is.
+    private float fightDuration;
+    private float peakTensionNormalised;
+
     private void Start()
     {
         Bobber.SetActive(false);
     }
+
     private void Update()
     {
         if (currentState == FishingState.WaitingForFish)
@@ -162,6 +174,15 @@ public class FishingManager : MonoBehaviour
 
     private void Cast()
     {
+        // The capacity constraint. Checked before the cast rather than
+        // after the fight, so a fish is never landed and then discarded
+        // for want of a slot.
+        if (catchHandler != null && !catchHandler.CanStartFishing(out string reason))
+        {
+            Debug.Log("Cannot cast: " + reason);
+            return;
+        }
+
         currentState = FishingState.Casting;
         Bobber.transform.position = BobberStart.position; //places bobber back where it starts from
         Bobber.SetActive(true);
@@ -207,10 +228,14 @@ public class FishingManager : MonoBehaviour
             Space.World
         );
         fishDistance = maximumFishDistance; //gives the distance the fish is from being reeled in
-        rodTension = 0f; 
+        rodTension = 0f;
         isReeling = false;
 
-        currentResistance = Random.Range(minimumResistance,maximumResistance);
+        // Reset fight telemetry for the new fish.
+        fightDuration = 0f;
+        peakTensionNormalised = 0f;
+
+        currentResistance = Random.Range(minimumResistance, maximumResistance);
         SetNewResistanceTarget();
         Debug.Log("Fish resistance: " + currentResistance);
 
@@ -235,6 +260,16 @@ public class FishingManager : MonoBehaviour
 
     private void UpdateFishing()
     {
+        // Track how long and how roughly this fish was fought.
+        fightDuration += Time.deltaTime;
+        if (maximumRodTension > 0f)
+        {
+            peakTensionNormalised = Mathf.Max(
+                peakTensionNormalised,
+                rodTension / maximumRodTension
+            );
+        }
+
         UpdateResistance();
 
         if (isReeling)
@@ -246,7 +281,7 @@ public class FishingManager : MonoBehaviour
             ReleaseLine();
         }
 
-        CheckRodTension(); 
+        CheckRodTension();
         CheckFishDistance();
         UpdateBobberPosition();
 
@@ -374,15 +409,34 @@ public class FishingManager : MonoBehaviour
     {
         fishDistance = 0f;
         isReeling = false;
+
+        // Which species it turns out to be is decided by the equipped
+        // bait's catch table, not here, so bait progression needs no
+        // changes to this file.
+        if (catchHandler != null)
+        {
+            var stored = catchHandler.ResolveCatch(
+                fightDuration,
+                peakTensionNormalised,
+                currentResistance
+            );
+
+            if (stored.IsValid)
+            {
+                Debug.Log("Caught and stored: " + stored.Label);
+            }
+        }
+        else
+        {
+            Debug.Log("Fish was caught, but no catch handler is assigned.");
+        }
+
         rodTension = 0f;
-        Debug.Log("Fish was caught!!!!!!!!!!");
-        //ADD CAUGHT FISH TO INV HERE
-        //Once i know how darryn is doing the inv, i can impliment here
-        //Thinking maybe i store all the fish types (and then later i can add a blocker for some depending on bait)
         currentState = FishingState.Withdrawing;
         FinishWithdrawing();
 
     }
+
     private void WithdrawLine()
     {
         currentState = FishingState.Withdrawing;
@@ -402,5 +456,23 @@ public class FishingManager : MonoBehaviour
         currentState = FishingState.Sitting;
         Bobber.SetActive(false);
         Debug.Log("Line withdrawn");
+    }
+
+
+    /// <summary>
+    /// Hard stop, called by DayNightController when the night phase begins.
+    /// Gets the player out of the chair no matter which state they were in,
+    /// so a hooked fish cannot survive the phase change.
+    /// </summary>
+    public void ForceStopFishing()
+    {
+        isReeling = false;
+        rodTension = 0f;
+        fishDistance = maximumFishDistance;
+
+        if (Bobber != null) Bobber.SetActive(false);
+
+        currentState = FishingState.NotFishing;
+        busyFishing = false;
     }
 }
