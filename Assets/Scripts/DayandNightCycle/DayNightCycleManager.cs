@@ -29,10 +29,26 @@ public class DayNightCycleManager : MonoBehaviour
     public TMP_Text countdownText;
     public GameObject countdownDisplayObject; // Parent object of the clock to hide/show it
 
-    [Header("References")]
+        [Header("References")]
     public GameObject player;
-    // Optional: Reference to your player movement script to disable it during fades
-    // public PlayerMovement playerMovement; 
+    private MonoBehaviour playerMovementComponent; // Acts as a handle to freeze movement
+
+    
+   private void Start()
+    {
+        // 1. Automatically find the movement script attached to your player object
+        if (player != null)
+        {
+            // If your script is named 'PlayerController', you can change 'MonoBehaviour' to 'PlayerController'
+            playerMovementComponent = player.GetComponent<MonoBehaviour>(); 
+        }
+
+        // 2. Clear visual overlays on startup
+        screenFaderCanvasGroup.alpha = 0f;
+        if (countdownDisplayObject != null) countdownDisplayObject.SetActive(false);
+        
+        TransitionToDaytimeDirect();
+    }
 
     private void Awake()
     {
@@ -40,14 +56,24 @@ public class DayNightCycleManager : MonoBehaviour
         else Destroy(gameObject);
     }
 
-    private void Start()
+    // --- HELPER FUNCTION TO FREEZE/UNFREEZE PLAYER ---
+    public void SetPlayerControls(bool state)
     {
-        // Force clean initial state
-        screenFaderCanvasGroup.alpha = 0f;
-        if (countdownDisplayObject != null) countdownDisplayObject.SetActive(false);
-        
-        // Initialize at the dock
-        TransitionToDaytimeDirect ();
+        if (playerMovementComponent != null)
+        {
+            playerMovementComponent.enabled = state;
+        }
+
+        // Stops sliding momentum when frozen if the player uses a Rigidbody2D
+        Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
+        if (rb != null && !state)
+        {
+#if UNITY_6000_0_OR_NEWER
+            rb.linearVelocity = Vector2.zero;
+#else
+            rb.velocity = Vector2.zero; 
+#endif
+        }
     }
 
     // --- BUTTON TRIGGER FUNCTIONS ---
@@ -116,38 +142,36 @@ public class DayNightCycleManager : MonoBehaviour
     }
 
     // Handles the active shift countdown timer before cycling back home
-    private IEnumerator RunRestaurantServiceSequence()
+      private IEnumerator RunRestaurantServiceSequence()
     {
         currentState = GameState.RestaurantService;
+        SetPlayerControls(true);
         
-        // Show the clock UI
         if (countdownDisplayObject != null) countdownDisplayObject.SetActive(true);
         
-        float timeRemaining = serviceDuration;
+        // --- HOOK: ACTIVATE THE TIMED GENERATION DISPATCHER ---
+        if (OrderManager.Instance != null) OrderManager.Instance.StartServiceOrders();
 
-        // Visual Countdown Loop
+        float timeRemaining = serviceDuration;
         while (timeRemaining > 0)
         {
             timeRemaining -= Time.deltaTime;
-            
-            // Protect against falling below zero visually
             float displayTime = Mathf.Max(0, timeRemaining); 
 
             if (countdownText != null)
             {
-                // Formats the raw float seconds into MM:SS digital format
                 int minutes = Mathf.FloorToInt(displayTime / 60f);
                 int seconds = Mathf.FloorToInt(displayTime % 60f);
                 countdownText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
             }
-
             yield return null;
         }
 
-        // Hide the clock UI now that dinner shift is over
         if (countdownDisplayObject != null) countdownDisplayObject.SetActive(false);
 
-        // Shift complete: Fade out and dump player back at the starting dock for daytime
+        // --- HOOK: TERMINATE THE REQUISITIONS LOOP & FLUSH REMAINING SLIPS ---
+        if (OrderManager.Instance != null) OrderManager.Instance.StopServiceOrders();
+
         yield return StartCoroutine(TeleportSequence(dockSpawnPoint.position, GameState.Daytime));
     }
 
@@ -156,4 +180,6 @@ public class DayNightCycleManager : MonoBehaviour
         currentState = GameState.Daytime;
         player.transform.position = dockSpawnPoint.position;
     }
+
+
 }
