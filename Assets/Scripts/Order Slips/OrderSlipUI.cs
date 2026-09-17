@@ -4,59 +4,89 @@ using TMPro;
 using Sushi.Data;
 using Sushi.Inventory;
 
-public class OrderSlipUI : MonoBehaviour
+namespace Sushi.UI
 {
-    [Header("Layout Assignments")]
-    public TMP_Text menuTitleText;
-    public Image menuIconDisplay;
-    public TMP_Text goldPayoutText;
-
-    private ItemData targetedFish;
-    private Inventory liveInventoryReference;
-    private OrderManager runtimeManager;
-
-    public void InitializeTicket(ItemData fish, Inventory inventory, OrderManager manager)
+    /// <summary>
+    /// Attached to the individual Order Slip UI prefab instances.
+    /// Extracts data from the chosen ItemData asset and updates the visual card fields.
+    /// Handles the click interaction to serve the dish and deduct fish from the inventory.
+    /// </summary>
+    [DisallowMultipleComponent]
+    public class OrderSlipUI : MonoBehaviour
     {
-        targetedFish = fish;
-        liveInventoryReference = inventory;
-        runtimeManager = manager;
+        [Header("UI Visual Assignments")]
+        [Tooltip("The text mesh element that will display the dish name (e.g., 'Tuna Sushi').")]
+        [SerializeField] private TMP_Text menuTitleText;
 
-        // Apply Data Fields cleanly via your custom properties
-        if (menuTitleText != null) menuTitleText.text = fish.Label + " Sushi";
-        
-        if (menuIconDisplay != null)
+        [Tooltip("The image slot displaying the fish silhouette or sprite design.")]
+        [SerializeField] private Image menuIconDisplay;
+
+        [Tooltip("The text element showing how much gold this recipe rewards.")]
+        [SerializeField] private TMP_Text goldPayoutText;
+
+        private ItemData targetedFish;
+        private Inventory.Inventory liveInventoryReference;
+        private OrderManager runtimeManager;
+
+        /// <summary>
+        /// Instantiated tickets call this entry method to populate names, icons, and economy weights.
+        /// </summary>
+        public void InitializeTicket(ItemData fish, Inventory.Inventory inventory, OrderManager manager)
         {
-            menuIconDisplay.sprite = fish.icon;
-            menuIconDisplay.color = fish.tint; // Respects modular scriptable object color tints
+            targetedFish = fish;
+            liveInventoryReference = inventory;
+            runtimeManager = manager;
+
+            // Apply Display Text safely via your ScriptableObject's 'Label' property
+            if (menuTitleText != null) 
+            {
+                menuTitleText.text = $"{fish.Label} Sushi";
+            }
+            
+            // Apply icons and respect the scriptable asset's layout tinting rules
+            if (menuIconDisplay != null)
+            {
+                menuIconDisplay.sprite = fish.icon;
+                menuIconDisplay.color = fish.tint; 
+            }
+
+            // Calculate active restaurant pricing curves
+            if (goldPayoutText != null)
+            {
+                // Dave the Diver rewards premium returns for processed dining orders over raw fish dumping values
+                int totalValue = Mathf.RoundToInt(fish.baseValue * 1.6f);
+                goldPayoutText.text = $"+{totalValue} Gold";
+            }
         }
 
-        if (goldPayoutText != null)
+        /// <summary>
+        /// Hook this method to an OnClick() event handler on a Button component located on the root of your UI Prefab.
+        /// </summary>
+       // Change this line in OrderSlipUI.cs:
+public void ClickServeRecipeButton(int ignoreThis = 0)
+
         {
-            // Value multiplier calculation: Restaurant fulfillment gives a bonus over raw cargo dumping
-            int totalValue = Mathf.RoundToInt(fish.baseValue * 1.6f);
-            goldPayoutText.text = $"+{totalValue} Gold";
-        }
-    }
+            if (liveInventoryReference == null || targetedFish == null) return;
 
-    // Map this to your Ticket UI asset button click setup
-    public void ClickServeRecipeButton()
-    {
-        if (liveInventoryReference == null || targetedFish == null) return;
+            // Check if player still owns at least 1 count of this specific fish
+            if (liveInventoryReference.CountOf(targetedFish) > 0)
+            {
+                // Cleanly remove exactly 1 matching index out of the player's catch bag list
+                liveInventoryReference.RemoveFirst(targetedFish);
 
-        // Uses your inventory's native query search function
-        if (liveInventoryReference.CountOf(targetedFish) > 0)
-        {
-            // Uses your script's native mutation feature to safely prune exactly 1 matching item
-            liveInventoryReference.RemoveFirst(targetedFish);
+                // TODO: Integrate with your financial player account manager here using the calculation above
+                Debug.Log($"Successfully served {targetedFish.Label} Sushi! 1 count removed from inventory.");
 
-            // TODO: Connect this placeholder slot into your global wallet/economy code
-            Debug.Log($"Served {targetedFish.Label}! Item deducted out of bag.");
-
-            runtimeManager.DismissTicket(gameObject);
-        }
-        else
-        {
-            Debug.LogWarning("You ran out of this fish species mid-shift! Cannot fulfill.");
+                // Tell the board container manager to wipe this specific visual card from the screen array
+                if (runtimeManager != null)
+                {
+                    runtimeManager.DismissTicket(gameObject);
+                }
+            }
+            else
+            {
+                Debug.LogWarning($"Cannot fulfill! You do not have any {targetedFish.Label} remaining in your bag.");
+            }
         }
     }
 }
