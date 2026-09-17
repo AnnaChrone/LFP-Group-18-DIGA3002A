@@ -42,6 +42,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Extras
+    uniqueID: 3370569417
+    locked: 0
+  - name: Player
+    uniqueID: 3356756259
+    locked: 0
+  - name: Decor
+    uniqueID: 162053543
+    locked: 0
   m_RenderingLayers:
   - Default
   m_MigratedRenderPipelines: []

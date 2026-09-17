@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.UI; // Replace with 'using TMPro;' if using TextMeshPro
+using TMPro;
 
 public enum GameState { Daytime, Nighttime, RestaurantService }
 
@@ -25,7 +26,7 @@ public class DayNightCycleManager : MonoBehaviour
     public float fadeSpeed = 2f;
 
     [Header("Visual Countdown Settings")]
-    public Text countdownText; // Change to 'public TMP_Text countdownText;' if using TMPro
+    public TMP_Text countdownText;
     public GameObject countdownDisplayObject; // Parent object of the clock to hide/show it
 
     [Header("References")]

@@ -1,16 +1,28 @@
 using UnityEngine;
+using UnityEngine.InputSystem; 
 
 public class OrderSlipBoard : MonoBehaviour
 {
+    [Header("UI Element")]
+    public GameObject interactPromptText; // Drag your "Press E to Interact" popup here
+
     private bool playerInRange = false;
+
+    private void Start()
+    {
+        if (interactPromptText != null) interactPromptText.SetActive(false);
+    }
 
     private void Update()
     {
-        // Only allow interaction if it is nighttime and player presses 'E'
+        // Only allow interactions during Nighttime (before service starts)
         if (playerInRange && DayNightCycleManager.Instance.currentState == GameState.Nighttime)
         {
-            if (Input.GetKeyDown(KeyCode.E)) 
+            if (Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame) 
             {
+                // Turn off prompt text while looking at the selection UI menu
+                if (interactPromptText != null) interactPromptText.SetActive(false);
+                
                 DayNightCycleManager.Instance.PromptStartService();
             }
         }
@@ -18,11 +30,19 @@ public class OrderSlipBoard : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player")) playerInRange = true;
+        if (collision.CompareTag("Player") && DayNightCycleManager.Instance.currentState == GameState.Nighttime)
+        {
+            playerInRange = true;
+            if (interactPromptText != null) interactPromptText.SetActive(true);
+        }
     }
 
-    private void OnTriggerDown2D(Collider2D collision)
+    private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player")) playerInRange = false;
+        if (collision.CompareTag("Player"))
+        {
+            playerInRange = false;
+            if (interactPromptText != null) interactPromptText.SetActive(false);
+        }
     }
 }
