@@ -294,6 +294,18 @@ PrefabInstance:
       value: Water Tile (4)
       objectReference: {fileID: 0}
     - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.b
+      value: 0.8862745
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.g
+      value: 0.84705883
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
       propertyPath: m_SortingOrder
       value: -1
       objectReference: {fileID: 0}
@@ -546,6 +558,18 @@ PrefabInstance:
     - target: {fileID: -2253911629886400664, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
       propertyPath: m_Name
       value: Water Tile (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.b
+      value: 0.8862745
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.g
+      value: 0.84705883
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.r
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
       propertyPath: m_SortingOrder
@@ -1292,6 +1316,18 @@ PrefabInstance:
     - target: {fileID: -2253911629886400664, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
       propertyPath: m_Name
       value: Water Tile (10)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.b
+      value: 0.8862745
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.g
+      value: 0.84705883
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.r
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
       propertyPath: m_SortingOrder
@@ -2572,6 +2608,18 @@ PrefabInstance:
     - target: {fileID: -2253911629886400664, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
       propertyPath: m_Name
       value: Water Tile (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.b
+      value: 0.8862745
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.g
+      value: 0.84705883
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.r
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
       propertyPath: m_SortingOrder
@@ -5091,6 +5139,18 @@ PrefabInstance:
       value: Water Tile (6)
       objectReference: {fileID: 0}
     - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.b
+      value: 0.8862745
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.g
+      value: 0.84705883
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
       propertyPath: m_SortingOrder
       value: -1
       objectReference: {fileID: 0}
@@ -5163,6 +5223,18 @@ PrefabInstance:
     - target: {fileID: -2253911629886400664, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
       propertyPath: m_Name
       value: Water Tile (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.b
+      value: 0.8862745
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.g
+      value: 0.84705883
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.r
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
       propertyPath: m_SortingOrder
@@ -5312,6 +5384,18 @@ PrefabInstance:
     - target: {fileID: -2253911629886400664, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
       propertyPath: m_Name
       value: Water Tile (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.b
+      value: 0.8862745
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.g
+      value: 0.84705883
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.r
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
       propertyPath: m_SortingOrder
@@ -5762,6 +5846,18 @@ PrefabInstance:
     - target: {fileID: -2253911629886400664, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
       propertyPath: m_Name
       value: Water Tile (9)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.b
+      value: 0.8862745
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.g
+      value: 0.84705883
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.r
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
       propertyPath: m_SortingOrder
@@ -6457,6 +6553,18 @@ PrefabInstance:
     - target: {fileID: -2253911629886400664, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
       propertyPath: m_Name
       value: Water Tile (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.b
+      value: 0.8862745
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.g
+      value: 0.84705883
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.r
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
       propertyPath: m_SortingOrder
@@ -8318,6 +8426,18 @@ PrefabInstance:
       value: Water Tile (11)
       objectReference: {fileID: 0}
     - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.b
+      value: 0.8862745
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.g
+      value: 0.84705883
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
       propertyPath: m_SortingOrder
       value: -1
       objectReference: {fileID: 0}
@@ -9248,6 +9368,18 @@ PrefabInstance:
       value: Water Tile (14)
       objectReference: {fileID: 0}
     - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.b
+      value: 0.8862745
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.g
+      value: 0.84705883
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
       propertyPath: m_SortingOrder
       value: -1
       objectReference: {fileID: 0}
@@ -9320,6 +9452,18 @@ PrefabInstance:
     - target: {fileID: -2253911629886400664, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
       propertyPath: m_Name
       value: Water Tile (12)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.b
+      value: 0.8862745
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.g
+      value: 0.84705883
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.r
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
       propertyPath: m_SortingOrder
@@ -9862,6 +10006,18 @@ PrefabInstance:
     - target: {fileID: -2253911629886400664, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
       propertyPath: m_Name
       value: Water Tile (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.b
+      value: 0.8862745
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.g
+      value: 0.84705883
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.r
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
       propertyPath: m_SortingOrder
@@ -10954,6 +11110,18 @@ PrefabInstance:
     - target: {fileID: -2253911629886400664, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
       propertyPath: m_Name
       value: Water Tile (15)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.b
+      value: 0.8862745
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.g
+      value: 0.84705883
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.r
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
       propertyPath: m_SortingOrder
@@ -13843,6 +14011,18 @@ PrefabInstance:
       value: Water Tile (13)
       objectReference: {fileID: 0}
     - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.b
+      value: 0.8862745
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.g
+      value: 0.84705883
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
       propertyPath: m_SortingOrder
       value: -1
       objectReference: {fileID: 0}
@@ -14425,7 +14605,7 @@ SpriteRenderer:
   m_SortingOrder: -4
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.4431373, g: 0.5254902, b: 0.8313726, a: 1}
+  m_Color: {r: 0, g: 0.43921572, b: 0.7372549, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -16304,6 +16484,18 @@ PrefabInstance:
     - target: {fileID: -2253911629886400664, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
       propertyPath: m_Name
       value: Water Tile
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.b
+      value: 0.8862745
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.g
+      value: 0.84705883
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
+      propertyPath: m_Color.r
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3626916397498700004, guid: a3187065494a3f640bdcd039b24b83e2, type: 3}
       propertyPath: m_SortingOrder
