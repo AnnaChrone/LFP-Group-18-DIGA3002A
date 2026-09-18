@@ -331,11 +331,11 @@ public class FishingManager : MonoBehaviour
         rodTension += tensionIncrease * Time.deltaTime;
 
 
-        Debug.Log(
-            "Reeling | Distance: " + fishDistance +
-            " | Resistance: " + currentResistance +
-            " | Tension: " + rodTension
-        );
+       // Debug.Log(
+      //      "Reeling | Distance: " + fishDistance +
+     //       " | Resistance: " + currentResistance +
+     //       " | Tension: " + rodTension
+       // );
     }
 
 

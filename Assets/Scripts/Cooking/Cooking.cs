@@ -39,6 +39,11 @@ public class Cooking : MonoBehaviour
         if (stoveUIPanel != null) stoveUIPanel.SetActive(true);
     }
 
+    public void OpenUI()
+    {
+        if (stoveUIPanel != null) stoveUIPanel.SetActive(true);
+    }
+
     public void CloseStoveUI()
     {
         if (stoveUIPanel != null) stoveUIPanel.SetActive(false);

@@ -10,8 +10,20 @@ public class ServeStation : MonoBehaviour
 {
     [Header("References")]
     public OrderManager orderManager;
+    public GameObject serveButton;
 
     /// <summary>Hook this up to your Serve button's OnClick().</summary>
+    /// 
+
+    public void ServeButton()
+    {
+        serveButton.SetActive(true);
+    }
+
+    public void CloseServeButton()
+    {
+        serveButton.SetActive(false);
+    }
     public void ClickServeButton()
     {
         if (orderManager == null)

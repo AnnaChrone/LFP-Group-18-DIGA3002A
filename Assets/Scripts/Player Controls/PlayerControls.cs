@@ -11,6 +11,7 @@ public class PlayerControls : MonoBehaviour
     [Header("Fishing Variables")]
     public FishingManager fishingManager;
     public Cooking cooking;
+    public ServeStation serveStation;
 
 
     private void Awake()
@@ -85,6 +86,10 @@ public class PlayerControls : MonoBehaviour
         {
             cooking.OpenStoveUI();
             Debug.Log("Opening stove");
+        } else if (other.CompareTag("Serve"))
+        {
+            serveStation.ServeButton();
+            Debug.Log("Opening serve");
         }
     }
 
@@ -96,6 +101,11 @@ public class PlayerControls : MonoBehaviour
             cooking.CloseStoveUI();
             Debug.Log("Closing stove");
 
+        }
+        else if (other.CompareTag("Serve"))
+        {
+            serveStation.CloseServeButton();
+            Debug.Log("closing serve");
         }
     }
 }
