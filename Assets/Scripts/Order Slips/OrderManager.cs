@@ -42,6 +42,9 @@ public class OrderManager : MonoBehaviour
     /// <summary>True while an order is accepted and not yet completed/failed — blocks accepting another.</summary>
     public bool HasActiveOrder => acceptedSlips.Count > 0;
 
+    /// <summary>The recipe of the currently accepted order, or null if none. For UI like the stove panel to display.</summary>
+    public RecipeData ActiveRecipe { get; private set; }
+
     /// <summary>Fired whenever an order is accepted, completed, or failed, so tickets can refresh their Accept button.</summary>
     public event Action OnActiveOrderChanged;
 
@@ -52,7 +55,7 @@ public class OrderManager : MonoBehaviour
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
         counter = 0;
-        
+
     }
 
     public void StartServiceOrders()
@@ -75,6 +78,7 @@ public class OrderManager : MonoBehaviour
         }
         spawnedSlips.Clear();
         acceptedSlips.Clear();
+        ActiveRecipe = null;
     }
 
     private IEnumerator GenerationLoop()
@@ -170,6 +174,7 @@ public class OrderManager : MonoBehaviour
         }
 
         acceptedSlips.Add(slipObj);
+        ActiveRecipe = recipe;
         Debug.Log($"Order accepted: {recipe.recipeName}");
         OnActiveOrderChanged?.Invoke();
         return true;
@@ -181,7 +186,9 @@ public class OrderManager : MonoBehaviour
     /// </summary>
     public void CompleteOrder(GameObject slipObj)
     {
+
         acceptedSlips.Remove(slipObj);
+        ActiveRecipe = null;
         DismissTicket(slipObj);
         OnActiveOrderChanged?.Invoke();
     }
@@ -194,6 +201,7 @@ public class OrderManager : MonoBehaviour
     public void FailOrder(GameObject slipObj)
     {
         acceptedSlips.Remove(slipObj);
+        ActiveRecipe = null;
         DismissTicket(slipObj);
         OnActiveOrderChanged?.Invoke();
     }
