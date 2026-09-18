@@ -26,7 +26,7 @@ namespace Sushi.UI
         private Inventory.Inventory liveInventoryReference;
         private OrderManager runtimeManager;
 
-        //tracks whether this ticket has moved past the "waiting to be picked up" stage.
+        // NEW: tracks whether this ticket has moved past the "waiting to be picked up" stage.
         public bool IsAccepted { get; private set; }
         public RecipeData AssignedRecipe => assignedRecipe;
 
@@ -65,7 +65,23 @@ namespace Sushi.UI
             }
 
             if (statusText != null) statusText.text = "Awaiting Acceptance";
-            if (acceptButton != null) acceptButton.interactable = true;
+
+            // Subscribe once we have a manager reference, so this ticket knows when to
+            // grey out its Accept button (another order became active) or re-enable it
+            // (the board is free again).
+            if (runtimeManager != null) runtimeManager.OnActiveOrderChanged += RefreshAcceptButtonInteractable;
+            RefreshAcceptButtonInteractable();
+        }
+
+        private void OnDestroy()
+        {
+            if (runtimeManager != null) runtimeManager.OnActiveOrderChanged -= RefreshAcceptButtonInteractable;
+        }
+
+        private void RefreshAcceptButtonInteractable()
+        {
+            if (acceptButton == null) return;
+            acceptButton.interactable = !IsAccepted && (runtimeManager == null || !runtimeManager.HasActiveOrder);
         }
 
         /// <summary>
@@ -77,23 +93,24 @@ namespace Sushi.UI
         {
             if (assignedRecipe == null || IsAccepted) return;
 
+            if (runtimeManager == null || !runtimeManager.AcceptOrder(assignedRecipe, gameObject))
+            {
+                // Rejected — another order is already active. Board should already show
+                // this button as non-interactable, but guard here in case of a stray click.
+                if (statusText != null) statusText.text = "Order In Progress...";
+                return;
+            }
+
             IsAccepted = true;
 
             if (acceptButton != null) acceptButton.interactable = false;
             if (statusText != null) statusText.text = "Cooking...";
-
-            if (runtimeManager != null)
-            {
-                // OrderManager needs a method like this to register the ticket as active,
-                // so Cooking.cs and the serve window can both look up "what's being worked on".
-                runtimeManager.AcceptOrder(assignedRecipe, gameObject);
-            }
         }
 
         /// <summary>
         /// Called by the serve window (not by a button on this ticket anymore) once the
         /// player has the finished plated sushi in their inventory and hits "Serve".
-        /// Returns true if the order was successfully served and the ticket dismissed. - WILL PAY OUT HERE
+        /// Returns true if the order was successfully served and the ticket dismissed.
         /// </summary>
         public bool TryServeOrder()
         {
@@ -113,14 +130,48 @@ namespace Sushi.UI
             liveInventoryReference.RemoveFirst(platedSushi);
 
             // TODO: Link up your financial inventory accounting system balance curves here!
+
             Debug.Log($"Served: {assignedRecipe.recipeName}! Order complete.");
 
             if (runtimeManager != null)
             {
                 runtimeManager.CompleteOrder(gameObject);
+                runtimeManager.counter = runtimeManager.counter + assignedRecipe.recipeValue;
+                runtimeManager.coinCounter.text = runtimeManager.counter.ToString();
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Called by the serve station when TryServeOrder() failed — i.e. the player doesn't
+        /// have the correct dish, but might be holding a WRONG plated dish and served it anyway.
+        /// If any other recipe's plated item is in the inventory, that counts as a failed
+        /// delivery: it's removed and this order is marked failed (no payout), freeing the
+        /// board up for the next Accept. Returns true if a failure was resolved this way.
+        /// </summary>
+        public bool TryFailServeWithWrongDish(System.Collections.Generic.List<RecipeData> allRecipes)
+        {
+            if (!IsAccepted || liveInventoryReference == null || allRecipes == null) return false;
+
+            foreach (RecipeData otherRecipe in allRecipes)
+            {
+                if (otherRecipe == null || otherRecipe == assignedRecipe || otherRecipe.resultItem == null) continue;
+
+                if (liveInventoryReference.CountOf(otherRecipe.resultItem) > 0)
+                {
+                    liveInventoryReference.RemoveFirst(otherRecipe.resultItem);
+
+                    Debug.Log($"Served the wrong dish ({otherRecipe.recipeName}) for order '{assignedRecipe.recipeName}' — order failed.");
+
+                    if (statusText != null) statusText.text = "Failed!";
+
+                    if (runtimeManager != null) runtimeManager.FailOrder(gameObject);
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

@@ -1,9 +1,11 @@
 using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Sushi.Data;
 using Sushi.Inventory;
 using Sushi.UI;
+using TMPro;
 
 public class OrderManager : MonoBehaviour
 {
@@ -11,6 +13,8 @@ public class OrderManager : MonoBehaviour
 
     [Header("Inventory Hook")]
     public Inventory playerInventory;
+    public TextMeshProUGUI coinCounter;
+    public int counter;
 
     [Header("Visual Prefabs & Boards")]
     public Transform orderBoardContainer;
@@ -35,12 +39,20 @@ public class OrderManager : MonoBehaviour
     /// <summary>Read-only view of accepted tickets, for the serve station to check against inventory.</summary>
     public IReadOnlyList<GameObject> AcceptedTickets => acceptedSlips;
 
+    /// <summary>True while an order is accepted and not yet completed/failed — blocks accepting another.</summary>
+    public bool HasActiveOrder => acceptedSlips.Count > 0;
+
+    /// <summary>Fired whenever an order is accepted, completed, or failed, so tickets can refresh their Accept button.</summary>
+    public event Action OnActiveOrderChanged;
+
     private Coroutine orderRoutine;
 
     private void Awake()
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
+        counter = 0;
+        
     }
 
     public void StartServiceOrders()
@@ -69,7 +81,7 @@ public class OrderManager : MonoBehaviour
     {
         while (DayNightCycleManager.Instance.currentState == GameState.RestaurantService)
         {
-            float delay = Random.Range(minTimeBetweenOrders, maxTimeBetweenOrders);
+            float delay = UnityEngine.Random.Range(minTimeBetweenOrders, maxTimeBetweenOrders);
             yield return new WaitForSeconds(delay);
 
             if (spawnedSlips.Count < maxConcurrentOrders)
@@ -123,7 +135,7 @@ public class OrderManager : MonoBehaviour
         }
 
         // 3. Select a random valid recipe from the possible choices
-        RecipeData selectedRecipe = viableRecipes[Random.Range(0, viableRecipes.Count)];
+        RecipeData selectedRecipe = viableRecipes[UnityEngine.Random.Range(0, viableRecipes.Count)];
 
         // 4. Instantiate Visual UI Elements
         if (orderSlipPrefab == null || orderBoardContainer == null)
@@ -145,17 +157,22 @@ public class OrderManager : MonoBehaviour
     /// <summary>
     /// Called from OrderSlipUI when the player clicks "Accept" on a ticket.
     /// Doesn't touch inventory — just marks the ticket as in-progress.
+    /// Rejects (returns false) if another order is already active.
     /// </summary>
-    public void AcceptOrder(RecipeData recipe, GameObject slipObj)
+    public bool AcceptOrder(RecipeData recipe, GameObject slipObj)
     {
-        if (slipObj == null) return;
+        if (slipObj == null) return false;
 
-        if (!acceptedSlips.Contains(slipObj))
+        if (HasActiveOrder)
         {
-            acceptedSlips.Add(slipObj);
+            Debug.LogWarning($"OrderManager: Can't accept '{recipe.recipeName}' — an order is already in progress.");
+            return false;
         }
 
+        acceptedSlips.Add(slipObj);
         Debug.Log($"Order accepted: {recipe.recipeName}");
+        OnActiveOrderChanged?.Invoke();
+        return true;
     }
 
     /// <summary>
@@ -166,6 +183,19 @@ public class OrderManager : MonoBehaviour
     {
         acceptedSlips.Remove(slipObj);
         DismissTicket(slipObj);
+        OnActiveOrderChanged?.Invoke();
+    }
+
+    /// <summary>
+    /// Called when the player serves the WRONG plated dish against this ticket.
+    /// Same cleanup as CompleteOrder, but no payout — this is the "failed" outcome
+    /// that frees the player up to accept a new order.
+    /// </summary>
+    public void FailOrder(GameObject slipObj)
+    {
+        acceptedSlips.Remove(slipObj);
+        DismissTicket(slipObj);
+        OnActiveOrderChanged?.Invoke();
     }
 
     public void DismissTicket(GameObject slipObj)

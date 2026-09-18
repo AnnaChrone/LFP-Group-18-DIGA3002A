@@ -48,6 +48,13 @@ public class ServeStation : MonoBehaviour
                 // One serve action delivers one dish. Stop after the first match.
                 return;
             }
+
+            // Correct dish wasn't in inventory — check if the player served a WRONG
+            // plated dish instead, which fails this order and frees up the board.
+            if (slip.TryFailServeWithWrongDish(orderManager.globalRecipeBook))
+            {
+                return;
+            }
         }
 
         Debug.LogWarning("Nothing in your bag matches an accepted order yet.");
