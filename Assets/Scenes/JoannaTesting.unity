@@ -12323,8 +12323,8 @@ MonoBehaviour:
   busyFishing: 0
   minimumBiteTime: 2
   maximumBiteTime: 5
-  maximumFishDistance: 1
-  fishDistance: 1
+  maximumFishDistance: 20
+  fishDistance: 20
   fishPullSpeed: 5
   minimumResistance: 0.2
   maximumResistance: 1
