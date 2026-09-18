@@ -1945,7 +1945,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &636447230
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3561,11 +3561,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cea05eee5bdd054c811c26094e28418, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FishingUI
-  fishingManager: {fileID: 0}
-  fishingBars: {fileID: 0}
-  fishDistanceBar: {fileID: 0}
-  rodTensionBar: {fileID: 0}
-  resistanceBar: {fileID: 0}
+  fishingManager: {fileID: 568811963}
+  fishingBars: {fileID: 1667683012}
+  fishDistanceBar: {fileID: 220148993}
+  rodTensionBar: {fileID: 366777496}
+  resistanceBar: {fileID: 1801601230}
 --- !u!4 &1168604368
 Transform:
   m_ObjectHideFlags: 0
@@ -5476,6 +5476,7 @@ GameObject:
   - component: {fileID: 1667683015}
   - component: {fileID: 1667683014}
   - component: {fileID: 1667683013}
+  - component: {fileID: 1667683017}
   m_Layer: 5
   m_Name: FishingUI
   m_TagString: Untagged
@@ -5568,6 +5569,23 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1667683017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1667683012}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5cea05eee5bdd054c811c26094e28418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FishingUI
+  fishingManager: {fileID: 0}
+  fishingBars: {fileID: 0}
+  fishDistanceBar: {fileID: 0}
+  rodTensionBar: {fileID: 0}
+  resistanceBar: {fileID: 0}
 --- !u!1 &1702103125
 GameObject:
   m_ObjectHideFlags: 0
