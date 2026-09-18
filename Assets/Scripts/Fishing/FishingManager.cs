@@ -1,5 +1,6 @@
 using UnityEngine;
 using Sushi.Fishing;
+using TMPro;
 
 public class FishingManager : MonoBehaviour
 {
@@ -66,6 +67,10 @@ public class FishingManager : MonoBehaviour
     private float fightDuration;
     private float peakTensionNormalised;
 
+    [Header("Instruction UI")]
+    public TextMeshProUGUI PressE;
+    public TextMeshProUGUI PressSpace;
+
     private void Start()
     {
         Bobber.SetActive(false);
@@ -90,6 +95,7 @@ public class FishingManager : MonoBehaviour
         if (other.CompareTag("Fishing"))
         {
             inFishingRange = true;
+            PressE.text = "Press E to sit down";
 
             Debug.Log("In fishing range");
         }
@@ -101,6 +107,8 @@ public class FishingManager : MonoBehaviour
         if (other.CompareTag("Fishing"))
         {
             inFishingRange = false;
+            PressE.text = "";
+
 
             Debug.Log("Out of fishing range");
         }
@@ -112,6 +120,7 @@ public class FishingManager : MonoBehaviour
         if (currentState == FishingState.NotFishing)
         {
             SitDown();
+
             busyFishing = true;
         }
         else if (currentState == FishingState.Sitting)
@@ -157,6 +166,8 @@ public class FishingManager : MonoBehaviour
         currentState = FishingState.Sitting;
 
         Debug.Log("Player sat down");
+        PressSpace.text = "Press [SPACEBAR] to cast your line";
+        PressE.text = "Press E to stop fishing";
 
         // Disable player movement here later.
     }
@@ -167,6 +178,9 @@ public class FishingManager : MonoBehaviour
         currentState = FishingState.NotFishing;
 
         Debug.Log("Player stood up");
+        PressSpace.text = "";
+        PressE.text = "Press E to sit down";
+
 
         // Enable player movement here later.
     }
@@ -187,7 +201,7 @@ public class FishingManager : MonoBehaviour
         Bobber.transform.position = BobberStart.position; //places bobber back where it starts from
         Bobber.SetActive(true);
         Debug.Log("Cast!");
-
+        PressSpace.text = "Wait for fish to bite...";
         StartWaitingForFish();
     }
 
@@ -221,6 +235,7 @@ public class FishingManager : MonoBehaviour
         currentState = FishingState.FishHooked;
 
         Debug.Log("FISH HOOKED!");
+        PressSpace.text = "Hold [SPACEBAR] to reel fish! Make sure rod tension doesnt get too high!";
         Bobber.transform.Translate(
             0f,
             -bobberDipAmount,
@@ -353,7 +368,7 @@ public class FishingManager : MonoBehaviour
 
         fishDistance = Mathf.Min(fishDistance, maximumFishDistance);
 
-        Debug.Log("Not reeling | Distance: " + fishDistance + " | Tension: " + rodTension);
+       // Debug.Log("Not reeling | Distance: " + fishDistance + " | Tension: " + rodTension);
     }
 
     private void UpdateBobberPosition()
@@ -456,6 +471,7 @@ public class FishingManager : MonoBehaviour
         currentState = FishingState.Sitting;
         Bobber.SetActive(false);
         Debug.Log("Line withdrawn");
+        PressSpace.text = "Press [SPACEBAR] to cast your line";
     }
 
 
