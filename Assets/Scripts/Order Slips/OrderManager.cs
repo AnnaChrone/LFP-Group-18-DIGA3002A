@@ -27,9 +27,13 @@ public class OrderManager : MonoBehaviour
 
     private List<GameObject> spawnedSlips = new List<GameObject>();
 
-    //Tickets the player has accepted (clicked Accept on), waiting to be cooked/served.
-    // (Kept separate from spawnedSlips so you can query "what's actively in progress")
+    // NEW: tickets the player has accepted (clicked Accept on), waiting to be cooked/served.
+    // Kept separate from spawnedSlips so you can query "what's actively in progress"
+    // without touching the full board list.
     private List<GameObject> acceptedSlips = new List<GameObject>();
+
+    /// <summary>Read-only view of accepted tickets, for the serve station to check against inventory.</summary>
+    public IReadOnlyList<GameObject> AcceptedTickets => acceptedSlips;
 
     private Coroutine orderRoutine;
 
@@ -160,7 +164,6 @@ public class OrderManager : MonoBehaviour
     /// </summary>
     public void CompleteOrder(GameObject slipObj)
     {
-        //DO PAYOUT HERE
         acceptedSlips.Remove(slipObj);
         DismissTicket(slipObj);
     }

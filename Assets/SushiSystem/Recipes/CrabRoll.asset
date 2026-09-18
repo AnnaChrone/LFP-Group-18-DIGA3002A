@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7a2efcab80ffb854dbf87b23d2c872e3, type: 3}
-  m_Name: Shrimp
+  m_Name: CrabRoll
   m_EditorClassIdentifier: Assembly-CSharp::Sushi.Data.RecipeData
-  recipeName: Prawn
-  mainFish: {fileID: 11400000, guid: 1e00797979e7c0e408de310e285b8172, type: 2}
+  recipeName: Crab Roll
+  mainFish: {fileID: 11400000, guid: c138376bc7307ee418d1bdc72cee994e, type: 2}
   requiredIngredients: []
-  resultItem: {fileID: 11400000, guid: feedc7042b181d245b1cc69b85ff8adc, type: 2}
+  resultItem: {fileID: 11400000, guid: ed41229438defa142afb8a8a9c4ba646, type: 2}
   recipeValue: 25
