@@ -111,8 +111,8 @@ public class Cooking : MonoBehaviour
 
         if (activeOrderIcon != null && active.mainFish != null)
         {
-            activeOrderIcon.sprite = active.mainFish.icon;
-            activeOrderIcon.color = active.mainFish.tint;
+            activeOrderIcon.sprite = active.resultItem.icon;
+            activeOrderIcon.color = active.resultItem.tint;
         }
 
         if (activeOrderIngredientsText != null)
