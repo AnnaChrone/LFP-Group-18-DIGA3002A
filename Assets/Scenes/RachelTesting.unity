@@ -3514,6 +3514,7 @@ MonoBehaviour:
   playerInventory: {fileID: 174427272}
   orderBoardContainer: {fileID: 1541510295}
   orderSlipPrefab: {fileID: 4593431020644480233, guid: 1d3007ce69df1664ebce78e08f682d03, type: 3}
+  globalRecipeBook: []
   minTimeBetweenOrders: 4
   maxTimeBetweenOrders: 10
   maxConcurrentOrders: 5

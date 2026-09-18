@@ -6,78 +6,94 @@ using Sushi.Inventory;
 
 namespace Sushi.UI
 {
-    /// <summary>
-    /// Attached to the individual Order Slip UI prefab instances.
-    /// Extracts data from the chosen ItemData asset and updates the visual card fields.
-    /// Handles the click interaction to serve the dish and deduct fish from the inventory.
-    /// </summary>
     [DisallowMultipleComponent]
     public class OrderSlipUI : MonoBehaviour
     {
-        [Header("UI Visual Assignments")]
-        [Tooltip("The text mesh element that will display the dish name (e.g., 'Tuna Sushi').")]
-        [SerializeField] private TMP_Text menuTitleText;
+        [Header("Layout Assignments")]
+        public TMP_Text menuTitleText;
+        public Image menuIconDisplay;
+        public TMP_Text goldPayoutText;
+        
+        [Tooltip("Optional: A text sub-field to show extra requested item list strings.")]
+        public TMP_Text ingredientsListText; 
 
-        [Tooltip("The image slot displaying the fish silhouette or sprite design.")]
-        [SerializeField] private Image menuIconDisplay;
-
-        [Tooltip("The text element showing how much gold this recipe rewards.")]
-        [SerializeField] private TMP_Text goldPayoutText;
-
-        private ItemData targetedFish;
+        private RecipeData assignedRecipe;
         private Inventory.Inventory liveInventoryReference;
         private OrderManager runtimeManager;
 
-        /// <summary>
-        /// Instantiated tickets call this entry method to populate names, icons, and economy weights.
-        /// </summary>
-        public void InitializeTicket(ItemData fish, Inventory.Inventory inventory, OrderManager manager)
+        public void InitializeRecipeTicket(RecipeData recipe, Inventory.Inventory inventory, OrderManager manager)
         {
-            targetedFish = fish;
+            assignedRecipe = recipe;
             liveInventoryReference = inventory;
             runtimeManager = manager;
 
-            // Apply Display Text safely via your ScriptableObject's 'Label' property
-            if (menuTitleText != null) 
-            {
-                menuTitleText.text = $"{fish.Label} Sushi";
-            }
+            if (menuTitleText != null) menuTitleText.text = recipe.recipeName;
             
-            // Apply icons and respect the scriptable asset's layout tinting rules
-            if (menuIconDisplay != null)
+            // Displays the icon of the main fish as the layout centerpiece
+            if (menuIconDisplay != null && recipe.mainFish != null)
             {
-                menuIconDisplay.sprite = fish.icon;
-                menuIconDisplay.color = fish.tint; 
+                menuIconDisplay.sprite = recipe.mainFish.icon;
+                menuIconDisplay.color = recipe.mainFish.tint; 
             }
 
-            // Calculate active restaurant pricing curves
             if (goldPayoutText != null)
             {
-                // Dave the Diver rewards premium returns for processed dining orders over raw fish dumping values
-                int totalValue = Mathf.RoundToInt(fish.baseValue * 1.6f);
-                goldPayoutText.text = $"+{totalValue} Gold";
+                goldPayoutText.text = $"+{recipe.recipeValue} Gold";
+            }
+
+            // Build a visual string listing required ingredients underneath the title
+            if (ingredientsListText != null)
+            {
+                string trackingList = "Requires: ";
+                for (int i = 0; i < recipe.requiredIngredients.Count; i++)
+                {
+                    trackingList += recipe.requiredIngredients[i].Label;
+                    if (i < recipe.requiredIngredients.Count - 1) trackingList += ", ";
+                }
+                
+                // Keep it clean if there are no extra ingredient modifiers
+                ingredientsListText.text = recipe.requiredIngredients.Count > 0 ? trackingList : "";
             }
         }
 
-        /// <summary>
-        /// Hook this method to an OnClick() event handler on a Button component located on the root of your UI Prefab.
-        /// </summary>
-       // Change this line in OrderSlipUI.cs:
-public void ClickServeRecipeButton(int ignoreThis = 0)
-
+        public void ClickServeRecipeButton()
         {
-            if (liveInventoryReference == null || targetedFish == null) return;
+            if (liveInventoryReference == null || assignedRecipe == null) return;
 
-            // Check if player still owns at least 1 count of this specific fish
-            if (liveInventoryReference.CountOf(targetedFish) > 0)
+            // 1. FIRST PASS: Verify player actually owns everything needed for the dish
+            bool canFulfill = true;
+
+            // Check main fish quantity
+            if (liveInventoryReference.CountOf(assignedRecipe.mainFish) <= 0)
             {
-                // Cleanly remove exactly 1 matching index out of the player's catch bag list
-                liveInventoryReference.RemoveFirst(targetedFish);
+                canFulfill = false;
+            }
 
-                // TODO: Integrate with your financial player account manager here using the calculation above
-                Debug.Log($"Successfully served {targetedFish.Label} Sushi! 1 count removed from inventory.");
+            // Check every sub-ingredient quantity
+            foreach (ItemData ingredient in assignedRecipe.requiredIngredients)
+            {
+                if (liveInventoryReference.CountOf(ingredient) <= 0)
+                {
+                    canFulfill = false;
+                    break;
+                }
+            }
 
-                // Tell the board container manager to wipe this specific visual card from the screen array
+            // 2. SECOND PASS: If check passes, systematically deduct the ingredients
+            if (canFulfill)
+            {
+                // Deduct primary fish
+                liveInventoryReference.RemoveFirst(assignedRecipe.mainFish);
+
+                // Deduct each extra item piece matching asset profiles
+                foreach (ItemData ingredient in assignedRecipe.requiredIngredients)
+                {
+                    liveInventoryReference.RemoveFirst(ingredient);
+                }
+
+                // TODO: Link up your financial inventory accounting system balance curves here!
+                Debug.Log($"Fulfill: {assignedRecipe.recipeName} served! All components extracted.");
+
                 if (runtimeManager != null)
                 {
                     runtimeManager.DismissTicket(gameObject);
@@ -85,7 +101,7 @@ public void ClickServeRecipeButton(int ignoreThis = 0)
             }
             else
             {
-                Debug.LogWarning($"Cannot fulfill! You do not have any {targetedFish.Label} remaining in your bag.");
+                Debug.LogWarning($"Missing ingredients to serve {assignedRecipe.recipeName}! Check your catch bag.");
             }
         }
     }

@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-using UnityEngine.UI; // Replace with 'using TMPro;' if using TextMeshPro
+using UnityEngine.UI; 
 using TMPro;
 
 public enum GameState { Daytime, Nighttime, RestaurantService }
@@ -36,10 +36,9 @@ public class DayNightCycleManager : MonoBehaviour
     
    private void Start()
     {
-        // 1. Automatically find the movement script attached to your player object
+        // 1. Automatically find the movement script attached to the player object
         if (player != null)
         {
-            // If your script is named 'PlayerController', you can change 'MonoBehaviour' to 'PlayerController'
             playerMovementComponent = player.GetComponent<MonoBehaviour>(); 
         }
 
@@ -111,10 +110,6 @@ public class DayNightCycleManager : MonoBehaviour
     // Unified transition handler that fades out, teleports, and fades back in safely
     private IEnumerator TeleportSequence(Vector3 targetPosition, GameState nextState)
     {
-        // 1. Freeze Player Control (Good practice so they don't move while screen is black)
-        // if (playerMovement != null) playerMovement.enabled = false;
-
-        // 2. Fade to Solid Black
         while (screenFaderCanvasGroup.alpha < 1f)
         {
             screenFaderCanvasGroup.alpha += Time.deltaTime * fadeSpeed;
@@ -122,14 +117,14 @@ public class DayNightCycleManager : MonoBehaviour
         }
         screenFaderCanvasGroup.alpha = 1f;
 
-        // 3. Perform World Modifications Safely While Screen is Dark
+        // Perform World Modifications Safely While Screen is Dark
         player.transform.position = targetPosition;
         currentState = nextState;
 
         // Small stall to give Cinemachine or camera scripts a frame to update positioning
         yield return new WaitForSeconds(0.2f); 
 
-        // 4. Fade Back to Gameplay
+        // Fade Back to Gameplay
         while (screenFaderCanvasGroup.alpha > 0f)
         {
             screenFaderCanvasGroup.alpha -= Time.deltaTime * fadeSpeed;
@@ -137,8 +132,6 @@ public class DayNightCycleManager : MonoBehaviour
         }
         screenFaderCanvasGroup.alpha = 0f;
 
-        // 5. Unfreeze Player Control
-        // if (playerMovement != null) playerMovement.enabled = true;
     }
 
     // Handles the active shift countdown timer before cycling back home

@@ -2,22 +2,25 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using Sushi.Data;
-using Sushi.Inventory; // Connects to your Inventory namespace
+using Sushi.Inventory;
 using Sushi.UI;
 
 public class OrderManager : MonoBehaviour
 {
     public static OrderManager Instance;
 
-    [Header("Inventory Hook")]
-    [Tooltip("Drag the Player's Inventory component here.")]
-    public Inventory playerInventory;
+       [Header("Inventory Hook")]
+    // TO THIS:
+    public Inventory playerInventory; 
+
 
     [Header("Visual Prefabs & Boards")]
-    [Tooltip("The UI layout component parent that handles sorting on the wall.")]
     public Transform orderBoardContainer;
-    [Tooltip("The Ticket Prefab UI gameobject asset.")]
     public GameObject orderSlipPrefab;
+
+    [Header("Recipe Database")]
+    [Tooltip("Drag all the Recipe Data assets you have created into this list.")]
+    public List<RecipeData> globalRecipeBook = new List<RecipeData>();
 
     [Header("Timing Loops")]
     public float minTimeBetweenOrders = 4f;
@@ -56,7 +59,6 @@ public class OrderManager : MonoBehaviour
 
     private IEnumerator GenerationLoop()
     {
-        // Keeps checking if the active loop is still running your service shift
         while (DayNightCycleManager.Instance.currentState == GameState.RestaurantService)
         {
             float delay = Random.Range(minTimeBetweenOrders, maxTimeBetweenOrders);
@@ -70,49 +72,68 @@ public class OrderManager : MonoBehaviour
     }
 
     private void TryCreateTicket()
+{
+    // Guard 1: Check if the inspector reference is missing entirely
+    if (playerInventory == null)
     {
-        if (playerInventory == null)
+        Debug.LogError("OrderManager: Player Inventory reference is missing in the Inspector!");
+        return;
+    }
+
+    // Guard 2: Check if you forgot to add recipes to your global list
+    if (globalRecipeBook == null || globalRecipeBook.Count == 0)
+    {
+        Debug.LogWarning("OrderManager: Your Global Recipe Book is empty! Add some Recipe Data assets in the Inspector.");
+        return;
+    }
+
+    // Guard 3: Direct inventory check. If total item count is 0, warn immediately and stop.
+    if (playerInventory.Count == 0)
+    {
+        Debug.LogWarning("OrderManager WARNING: Player inventory is completely empty! No orders can be generated.");
+        return;
+    }
+
+    // 1. Find all recipes where the player has at least the primary fish in stock
+    List<RecipeData> viableRecipes = new List<RecipeData>();
+
+    foreach (RecipeData recipe in globalRecipeBook)
+    {
+        if (recipe == null) continue; // Safety skip if a slot in the list is empty
+
+        if (recipe.mainFish != null && playerInventory.CountOf(recipe.mainFish) > 0)
         {
-            Debug.LogError("OrderManager: No Player Inventory reference assigned!");
-            return;
-        }
-
-        // 1. Parse your real inventory items list to extract uniquely available Fish types
-        List<ItemData> validFishInBag = new List<ItemData>();
-        
-        for (int i = 0; i < playerInventory.Items.Count; i++)
-        {
-            ItemData fish = playerInventory.Items[i].data;
-            if (fish != null && fish.category == ItemCategory.Fish)
-            {
-                // Simple duplicate exclusion tracker
-                if (!validFishInBag.Contains(fish))
-                {
-                    validFishInBag.Add(fish);
-                }
-            }
-        }
-
-        // 2. Halt generation if player is out of stock entirely
-        if (validFishInBag.Count == 0)
-        {
-            Debug.LogWarning("No fish available in player's catch bag to generate orders!");
-            return;
-        }
-
-        // 3. Pick a random choice from the gathered collection
-        ItemData selectedFish = validFishInBag[Random.Range(0, validFishInBag.Count)];
-
-        // 4. Instantiate Visual UI Elements
-        GameObject newSlip = Instantiate(orderSlipPrefab, orderBoardContainer);
-        spawnedSlips.Add(newSlip);
-
-        OrderSlipUI slipUI = newSlip.GetComponent<OrderSlipUI>();
-        if (slipUI != null)
-        {
-            slipUI.InitializeTicket(selectedFish, playerInventory, this);
+            viableRecipes.Add(recipe);
         }
     }
+
+    // 2. If we have recipes in our book, but none match the fish currently held
+    if (viableRecipes.Count == 0)
+    {
+        Debug.LogWarning("OrderManager: The player has items, but none of them match the 'Main Fish' required for your recipes.");
+        return;
+    }
+
+    // 3. Select a random valid recipe from the possible choices
+    RecipeData selectedRecipe = viableRecipes[Random.Range(0, viableRecipes.Count)];
+
+    // 4. Instantiate Visual UI Elements
+    if (orderSlipPrefab == null || orderBoardContainer == null)
+    {
+        Debug.LogError("OrderManager: Order Slip Prefab or Order Board Container is not assigned!");
+        return;
+    }
+
+    GameObject newSlip = Instantiate(orderSlipPrefab, orderBoardContainer);
+    spawnedSlips.Add(newSlip);
+
+    OrderSlipUI slipUI = newSlip.GetComponent<OrderSlipUI>();
+    if (slipUI != null)
+    {
+        slipUI.InitializeRecipeTicket(selectedRecipe, playerInventory, this);
+    }
+}
+
 
     public void DismissTicket(GameObject slipObj)
     {
