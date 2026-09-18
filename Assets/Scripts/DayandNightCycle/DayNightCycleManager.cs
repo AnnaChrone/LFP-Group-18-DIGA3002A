@@ -20,6 +20,7 @@ public class DayNightCycleManager : MonoBehaviour
     [Header("UI Panels")]
     public GameObject restaurantTransitionPanel;
     public GameObject startServicePanel;
+    public TextMeshProUGUI SequenceText;
 
     [Header("Visual Transition Settings")]
     public CanvasGroup screenFaderCanvasGroup;
@@ -110,11 +111,18 @@ public class DayNightCycleManager : MonoBehaviour
     // Unified transition handler that fades out, teleports, and fades back in safely
     private IEnumerator TeleportSequence(Vector3 targetPosition, GameState nextState)
     {
-        while (screenFaderCanvasGroup.alpha < 1f)
+        if (nextState == GameState.Nighttime)
         {
-            screenFaderCanvasGroup.alpha += Time.deltaTime * fadeSpeed;
-            yield return null;
+            SequenceText.text = "Loading Sushi...";
+        } else
+        {
+            SequenceText.text = "Loading Dock...";
         }
+            while (screenFaderCanvasGroup.alpha < 1f)
+            {
+                screenFaderCanvasGroup.alpha += Time.deltaTime * fadeSpeed;
+                yield return null;
+            }
         screenFaderCanvasGroup.alpha = 1f;
 
         // Perform World Modifications Safely While Screen is Dark

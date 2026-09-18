@@ -5725,6 +5725,7 @@ MonoBehaviour:
   restaurantSpawnPoint: {fileID: 1616507085}
   restaurantTransitionPanel: {fileID: 110846137}
   startServicePanel: {fileID: 1297572724}
+  SequenceText: {fileID: 262798633}
   screenFaderCanvasGroup: {fileID: 117553233}
   fadeSpeed: 12
   countdownText: {fileID: 882838883}
