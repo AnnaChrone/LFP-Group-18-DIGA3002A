@@ -18,6 +18,12 @@ namespace Sushi.Data
         [Tooltip("List of extra ingredients required (e.g., Seaweed, Rice, Wasabi).")]
         public List<ItemData> requiredIngredients = new List<ItemData>();
 
+        [Header("Cooking Output")]
+        [Tooltip("The finished, plated sushi item this recipe produces at the stove. " +
+                 "This is what gets added to inventory after cooking, and what the " +
+                 "serve/delivery station checks for — NOT the raw ingredients above.")]
+        public ItemData resultItem;
+
         [Header("Economy")]
         [Tooltip("Fulfillment gold payout for successfully serving this complex dish.")]
         [Min(0)] public int recipeValue = 25;

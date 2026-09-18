@@ -5,7 +5,8 @@ namespace Sushi.Data
     public enum ItemCategory
     {
         Fish,
-        Ingredient
+        Ingredient,
+        Sushi
     }
 
     /// <summary>

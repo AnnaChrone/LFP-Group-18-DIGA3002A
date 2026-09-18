@@ -10,6 +10,7 @@ public class PlayerControls : MonoBehaviour
 
     [Header("Fishing Variables")]
     public FishingManager fishingManager;
+    public Cooking cooking;
 
 
     private void Awake()
@@ -74,6 +75,27 @@ public class PlayerControls : MonoBehaviour
         if (context.canceled)
         {
             fishingManager.FishReleased();
+        }
+    }
+
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Stove"))
+        {
+            cooking.OpenStoveUI();
+            Debug.Log("Opening stove");
+        }
+    }
+
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("Stove"))
+        {
+            cooking.CloseStoveUI();
+            Debug.Log("Closing stove");
+
         }
     }
 }

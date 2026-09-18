@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Serve
+  m_text: Accept
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -750,6 +750,8 @@ MonoBehaviour:
   menuIconDisplay: {fileID: 8496805168307753383}
   goldPayoutText: {fileID: 7235858933184137874}
   ingredientsListText: {fileID: 1505250485723662593}
+  statusText: {fileID: 0}
+  acceptButton: {fileID: 0}
 --- !u!1 &5748804615733476965
 GameObject:
   m_ObjectHideFlags: 0
@@ -873,7 +875,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4157867250176404639}
         m_TargetAssemblyTypeName: Sushi.UI.OrderSlipUI, Assembly-CSharp
-        m_MethodName: ClickServeRecipeButton
+        m_MethodName: ClickAcceptOrderButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -15,4 +15,5 @@ MonoBehaviour:
   recipeName: Tuna Roll
   mainFish: {fileID: 11400000, guid: 7cd3ff561c9b158429637bb0c806498b, type: 2}
   requiredIngredients: []
+  resultItem: {fileID: 11400000, guid: 7dbf41061d76d4040bfe750b822e14fb, type: 2}
   recipeValue: 25

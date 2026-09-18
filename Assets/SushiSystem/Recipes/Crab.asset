@@ -15,4 +15,5 @@ MonoBehaviour:
   recipeName: Crab
   mainFish: {fileID: 11400000, guid: c138376bc7307ee418d1bdc72cee994e, type: 2}
   requiredIngredients: []
+  resultItem: {fileID: 11400000, guid: ed41229438defa142afb8a8a9c4ba646, type: 2}
   recipeValue: 25
