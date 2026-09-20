@@ -15,7 +15,7 @@ MonoBehaviour:
   id: crabroll
   displayName: Crab Roll
   category: 2
-  icon: {fileID: -3723441096681265979, guid: d266202cae897714aaa877350e303076, type: 3}
+  icon: {fileID: 21300000, guid: bfaced186ffd943409a2562e83c91ffe, type: 3}
   tint: {r: 1, g: 1, b: 1, a: 1}
   baseValue: 10
   weight: 1

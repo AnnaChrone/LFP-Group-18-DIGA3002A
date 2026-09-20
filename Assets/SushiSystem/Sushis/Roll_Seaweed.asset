@@ -15,7 +15,7 @@ MonoBehaviour:
   id: makiroll
   displayName: Maki Roll
   category: 2
-  icon: {fileID: -4345350821065967682, guid: e75a340ca55492b4d8eb70e0d48b8f1c, type: 3}
+  icon: {fileID: 21300000, guid: 40d4950ed91696043ada3cc46296571d, type: 3}
   tint: {r: 1, g: 1, b: 1, a: 1}
   baseValue: 10
   weight: 1

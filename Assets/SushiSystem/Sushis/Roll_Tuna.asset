@@ -15,7 +15,7 @@ MonoBehaviour:
   id: tunaroll
   displayName: Tuna Roll
   category: 2
-  icon: {fileID: 3658461449516514455, guid: e75a340ca55492b4d8eb70e0d48b8f1c, type: 3}
+  icon: {fileID: 21300000, guid: f3ebf4cda2d5ab940a70c453b0c4ce3c, type: 3}
   tint: {r: 1, g: 1, b: 1, a: 1}
   baseValue: 10
   weight: 1
