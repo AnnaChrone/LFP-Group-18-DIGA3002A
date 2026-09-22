@@ -130,7 +130,7 @@ namespace Sushi.UI
             liveInventoryReference.RemoveFirst(platedSushi);
 
             // TODO: Link up your financial inventory accounting system balance curves here!
-
+            UiPrompter.Instance.CorrectOrder();
             Debug.Log($"Served: {assignedRecipe.recipeName}! Order complete.");
 
             if (runtimeManager != null)
@@ -163,7 +163,7 @@ namespace Sushi.UI
                     liveInventoryReference.RemoveFirst(otherRecipe.resultItem);
 
                     Debug.Log($"Served the wrong dish ({otherRecipe.recipeName}) for order '{assignedRecipe.recipeName}' — order failed.");
-
+                    UiPrompter.Instance.IncorrectOrder();
                     if (statusText != null) statusText.text = "Failed!";
 
                     if (runtimeManager != null) runtimeManager.FailOrder(gameObject);

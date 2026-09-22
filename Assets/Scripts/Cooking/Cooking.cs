@@ -150,6 +150,7 @@ public class Cooking : MonoBehaviour
 
         if (!HasIngredientsFor(recipe))
         {
+            UiPrompter.Instance.noIngredients();
             Debug.LogWarning($"Missing ingredients to cook {recipe.recipeName}! Check your catch bag.");
             return;
         }
