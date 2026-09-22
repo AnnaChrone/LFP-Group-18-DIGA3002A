@@ -160,15 +160,7 @@ public class Cooking : MonoBehaviour
             return;
         }
 
-        // Check there's room for the plated dish BEFORE deducting ingredients, so a full
-        // bag doesn't eat the player's raw ingredients for nothing.
-        if (!playerInventory.CanAccept(recipe.resultItem))
-        {
-            Debug.LogWarning($"No room in the catch bag for {recipe.resultItem.name}! Free up a slot first.");
-            return;
-        }
-
-        // Deduct raw ingredients
+        // Deduct raw ingredients first
         playerInventory.RemoveFirst(recipe.mainFish);
         foreach (ItemData ingredient in recipe.requiredIngredients)
         {
@@ -176,7 +168,18 @@ public class Cooking : MonoBehaviour
         }
 
         // Grant the finished, plated sushi
-        playerInventory.TryAdd(recipe.resultItem);
+        bool added = playerInventory.TryAdd(recipe.resultItem);
+        if (!added)
+        {
+            playerInventory.TryAdd(recipe.mainFish);
+            foreach (ItemData ingredient in recipe.requiredIngredients)
+            {
+                playerInventory.TryAdd(ingredient);
+            }
+            Debug.LogError($"Could not place cooked {recipe.resultItem.name} — ingredients restored.");
+            return;
+        }
+
         Debug.Log($"Cooked: {recipe.recipeName} -> {recipe.resultItem.name} added to inventory.");
     }
 
