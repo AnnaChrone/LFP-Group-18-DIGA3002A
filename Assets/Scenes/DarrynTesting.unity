@@ -13921,7 +13921,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Sushi.Inventory.Inventory
   slotCount: 8
-  capacityRule: {fileID: 11400000, guid: 4ba381cc5180e3146989ae4cadb12c3e, type: 2}
+  capacityRule: {fileID: 11400000, guid: 96c1552cc5cbd8349990791cbcfae45c, type: 2}
 --- !u!114 &1545516189
 MonoBehaviour:
   m_ObjectHideFlags: 0
