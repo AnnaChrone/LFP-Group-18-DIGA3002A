@@ -18,4 +18,8 @@ MonoBehaviour:
   icon: {fileID: -8652033640658449738, guid: d266202cae897714aaa877350e303076, type: 3}
   tint: {r: 1, g: 1, b: 1, a: 1}
   baseValue: 10
-  weight: 3
+  weight: 1
+  minWeight: 0.2
+  maxWeight: 0.65
+  minResistance: 0.071
+  maxResistance: 0.461

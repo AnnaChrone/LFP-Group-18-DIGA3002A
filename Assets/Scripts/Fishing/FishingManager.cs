@@ -6,8 +6,6 @@ public class FishingManager : MonoBehaviour
 {
     public FishingState currentState = FishingState.NotFishing;
 
-    // Optional. Leave empty and this script behaves exactly as before,
-    // so fishing stays testable in isolation on its own branch.
     [Header("Inventory")]
     public FishingCatchHandler catchHandler;
 
@@ -24,14 +22,20 @@ public class FishingManager : MonoBehaviour
     [Header("Fish")]
     public float maximumFishDistance = 100f;  //as far as the fish can be before the line breaks
     public float fishDistance = 80f;
-    public float fishPullSpeed = 5f;
+    public float fishPullSpeed = 3f;
 
     [Header("Fish Resistance")]
+    [Tooltip("Fallback range, used only when no catch handler is assigned. " +
+            "With a handler, each species supplies its own range on bite.")]
     public float minimumResistance = 0.2f;
     public float maximumResistance = 1f;
 
     public float currentResistance;
     private float targetResistance;
+
+    // The range for the fish currently on the line.
+    private float activeMinResistance;
+    private float activeMaxResistance;
 
     public float minimumResistanceChangeTime = 0.5f;
     public float maximumResistanceChangeTime = 2f;
@@ -44,6 +48,10 @@ public class FishingManager : MonoBehaviour
     public float reelSpeed = 10f;
     public float rodRecoverySpeed = 12f;
     public float resistanceTensionMultiplier = 25f;
+
+    [Header("Fight Scoring")]
+    [Tooltip("Rod tension above this fraction of maximum counts as 'in the danger zone'.")]
+    [Range(0.5f, 0.99f)] public float highTensionThreshold = 0.9f;
 
     [Header("Tension Curve")]
     public float minimumTension = 5f;    // tension/sec at resistance = 0
@@ -62,10 +70,11 @@ public class FishingManager : MonoBehaviour
     public Transform BobberEnd;
     public float bobberDipAmount = 0.5f;
 
-    // Fight telemetry. Prototype 1 ignores these; Milestone 2's fish
-    // quality system reads them to decide how heavy the catch is.
+    // Fight telemetry, read by the fish quality system to decide how heavy the catch is.
     private float fightDuration;
-    private float peakTensionNormalised;
+    private float timeAtHighTension; // seconds spent at or above the threshold
+    private float resistanceTimeSum; // resistance * time, for the fight's average
+
 
     [Header("Instruction UI")]
     public TextMeshProUGUI PressE;
@@ -169,7 +178,6 @@ public class FishingManager : MonoBehaviour
         PressSpace.text = "Press [SPACEBAR] to cast your line";
         PressE.text = "Press E to stop fishing";
 
-        // Disable player movement here later.
     }
 
 
@@ -182,7 +190,7 @@ public class FishingManager : MonoBehaviour
         PressE.text = "Press E to sit down";
 
 
-        // Enable player movement here later.
+        // Enable  movement here later.
     }
 
 
@@ -236,21 +244,27 @@ public class FishingManager : MonoBehaviour
 
         Debug.Log("FISH HOOKED!");
         PressSpace.text = "Hold [SPACEBAR] to reel fish! Make sure rod tension doesnt get too high!";
-        Bobber.transform.Translate(
-            0f,
-            -bobberDipAmount,
-            0f,
-            Space.World
-        );
+        Bobber.transform.Translate(0f,-bobberDipAmount,0f,Space.World);
+
         fishDistance = maximumFishDistance; //gives the distance the fish is from being reeled in
         rodTension = 0f;
         isReeling = false;
 
         // Reset fight telemetry for the new fish.
         fightDuration = 0f;
-        peakTensionNormalised = 0f;
+        timeAtHighTension = 0f;
+        resistanceTimeSum = 0f;
 
-        currentResistance = Random.Range(minimumResistance, maximumResistance);
+        // The species is decided here, on the bite, and it sets how hard the fight is.
+        activeMinResistance = minimumResistance;
+        activeMaxResistance = maximumResistance;
+
+        if (catchHandler != null)
+        {
+            catchHandler.RollHookedFish(out activeMinResistance, out activeMaxResistance);
+        }
+
+        currentResistance = Random.Range(activeMinResistance, activeMaxResistance);
         SetNewResistanceTarget();
         Debug.Log("Fish resistance: " + currentResistance);
 
@@ -277,12 +291,11 @@ public class FishingManager : MonoBehaviour
     {
         // Track how long and how roughly this fish was fought.
         fightDuration += Time.deltaTime;
-        if (maximumRodTension > 0f)
+        resistanceTimeSum += currentResistance * Time.deltaTime;
+
+        if (maximumRodTension > 0f && rodTension / maximumRodTension >= highTensionThreshold)
         {
-            peakTensionNormalised = Mathf.Max(
-                peakTensionNormalised,
-                rodTension / maximumRodTension
-            );
+            timeAtHighTension += Time.deltaTime;
         }
 
         UpdateResistance();
@@ -316,7 +329,7 @@ public class FishingManager : MonoBehaviour
 
     private void SetNewResistanceTarget()
     {
-        targetResistance = Random.Range(minimumResistance, maximumResistance);
+        targetResistance = Random.Range(activeMinResistance, activeMaxResistance);
 
         resistanceChangeTimer = Random.Range(minimumResistanceChangeTime, maximumResistanceChangeTime); //decides how long the resistance change should take
 
@@ -326,7 +339,7 @@ public class FishingManager : MonoBehaviour
     {
         /*
          * The higher the resistance, the less effective the reeling is.
-         * Resistance of 0.2 = easier to reel.
+         * Resistance of 0 = effortless (seaweed).
          * Resistance of 1.0 = difficult to reel.
          */
 
@@ -335,22 +348,15 @@ public class FishingManager : MonoBehaviour
         fishDistance -= effectiveReelSpeed * Time.deltaTime;
 
 
-        // Normalizes resistance to 0-1
-        float normalizedResistance = Mathf.InverseLerp(minimumResistance, maximumResistance, currentResistance);
-
-        // Power curve allows low resistance stays low, high resistance spikes
-        float curvedResistance = Mathf.Pow(normalizedResistance, tensionExponent);
+        // Power curve on absolute resistance (0-1): low resistance stays low,
+        // high resistance spikes. Absolute rather than range-normalised so a
+        // species with a narrow range does not swing through the whole curve.
+        float curvedResistance = Mathf.Pow(Mathf.Clamp01(currentResistance), tensionExponent);
 
         float tensionIncrease = Mathf.Lerp(minimumTension, maximumTension, curvedResistance);
 
         rodTension += tensionIncrease * Time.deltaTime;
 
-
-       // Debug.Log(
-      //      "Reeling | Distance: " + fishDistance +
-     //       " | Resistance: " + currentResistance +
-     //       " | Tension: " + rodTension
-       // );
     }
 
 
@@ -406,6 +412,9 @@ public class FishingManager : MonoBehaviour
         isReeling = false;
         //play anim for line break here
 
+        // The fish got away.
+        if (catchHandler != null) catchHandler.ClearHookedFish();
+
         rodTension = 0f;
         currentState = FishingState.Withdrawing;
 
@@ -425,15 +434,19 @@ public class FishingManager : MonoBehaviour
         fishDistance = 0f;
         isReeling = false;
 
-        // Which species it turns out to be is decided by the equipped
-        // bait's catch table, not here, so bait progression needs no
-        // changes to this file.
+        // The species was already decided on the bite. The handler scores the
+        // fight and stores the fish, so this file needs no changes for new
+        // fish or bait.
         if (catchHandler != null)
         {
+            float averageResistance = fightDuration > 0f
+                ? resistanceTimeSum / fightDuration
+                : currentResistance;
+
             var stored = catchHandler.ResolveCatch(
                 fightDuration,
-                peakTensionNormalised,
-                currentResistance
+                timeAtHighTension,
+                averageResistance
             );
 
             if (stored.IsValid)
@@ -457,6 +470,9 @@ public class FishingManager : MonoBehaviour
         currentState = FishingState.Withdrawing;
 
         isReeling = false;
+
+        // Reeling the line in early lets the hooked fish go.
+        if (catchHandler != null) catchHandler.ClearHookedFish();
 
         Debug.Log("Withdrawing fishing line");
 
@@ -486,6 +502,7 @@ public class FishingManager : MonoBehaviour
         rodTension = 0f;
         fishDistance = maximumFishDistance;
 
+        if (catchHandler != null) catchHandler.ClearHookedFish();
         if (Bobber != null) Bobber.SetActive(false);
 
         currentState = FishingState.NotFishing;

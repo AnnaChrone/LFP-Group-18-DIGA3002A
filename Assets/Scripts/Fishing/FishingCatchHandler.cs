@@ -2,21 +2,21 @@ using System;
 using UnityEngine;
 using Sushi.Data;
 using Sushi.Inventory;
-using NUnit.Framework.Interfaces;
 
 namespace Sushi.Fishing
 {
     /// <summary>
     /// The one and only bridge between Joanna's FishingManager and Darryn's
-    /// inventory. FishingManager calls exactly two methods on this:
+    /// inventory. FishingManager calls these methods on it:
     ///
     ///   CanStartFishing  — before a cast, to enforce the capacity constraint
-    ///   ResolveCatch     — on a successful landing, to pick and store a fish
+    ///   RollHookedFish   — on a bite, to decide the species and its resistance
+    ///   ResolveCatch     — on a successful landing, to score and store the fish
+    ///   ClearHookedFish  — when the fish gets away
     ///
-    /// Everything else stays on its own side. FishingManager never references
-    /// Inventory, ItemData or BaitData directly, so the two systems can keep
-    /// being developed on separate branches without merge conflicts in either
-    /// file.
+    /// FishingManager never references Inventory, ItemData or BaitData directly,
+    /// so the two systems can keep being developed on separate branches without
+    /// merge conflicts in either file.
     /// </summary>
     public class FishingCatchHandler : MonoBehaviour
     {
@@ -27,18 +27,31 @@ namespace Sushi.Fishing
         [SerializeField] private BaitData equippedBait;
 
         [Header("Milestone 2 — Fish Quality")]
-        [Tooltip("Off for Prototype 1: every catch weighs the item's base weight. " +
-                 "On: a cleanly fought fish comes in heavier and higher quality.")]
-        [SerializeField] private bool useProficiencyWeighting = false;
+        [Tooltip("Off: every catch uses the item's flat weight. " +
+                 "On: weight runs from the species' min to max based on how well the fight went.")]
+        [SerializeField] private bool useProficiencyWeighting = true;
 
-        [Tooltip("Weight multiplier for a badly fought fish (high tension, long fight).")]
-        [SerializeField, Min(0.1f)] private float worstCaseWeightScale = 0.75f;
+        [Header("Proficiency — Speed")]
+        [Tooltip("A fight this short or shorter earns full speed marks (at resistance 0.5).")]
+        [SerializeField, Min(0.5f)] private float fastFightSeconds = 6f;
 
-        [Tooltip("Weight multiplier for a cleanly fought fish.")]
-        [SerializeField, Min(0.1f)] private float bestCaseWeightScale = 1.5f;
-
-        [Tooltip("A fight longer than this counts as fully sloppy for scoring purposes.")]
+        [Tooltip("A fight this long or longer earns zero speed marks (at resistance 0.5).")]
         [SerializeField, Min(1f)] private float slowFightSeconds = 25f;
+
+        [Header("Proficiency — Tension Control")]
+        [Tooltip("Seconds spent at the danger tension (90%+) that earn zero control marks.")]
+        [SerializeField, Min(0.1f)] private float maxDangerSeconds = 4f;
+
+        [Header("Proficiency — Blend")]
+        [Tooltip("How much of the score comes from speed. The rest comes from tension control.")]
+        [SerializeField, Range(0f, 1f)] private float speedWeight = 0.5f;
+
+        [Tooltip("Proficiency at or above this counts as a perfect catch and gives the max weight.")]
+        [SerializeField, Range(0.5f, 1f)] private float perfectProficiency = 0.9f;
+
+        // The species rolled at the moment of the bite. Held here so the
+        // manager never needs to know about ItemData.
+        private ItemData hookedItem;
 
         // --- Events for UI and audio --------------------------------------
         /// <summary>A fish was landed and stored.</summary>
@@ -60,10 +73,7 @@ namespace Sushi.Fishing
         /// timer, is what stops the player fishing (GDD section 2).
         ///
         /// The check happens here rather than after the fight so a fish is
-        /// never lost to a full bag. Under the Milestone 2 weight rule the bag
-        /// can be "not full" yet still unable to take a heavy tuna, which is
-        /// why this asks the capacity rule about the lightest possible catch
-        /// rather than just reading IsFull.
+        /// never lost to a full bag.
         /// </summary>
         public bool CanStartFishing(out string reason)
         {
@@ -88,28 +98,59 @@ namespace Sushi.Fishing
         public bool CanStartFishing() => CanStartFishing(out _);
 
         /// <summary>
-        /// Called the moment FishingManager lands a fish. Rolls the bait's
-        /// catch table, scores the fight, and stores the result.
+        /// Called on bite. Rolls the equipped bait's catch table to decide which
+        /// species is on the line, and returns that species' resistance range
+        /// so the fight can be tuned to it.
+        /// </summary>
+        public bool RollHookedFish(out float minResistance, out float maxResistance)
+        {
+            hookedItem = equippedBait != null ? equippedBait.Roll() : null;
+
+            if (hookedItem == null)
+            {
+                Debug.LogWarning("[FishingCatchHandler] Nothing rolled on bite; using fallback resistance.", this);
+                minResistance = 0.2f;
+                maxResistance = 1f;
+                return false;
+            }
+
+            minResistance = hookedItem.minResistance;
+            maxResistance = hookedItem.maxResistance;
+            return true;
+        }
+
+        /// <summary>Called when the fish gets away (line broke, withdrew, forced stop).</summary>
+        public void ClearHookedFish() => hookedItem = null;
+
+        /// <summary>
+        /// Called the moment FishingManager lands a fish. Scores the fight and
+        /// stores the species that was rolled on bite.
         /// </summary>
         /// <param name="fightDuration">Seconds from hook to landing.</param>
-        /// <param name="peakTensionNormalised">Highest rod tension reached, 0 to 1.</param>
-        /// <param name="finalResistance">Fish resistance at the moment it landed, 0 to 1.</param>
-        public CaughtItem ResolveCatch(float fightDuration, float peakTensionNormalised, float finalResistance)
+        /// <param name="timeAtHighTension">Seconds the rod spent at or above the danger threshold.</param>
+        /// <param name="averageResistance">Fish resistance averaged over the fight, 0 to 1.</param>
+        public CaughtItem ResolveCatch(float fightDuration, float timeAtHighTension, float averageResistance)
         {
-            if (inventory == null || equippedBait == null)
+            if (inventory == null)
             {
-                Debug.LogWarning("[FishingCatchHandler] Inventory or bait not assigned; catch discarded.", this);
+                Debug.LogWarning("[FishingCatchHandler] No inventory assigned; catch discarded.", this);
+                hookedItem = null;
                 return CaughtItem.None;
             }
 
-            ItemData rolled = equippedBait.Roll();
+            ItemData rolled = hookedItem;
+            hookedItem = null;
+
+            // Safety net in case ResolveCatch is called without a bite roll.
+            if (rolled == null && equippedBait != null) rolled = equippedBait.Roll();
+
             if (rolled == null)
             {
-                Debug.LogWarning("[FishingCatchHandler] Bait table is empty or all odds are zero.", this);
+                Debug.LogWarning("[FishingCatchHandler] No fish to resolve (no bait, or bait table empty).", this);
                 return CaughtItem.None;
             }
 
-            CaughtItem result = BuildCatch(rolled, fightDuration, peakTensionNormalised, finalResistance);
+            CaughtItem result = BuildCatch(rolled, fightDuration, timeAtHighTension, averageResistance);
 
             if (inventory.TryAdd(result))
             {
@@ -123,26 +164,46 @@ namespace Sushi.Fishing
             return CaughtItem.None;
         }
 
-        /// <summary>Simple overload for Prototype 1, where the fight is not scored.</summary>
+        /// <summary>Simple overload where the fight is not scored.</summary>
         public CaughtItem ResolveCatch() => ResolveCatch(0f, 0f, 0.5f);
 
         // --- Scoring -----------------------------------------------------------
 
-        private CaughtItem BuildCatch(ItemData item, float fightDuration, float peakTension, float finalResistance)
+        private CaughtItem BuildCatch(ItemData item, float fightDuration, float timeAtHighTension, float averageResistance)
         {
-            if (!useProficiencyWeighting) return new CaughtItem(item);
+            if (!useProficiencyWeighting)
+            {
+                Debug.Log($"[Catch] {item.Label} | proficiency weighting off | weight: {item.weight:F2}");
+                return new CaughtItem(item);
+            }
 
-            // A clean fight is short and never redlines the rod. A tough fish
-            // (high resistance) earns forgiveness on both counts, so a hard
-            // catch is not punished for being hard.
-            float speedScore = 1f - Mathf.Clamp01(fightDuration / slowFightSeconds);
-            float controlScore = 1f - Mathf.Clamp01(peakTension);
-            float difficultyBonus = Mathf.Clamp01(finalResistance) * 0.25f;
+            // Tougher fish legitimately take longer, so their time window stretches.
+            float difficultyScale = Mathf.Lerp(0.6f, 1.6f, Mathf.Clamp01(averageResistance));
+            float fastTime = fastFightSeconds * difficultyScale;
+            float slowTime = Mathf.Max(slowFightSeconds * difficultyScale, fastTime + 0.01f);
 
-            float proficiency = Mathf.Clamp01((speedScore * 0.4f) + (controlScore * 0.6f) + difficultyBonus);
+            // 1 = at or under fastTime, 0 = at or over slowTime.
+            float speedScore = 1f - Mathf.InverseLerp(fastTime, slowTime, fightDuration);
 
-            float scale = Mathf.Lerp(worstCaseWeightScale, bestCaseWeightScale, proficiency);
-            return new CaughtItem(item, item.weight * scale, proficiency);
+            // 1 = never hit the danger zone, 0 = spent maxDangerSeconds or more there.
+            float controlScore = 1f - Mathf.Clamp01(timeAtHighTension / maxDangerSeconds);
+
+            float proficiency = Mathf.Clamp01((speedScore * speedWeight) + (controlScore * (1f - speedWeight)));
+
+            // Remap so a near-perfect fight reaches the max weight without needing exactly 1.0.
+            float weightT = Mathf.Clamp01(proficiency / perfectProficiency);
+
+            float weight = item.WeightForProficiency(weightT);
+
+            Debug.Log(
+                $"[Catch] {item.Label} | proficiency: {proficiency:P0} " +
+                $"(speed {speedScore:P0}, control {controlScore:P0}) | " +
+                $"fight: {fightDuration:F1}s (fast {fastTime:F1}s, slow {slowTime:F1}s) | " +
+                $"time at danger tension: {timeAtHighTension:F1}s | " +
+                $"weight: {weight:F2} (range {item.minWeight:F2} to {item.maxWeight:F2})"
+            );
+
+            return new CaughtItem(item, weight, proficiency);
         }
 
         // --- Bait shop API ------------------------------------------------------

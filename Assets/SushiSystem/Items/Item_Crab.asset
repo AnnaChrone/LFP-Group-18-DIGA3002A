@@ -19,3 +19,7 @@ MonoBehaviour:
   tint: {r: 1, g: 1, b: 1, a: 1}
   baseValue: 10
   weight: 3
+  minWeight: 0.5
+  maxWeight: 1.5
+  minResistance: 0.067
+  maxResistance: 0.697
