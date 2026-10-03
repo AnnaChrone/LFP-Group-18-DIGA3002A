@@ -1,19 +1,26 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class BaitShopTrigger : MonoBehaviour
 {
+    [Header("UI Panels")]
     [SerializeField] private GameObject shopUIPanel;
+    [SerializeField] private GameObject interactPromptText; // Drag your "Press E" text here
+    
     private bool playerInRange = false;
 
     void Update()
     {
-        // Toggle shop UI when pressing E if the player is nearby
-        if (playerInRange && Input.GetKeyDown(KeyCode.E))
+        if (Keyboard.current == null) return;
+
+        if (playerInRange && Keyboard.current.eKey.wasPressedThisFrame)
         {
             bool isShopActive = shopUIPanel.activeSelf;
             shopUIPanel.SetActive(!isShopActive);
             
-            // Optional: Pause game or unlock cursor when shop opens
+            // Hide the prompt text if the shop is wide open, show it if closed
+            interactPromptText.SetActive(isShopActive);
+            
             Cursor.lockState = !isShopActive ? CursorLockMode.None : CursorLockMode.Locked;
         }
     }
@@ -23,7 +30,12 @@ public class BaitShopTrigger : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             playerInRange = true;
-            // Optional: Show an "E to Interact" floating prompt here
+            
+            // Only show prompt if the shop isn't already open
+            if (!shopUIPanel.activeSelf)
+            {
+                interactPromptText.SetActive(true);
+            }
         }
     }
 
@@ -32,7 +44,8 @@ public class BaitShopTrigger : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             playerInRange = false;
-            shopUIPanel.SetActive(false); // Auto-close if player walks away
+            shopUIPanel.SetActive(false);
+            interactPromptText.SetActive(false); // Cleanly hide prompt when walking away
         }
     }
 }
