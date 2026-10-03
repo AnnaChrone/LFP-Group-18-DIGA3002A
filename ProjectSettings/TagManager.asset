@@ -41,14 +41,20 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: BackGround
+    uniqueID: 3757072547
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Extras1
+    uniqueID: 2153467975
     locked: 0
   - name: Extras
     uniqueID: 3370569417
     locked: 0
   - name: Player
-    uniqueID: 3356756259
+    uniqueID: 3316496807
     locked: 0
   - name: Decor
     uniqueID: 162053543
