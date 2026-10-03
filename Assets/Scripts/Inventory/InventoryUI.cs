@@ -1,173 +1,143 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using Sushi.Data;
 
 namespace Sushi.UI
 {
     /// <summary>
-    /// Builds and maintains the visual inventory grid.
-    /// The inventory is display-only and does not accept player input.
+    /// The Inventory tab's whole display: one row per distinct species
+    /// currently held, each showing an icon and a count, e.g. "crab icon, 2".
+    /// Replaces the earlier one-cell-per-catch slot grid, matching the
+    /// updated sketch. The weight threshold bar lives separately on
+    /// InventoryFillBar and is unaffected by this change.
+    ///
+    /// Row prefab convention: each row prefab must have a child named
+    /// exactly "Icon" (an Image) and a child named exactly "CountLabel"
+    /// (a TMP_Text). No script is needed on the prefab itself, this class
+    /// finds those two children by name when it spawns a row. Keeping that
+    /// naming consistent is what lets this stay a single file.
     /// </summary>
     public class InventoryUI : MonoBehaviour
     {
+        private const string IconChildName = "Icon";
+        private const string CountLabelChildName = "CountLabel";
+
         [Header("Wiring")]
         [SerializeField] private Sushi.Inventory.Inventory inventory;
-        [SerializeField] private InventorySlotUI slotPrefab;
+        [SerializeField] private GameObject rowPrefab;
+        [Tooltip("A RectTransform with a Vertical Layout Group (or Grid Layout Group) on it.")]
+        [SerializeField] private RectTransform rowParent;
 
-        [Tooltip("A RectTransform with a GridLayoutGroup on it.")]
-        [SerializeField] private RectTransform slotParent;
+        private struct Row
+        {
+            public GameObject root;
+            public Image icon;
+            public TMP_Text countLabel;
+        }
 
-        [Header("Readouts (optional)")]
-        [SerializeField] private InventoryFillBar fillBar;
-        [SerializeField] private TMP_Text itemNameLabel;
-        [SerializeField] private TMP_Text messageLabel;
+        private readonly List<Row> pooledRows = new List<Row>();
 
-        [Header("Full Banner (optional)")]
-        [Tooltip("Shown while the bag is full.")]
-        [SerializeField] private GameObject fullBanner;
-
-        [Header("Feedback")]
-        [SerializeField] private Color rejectColor = new Color(0.85f, 0.25f, 0.25f);
-        [SerializeField] private Color normalMessageColor = Color.white;
-
-        [SerializeField, Min(0.5f)]
-        private float messageDuration = 1.6f;
-
-        private readonly List<InventorySlotUI> slots = new List<InventorySlotUI>();
-        private Coroutine messageRoutine;
+        // Reused every refresh to avoid per-frame allocations.
+        private readonly List<ItemData> speciesOrder = new List<ItemData>();
+        private readonly Dictionary<ItemData, int> counts = new Dictionary<ItemData, int>();
 
         private void Awake()
         {
-            if (inventory == null)
-                inventory = FindObjectOfType<Sushi.Inventory.Inventory>();
+            if (inventory == null) inventory = FindObjectOfType<Sushi.Inventory.Inventory>();
         }
 
         private void OnEnable()
         {
-            if (inventory == null)
-                return;
-
-            inventory.OnChanged += Refresh;
-            inventory.OnAddRejected += HandleRejected;
-            inventory.OnItemAdded += HandleAdded;
+            if (inventory != null) inventory.OnChanged += Refresh;
+            Refresh();
         }
 
         private void OnDisable()
         {
-            if (inventory == null)
-                return;
-
-            inventory.OnChanged -= Refresh;
-            inventory.OnAddRejected -= HandleRejected;
-            inventory.OnItemAdded -= HandleAdded;
+            if (inventory != null) inventory.OnChanged -= Refresh;
         }
-
-        private void Start()
-        {
-            BuildGrid();
-            Refresh();
-        }
-
-        // --- Construction ---------------------------------------------------
-
-        private void BuildGrid()
-        {
-            if (slotPrefab == null || slotParent == null || inventory == null)
-            {
-                Debug.LogError(
-                    "[InventoryUI] Assign inventory, slotPrefab and slotParent in the inspector.",
-                    this
-                );
-
-                return;
-            }
-
-            foreach (var existing in slots)
-            {
-                if (existing != null)
-                    Destroy(existing.gameObject);
-            }
-
-            slots.Clear();
-
-            for (int i = 0; i < inventory.SlotCount; i++)
-            {
-                InventorySlotUI slot = Instantiate(slotPrefab, slotParent);
-
-                slot.name = $"Slot_{i:00}";
-                slot.Initialise(i);
-
-                slots.Add(slot);
-            }
-        }
-
-        // --- Refresh --------------------------------------------------------
 
         public void Refresh()
         {
-            if (inventory == null)
-                return;
+            if (inventory == null || rowPrefab == null || rowParent == null) return;
 
-            for (int i = 0; i < slots.Count; i++)
+            BuildCounts();
+
+            while (pooledRows.Count < speciesOrder.Count)
+                pooledRows.Add(SpawnRow());
+
+            for (int i = 0; i < pooledRows.Count; i++)
             {
-                ItemData item = inventory.GetItemAt(i);
+                if (i < speciesOrder.Count)
+                {
+                    ItemData species = speciesOrder[i];
+                    ApplyToRow(pooledRows[i], species, counts[species]);
+                    pooledRows[i].root.SetActive(true);
+                }
+                else
+                {
+                    pooledRows[i].root.SetActive(false);
+                }
+            }
+        }
 
-                slots[i].SetItem(item);
-                slots[i].SetSelected(false);
+        private Row SpawnRow()
+        {
+            GameObject instance = Instantiate(rowPrefab, rowParent);
+
+            Transform iconTransform = instance.transform.Find(IconChildName);
+            Transform labelTransform = instance.transform.Find(CountLabelChildName);
+
+            if (iconTransform == null || labelTransform == null)
+            {
+                Debug.LogError($"[InventoryUI] Row prefab '{rowPrefab.name}' needs a child named " +
+                                $"'{IconChildName}' and a child named '{CountLabelChildName}'.", rowPrefab);
             }
 
-            if (fillBar != null)
-                fillBar.Refresh();
-
-            if (fullBanner != null)
-                fullBanner.SetActive(inventory.IsFull);
+            return new Row
+            {
+                root = instance,
+                icon = iconTransform != null ? iconTransform.GetComponent<Image>() : null,
+                countLabel = labelTransform != null ? labelTransform.GetComponent<TMP_Text>() : null
+            };
         }
 
-        // --- Feedback -------------------------------------------------------
-
-        private void HandleAdded(Sushi.Inventory.CaughtItem item)
+        private void ApplyToRow(Row row, ItemData item, int count)
         {
-            ShowMessage(
-                $"Caught {item.Label}",
-                normalMessageColor
-            );
+            if (row.icon != null)
+            {
+                bool hasIcon = item != null && item.icon != null;
+                row.icon.enabled = hasIcon;
+                if (hasIcon)
+                {
+                    row.icon.sprite = item.icon;
+                    row.icon.color = item.tint;
+                }
+            }
+
+            if (row.countLabel != null) row.countLabel.text = count.ToString();
         }
 
-        private void HandleRejected(Sushi.Inventory.CaughtItem item)
+        private void BuildCounts()
         {
-            ShowMessage(
-                "No room - the bag is full",
-                rejectColor
-            );
-        }
+            speciesOrder.Clear();
+            counts.Clear();
 
-        public void ShowMessage(string text, Color color)
-        {
-            if (messageLabel == null)
-                return;
+            IReadOnlyList<Sushi.Inventory.CaughtItem> items = inventory.Items;
+            for (int i = 0; i < items.Count; i++)
+            {
+                ItemData species = items[i].data;
+                if (species == null) continue;
 
-            messageLabel.text = text;
-            messageLabel.color = color;
-
-            if (messageRoutine != null)
-                StopCoroutine(messageRoutine);
-
-            messageRoutine = StartCoroutine(
-                ClearMessageAfterDelay()
-            );
-        }
-
-        private IEnumerator ClearMessageAfterDelay()
-        {
-            yield return new WaitForSeconds(messageDuration);
-
-            if (messageLabel != null)
-                messageLabel.text = string.Empty;
-
-            messageRoutine = null;
+                if (!counts.ContainsKey(species))
+                {
+                    counts[species] = 0;
+                    speciesOrder.Add(species);
+                }
+                counts[species]++;
+            }
         }
     }
 }
