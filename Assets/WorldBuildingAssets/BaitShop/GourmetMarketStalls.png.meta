@@ -1,0 +1,1315 @@
+fileFormatVersion: 2
+guid: 707e53130e2560f4c996b438a859e7d5
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -5970450826484761867
+    second: GourmetMarketStalls_0
+  - first:
+      213: -149200301428920566
+    second: GourmetMarketStalls_1
+  - first:
+      213: 7570443888431616760
+    second: GourmetMarketStalls_2
+  - first:
+      213: -6174747321210785045
+    second: GourmetMarketStalls_3
+  - first:
+      213: 7121619819841889717
+    second: GourmetMarketStalls_4
+  - first:
+      213: 174282216195092258
+    second: GourmetMarketStalls_5
+  - first:
+      213: 8766430448201003092
+    second: GourmetMarketStalls_6
+  - first:
+      213: 4814329565266379492
+    second: GourmetMarketStalls_7
+  - first:
+      213: 2234733232355161776
+    second: GourmetMarketStalls_8
+  - first:
+      213: 4519450616783413467
+    second: GourmetMarketStalls_9
+  - first:
+      213: -1708051936898611249
+    second: GourmetMarketStalls_10
+  - first:
+      213: 8043053856206930843
+    second: GourmetMarketStalls_11
+  - first:
+      213: 8716614433192261704
+    second: GourmetMarketStalls_12
+  - first:
+      213: 4362329405695504966
+    second: GourmetMarketStalls_13
+  - first:
+      213: 6637286388695992027
+    second: GourmetMarketStalls_14
+  - first:
+      213: 8218319925814623904
+    second: GourmetMarketStalls_15
+  - first:
+      213: -8179112960101840512
+    second: GourmetMarketStalls_16
+  - first:
+      213: 3507422907644259597
+    second: GourmetMarketStalls_17
+  - first:
+      213: -1622330736921457742
+    second: GourmetMarketStalls_18
+  - first:
+      213: 8642735641044559573
+    second: GourmetMarketStalls_19
+  - first:
+      213: 6366110199133811148
+    second: GourmetMarketStalls_20
+  - first:
+      213: 2739302254161009250
+    second: GourmetMarketStalls_21
+  - first:
+      213: -3608475899030667187
+    second: GourmetMarketStalls_22
+  - first:
+      213: 846029820231675899
+    second: GourmetMarketStalls_23
+  - first:
+      213: -2757471886989151896
+    second: GourmetMarketStalls_24
+  - first:
+      213: -4970257289169607194
+    second: GourmetMarketStalls_25
+  - first:
+      213: -917113314087643558
+    second: GourmetMarketStalls_26
+  - first:
+      213: 9084065941463839449
+    second: GourmetMarketStalls_27
+  - first:
+      213: -2353473434131962510
+    second: GourmetMarketStalls_28
+  - first:
+      213: 308688196136508107
+    second: GourmetMarketStalls_29
+  - first:
+      213: 8473758613091404361
+    second: GourmetMarketStalls_30
+  - first:
+      213: -4088203418530038613
+    second: GourmetMarketStalls_31
+  - first:
+      213: -3747720255656356665
+    second: GourmetMarketStalls_32
+  - first:
+      213: 2816387781780932817
+    second: GourmetMarketStalls_33
+  - first:
+      213: 6320904981589936880
+    second: GourmetMarketStalls_34
+  - first:
+      213: -4401819335276475762
+    second: GourmetMarketStalls_35
+  - first:
+      213: -1245106402121581636
+    second: GourmetMarketStalls_36
+  - first:
+      213: 8397854842081281336
+    second: GourmetMarketStalls_37
+  - first:
+      213: 4841379854342447742
+    second: GourmetMarketStalls_38
+  - first:
+      213: -1308623394517095106
+    second: GourmetMarketStalls_39
+  - first:
+      213: 2892708651305444728
+    second: GourmetMarketStalls_40
+  - first:
+      213: -3472492759599142235
+    second: GourmetMarketStalls_41
+  - first:
+      213: -1505233696728227615
+    second: GourmetMarketStalls_42
+  - first:
+      213: -7400310864198907422
+    second: GourmetMarketStalls_43
+  - first:
+      213: 2570342755791429581
+    second: GourmetMarketStalls_44
+  - first:
+      213: 8824627838239044546
+    second: GourmetMarketStalls_45
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: GourmetMarketStalls_0
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 161
+        width: 45
+        height: 60
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5fa307a2b92b42da0800000000000000
+      internalID: -5970450826484761867
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GourmetMarketStalls_1
+      rect:
+        serializedVersion: 2
+        x: 49
+        y: 161
+        width: 45
+        height: 60
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a0fa2f8cd1fededf0800000000000000
+      internalID: -149200301428920566
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GourmetMarketStalls_2
+      rect:
+        serializedVersion: 2
+        x: 97
+        y: 161
+        width: 45
+        height: 60
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f25ef94b9e9f0960800000000000000
+      internalID: 7570443888431616760
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GourmetMarketStalls_3
+      rect:
+        serializedVersion: 2
+        x: 145
+        y: 161
+        width: 45
+        height: 60
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: be2bf6dc604ee4aa0800000000000000
+      internalID: -6174747321210785045
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GourmetMarketStalls_4
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 146
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b5ae038e7315d260800000000000000
+      internalID: 7121619819841889717
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GourmetMarketStalls_5
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 146
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 22fe9f290cc2b6200800000000000000
+      internalID: 174282216195092258
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GourmetMarketStalls_6
+      rect:
+        serializedVersion: 2
+        x: 68
+        y: 146
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 450703dcb0e98a970800000000000000
+      internalID: 8766430448201003092
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GourmetMarketStalls_7
+      rect:
+        serializedVersion: 2
+        x: 84
+        y: 146
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e20d517b3fefc240800000000000000
+      internalID: 4814329565266379492
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GourmetMarketStalls_8
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 146
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0b63a42e80e530f10800000000000000
+      internalID: 2234733232355161776
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GourmetMarketStalls_9
+      rect:
+        serializedVersion: 2
+        x: 116
+        y: 146
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bd0ab41146058be30800000000000000
+      internalID: 4519450616783413467
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GourmetMarketStalls_10
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 146
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fc78d3320d7cb48e0800000000000000
+      internalID: -1708051936898611249
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GourmetMarketStalls_11
+      rect:
+        serializedVersion: 2
+        x: 146
+        y: 104
+        width: 13
+        height: 56
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b93cc884edaae9f60800000000000000
+      internalID: 8043053856206930843
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GourmetMarketStalls_12
+      rect:
+        serializedVersion: 2
+        x: 161
+        y: 100
+        width: 14
+        height: 60
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 848b776f4a2a7f870800000000000000
+      internalID: 8716614433192261704
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GourmetMarketStalls_13
+      rect:
+        serializedVersion: 2
+        x: 179
+        y: 102
+        width: 12
+        height: 58
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 642b8bb5b7b1a8c30800000000000000
+      internalID: 4362329405695504966
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GourmetMarketStalls_14
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 130
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bd682cefdc06c1c50800000000000000
+      internalID: 6637286388695992027
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GourmetMarketStalls_15
+      rect:
+        serializedVersion: 2
+        x: 68
+        y: 130
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0aef1b41e665d0270800000000000000
+      internalID: 8218319925814623904
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GourmetMarketStalls_16
+      rect:
+        serializedVersion: 2
+        x: 84
+        y: 130
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 089065bf814fd7e80800000000000000
+      internalID: -8179112960101840512
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GourmetMarketStalls_17
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 130
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d0d24372d8edca030800000000000000
+      internalID: 3507422907644259597
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GourmetMarketStalls_18
+      rect:
+        serializedVersion: 2
+        x: 116
+        y: 130
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2bb499d4ac25c79e0800000000000000
+      internalID: -1622330736921457742
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GourmetMarketStalls_19
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 130
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5d6a11c364a21f770800000000000000
+      internalID: 8642735641044559573
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GourmetMarketStalls_20
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 99
+        width: 22
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cc1bc5c3f77f85850800000000000000
+      internalID: 6366110199133811148
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GourmetMarketStalls_21
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 100
+        width: 12
+        height: 28
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 26a91bff2e4f30620800000000000000
+      internalID: 2739302254161009250
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GourmetMarketStalls_22
+      rect:
+        serializedVersion: 2
+        x: 53
+        y: 104
+        width: 9
+        height: 24
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d4008b1d94e1cedc0800000000000000
+      internalID: -3608475899030667187
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GourmetMarketStalls_23
+      rect:
+        serializedVersion: 2
+        x: 65
+        y: 102
+        width: 13
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bffeb4893a3bdbb00800000000000000
+      internalID: 846029820231675899
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GourmetMarketStalls_24
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 100
+        width: 16
+        height: 28
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 861b2e1bded7bb9d0800000000000000
+      internalID: -2757471886989151896
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GourmetMarketStalls_25
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 105
+        width: 9
+        height: 23
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6e5efbc3459160bb0800000000000000
+      internalID: -4970257289169607194
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GourmetMarketStalls_26
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 104
+        width: 11
+        height: 24
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a565607cc42c543f0800000000000000
+      internalID: -917113314087643558
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GourmetMarketStalls_27
+      rect:
+        serializedVersion: 2
+        x: 130
+        y: 103
+        width: 11
+        height: 25
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9d23d2528d5111e70800000000000000
+      internalID: 9084065941463839449
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GourmetMarketStalls_28
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 70
+        width: 22
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 275ee328168c65fd0800000000000000
+      internalID: -2353473434131962510
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GourmetMarketStalls_29
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 70
+        width: 22
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bca9215674ea84400800000000000000
+      internalID: 308688196136508107
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GourmetMarketStalls_30
+      rect:
+        serializedVersion: 2
+        x: 68
+        y: 69
+        width: 22
+        height: 25
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 94a48bd0096d89570800000000000000
+      internalID: 8473758613091404361
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GourmetMarketStalls_31
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 69
+        width: 24
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bacbafca6a8c347c0800000000000000
+      internalID: -4088203418530038613
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GourmetMarketStalls_32
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 68
+        width: 22
+        height: 23
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7c41114a84c6dfbc0800000000000000
+      internalID: -3747720255656356665
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GourmetMarketStalls_33
+      rect:
+        serializedVersion: 2
+        x: 164
+        y: 68
+        width: 22
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1d88dc204c1d51720800000000000000
+      internalID: 2816387781780932817
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GourmetMarketStalls_34
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 36
+        width: 23
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0fa4aa6579d58b750800000000000000
+      internalID: 6320904981589936880
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GourmetMarketStalls_35
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 36
+        width: 22
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e8a466be2a899e2c0800000000000000
+      internalID: -4401819335276475762
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GourmetMarketStalls_36
+      rect:
+        serializedVersion: 2
+        x: 68
+        y: 36
+        width: 22
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cbb7af9f25e78bee0800000000000000
+      internalID: -1245106402121581636
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GourmetMarketStalls_37
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 36
+        width: 22
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8358c813c7c2b8470800000000000000
+      internalID: 8397854842081281336
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GourmetMarketStalls_38
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 36
+        width: 22
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e7260d8a359003340800000000000000
+      internalID: 4841379854342447742
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GourmetMarketStalls_39
+      rect:
+        serializedVersion: 2
+        x: 164
+        y: 36
+        width: 22
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e3dea01c4f5d6dde0800000000000000
+      internalID: -1308623394517095106
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GourmetMarketStalls_40
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 4
+        width: 22
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 875a2cf2137f42820800000000000000
+      internalID: 2892708651305444728
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GourmetMarketStalls_41
+      rect:
+        serializedVersion: 2
+        x: 37
+        y: 4
+        width: 23
+        height: 23
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5aa2af2bb3a3fcfc0800000000000000
+      internalID: -3472492759599142235
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GourmetMarketStalls_42
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 4
+        width: 22
+        height: 21
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1e0e09a8de55c1be0800000000000000
+      internalID: -1505233696728227615
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GourmetMarketStalls_43
+      rect:
+        serializedVersion: 2
+        x: 101
+        y: 5
+        width: 22
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2e9c5ff3a70dc4990800000000000000
+      internalID: -7400310864198907422
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GourmetMarketStalls_44
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 5
+        width: 22
+        height: 21
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dcf52fd3e11bba320800000000000000
+      internalID: 2570342755791429581
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GourmetMarketStalls_45
+      rect:
+        serializedVersion: 2
+        x: 164
+        y: 6
+        width: 22
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2c3f2459340677a70800000000000000
+      internalID: 8824627838239044546
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 11a65b85a36c3b9459a235b03ee93b9b
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      GourmetMarketStalls_0: -5970450826484761867
+      GourmetMarketStalls_1: -149200301428920566
+      GourmetMarketStalls_10: -1708051936898611249
+      GourmetMarketStalls_11: 8043053856206930843
+      GourmetMarketStalls_12: 8716614433192261704
+      GourmetMarketStalls_13: 4362329405695504966
+      GourmetMarketStalls_14: 6637286388695992027
+      GourmetMarketStalls_15: 8218319925814623904
+      GourmetMarketStalls_16: -8179112960101840512
+      GourmetMarketStalls_17: 3507422907644259597
+      GourmetMarketStalls_18: -1622330736921457742
+      GourmetMarketStalls_19: 8642735641044559573
+      GourmetMarketStalls_2: 7570443888431616760
+      GourmetMarketStalls_20: 6366110199133811148
+      GourmetMarketStalls_21: 2739302254161009250
+      GourmetMarketStalls_22: -3608475899030667187
+      GourmetMarketStalls_23: 846029820231675899
+      GourmetMarketStalls_24: -2757471886989151896
+      GourmetMarketStalls_25: -4970257289169607194
+      GourmetMarketStalls_26: -917113314087643558
+      GourmetMarketStalls_27: 9084065941463839449
+      GourmetMarketStalls_28: -2353473434131962510
+      GourmetMarketStalls_29: 308688196136508107
+      GourmetMarketStalls_3: -6174747321210785045
+      GourmetMarketStalls_30: 8473758613091404361
+      GourmetMarketStalls_31: -4088203418530038613
+      GourmetMarketStalls_32: -3747720255656356665
+      GourmetMarketStalls_33: 2816387781780932817
+      GourmetMarketStalls_34: 6320904981589936880
+      GourmetMarketStalls_35: -4401819335276475762
+      GourmetMarketStalls_36: -1245106402121581636
+      GourmetMarketStalls_37: 8397854842081281336
+      GourmetMarketStalls_38: 4841379854342447742
+      GourmetMarketStalls_39: -1308623394517095106
+      GourmetMarketStalls_4: 7121619819841889717
+      GourmetMarketStalls_40: 2892708651305444728
+      GourmetMarketStalls_41: -3472492759599142235
+      GourmetMarketStalls_42: -1505233696728227615
+      GourmetMarketStalls_43: -7400310864198907422
+      GourmetMarketStalls_44: 2570342755791429581
+      GourmetMarketStalls_45: 8824627838239044546
+      GourmetMarketStalls_5: 174282216195092258
+      GourmetMarketStalls_6: 8766430448201003092
+      GourmetMarketStalls_7: 4814329565266379492
+      GourmetMarketStalls_8: 2234733232355161776
+      GourmetMarketStalls_9: 4519450616783413467
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
