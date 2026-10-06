@@ -38,6 +38,10 @@ public class Cooking : MonoBehaviour
     [Tooltip("Order: 0 = Top, 1 = Middle, 2 = Bottom")]
     public SushiSlot[] slots;
 
+    public Image disptop;
+    public Image dispmiddle;
+    public Image dispbottom;
+
     [Header("Stove UI")]
     public GameObject stoveUIPanel;
 
@@ -210,12 +214,17 @@ public class Cooking : MonoBehaviour
             activeOrderIcon.color = active.resultItem.tint;
         }
 
+
         if (activeOrderIngredientsText != null)
         {
             string list = "";
             if (active.slot3BOTTOM != null) list += active.slot3BOTTOM.Label;
             if (active.slot2MIDDLE != null) { if (list.Length > 0) list += ", "; list += active.slot2MIDDLE.Label; }
             if (active.slot1TOP != null) { if (list.Length > 0) list += ", "; list += active.slot1TOP.Label; }
+
+           // disptop.sprite = active.slot1TOP.icon;
+            dispmiddle.sprite = active.slot2MIDDLE.icon;
+            dispbottom.sprite = active.slot3BOTTOM.icon;
 
             activeOrderIngredientsText.text = list;
         }

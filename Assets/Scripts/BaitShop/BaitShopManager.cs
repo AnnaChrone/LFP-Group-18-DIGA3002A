@@ -73,7 +73,7 @@ public class BaitShopManager : MonoBehaviour
         {
             if (entry != null && entry.item != null && entry.odds > 0)
             {
-                uniqueFishNames.Add($"- {entry.item.name}"); 
+                uniqueFishNames.Add($"- {entry.item.displayName}"); 
             }
         }
 
