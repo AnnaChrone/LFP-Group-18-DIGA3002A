@@ -50,6 +50,7 @@ namespace Sushi.Inventory
         public int GetBaitCount(BaitData bait)
         {
             if (bait == null) return 0;
+            if (bait.ownedFromStart) return int.MaxValue; // ASK: ADDED TO MAKE STANDARD FREE
             return baitCounts.ContainsKey(bait) ? baitCounts[bait] : 0;
         }
     }

@@ -1,11 +1,12 @@
-using UnityEngine;
+using Sushi.Data;
 using Sushi.Fishing;
 using TMPro;
+using UnityEngine;
 
 public class FishingManager : MonoBehaviour
 {
     public FishingState currentState = FishingState.NotFishing;
-
+    
     [Header("Inventory")]
     public FishingCatchHandler catchHandler;
 
@@ -23,6 +24,13 @@ public class FishingManager : MonoBehaviour
     public float maximumFishDistance = 100f;  //as far as the fish can be before the line breaks
     public float fishDistance = 80f;
     public float fishPullSpeed = 3f;
+
+    [Header("Rod")]
+    [Tooltip("The single hook slot where bait is attached before casting.")]
+    public BaitHook baitHook;
+    public GameObject baitingPanel;
+    public GameObject baitedRod;
+    public GameObject ActiveFishingRod;
 
     [Header("Fish Resistance")]
     [Tooltip("Fallback range, used only when no catch handler is assigned. " +
@@ -83,6 +91,7 @@ public class FishingManager : MonoBehaviour
     private void Start()
     {
         Bobber.SetActive(false);
+        baitingPanel.SetActive(false);
     }
 
     private void Update()
@@ -96,6 +105,8 @@ public class FishingManager : MonoBehaviour
         {
             UpdateFishing();
         }
+
+        ActiveFishingRod.transform.localRotation = Quaternion.Euler(0f, isReeling ? 0f : 180f, 0f);
     }
 
 
@@ -172,6 +183,8 @@ public class FishingManager : MonoBehaviour
 
     private void SitDown()
     {
+        baitingPanel.SetActive(true);
+        baitedRod.SetActive(true);
         currentState = FishingState.Sitting;
 
         Debug.Log("Player sat down");
@@ -186,31 +199,59 @@ public class FishingManager : MonoBehaviour
         currentState = FishingState.NotFishing;
 
         Debug.Log("Player stood up");
+
+        // Clear the hook
+        if (baitHook != null) baitHook.ClearHook();
+        baitingPanel.SetActive(false);
+        baitedRod.SetActive(false);
         PressSpace.text = "";
         PressE.text = "Press E to sit down";
-
-
-        // Enable  movement here later.
     }
 
 
     private void Cast()
     {
-        // The capacity constraint. Checked before the cast rather than
-        // after the fight, so a fish is never landed and then discarded
-        // for want of a slot.
+        // Must have bait on the hook
+        if (baitHook == null || baitHook.attachedBait == null)
+        {
+            Debug.Log("Cannot cast: no bait on the hook!");
+            // Optional: UiPrompter or a message
+            return;
+        }
+
+        // 2. Must have capacity in inventory
         if (catchHandler != null && !catchHandler.CanStartFishing(out string reason))
         {
             Debug.Log("Cannot cast: " + reason);
             return;
         }
 
+        // 3. Consume 1 bait from inventory and get the type being cast with
+        BaitData castBait = baitHook.ConsumeAndGetBaitForCast();
+        if (castBait == null)
+        {
+            Debug.Log("Cannot cast: bait ran out!");
+            return;
+        }
+
+        // 4. Tell the catch handler which bait to roll with
+        if (catchHandler != null)
+        {
+            catchHandler.SetBaitForThisCast(castBait);
+        }
+
+        // 5. Existing cast flow
         currentState = FishingState.Casting;
-        Bobber.transform.position = BobberStart.position; //places bobber back where it starts from
+        Bobber.transform.position = BobberStart.position;
         Bobber.SetActive(true);
-        Debug.Log("Cast!");
+        Debug.Log($"Cast! Using bait: {castBait.displayName}");
+        baitingPanel.SetActive(false);
+        baitedRod.SetActive(false);
+        ActiveFishingRod.SetActive(true);
+        //new rod here
         PressSpace.text = "Wait for fish to bite...";
         StartWaitingForFish();
+
     }
 
 
@@ -486,6 +527,9 @@ public class FishingManager : MonoBehaviour
     {
         currentState = FishingState.Sitting;
         Bobber.SetActive(false);
+        ActiveFishingRod.SetActive(false);
+        baitedRod.SetActive(true);
+        baitingPanel.SetActive(true);
         Debug.Log("Line withdrawn");
         PressSpace.text = "Press [SPACEBAR] to cast your line";
     }
@@ -504,6 +548,9 @@ public class FishingManager : MonoBehaviour
 
         if (catchHandler != null) catchHandler.ClearHookedFish();
         if (Bobber != null) Bobber.SetActive(false);
+
+        // Clear the hook so the player isn't left with stale bait after the phase change
+        if (baitHook != null) baitHook.ClearHook();
 
         currentState = FishingState.NotFishing;
         busyFishing = false;

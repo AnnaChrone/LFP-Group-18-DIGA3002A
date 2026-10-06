@@ -15,7 +15,7 @@ MonoBehaviour:
   displayName: Standard Bait
   icon: {fileID: -1405847841753543399, guid: e75a340ca55492b4d8eb70e0d48b8f1c, type: 3}
   price: 10
-  ownedFromStart: 0
+  ownedFromStart: 1
   table:
   - item: {fileID: 11400000, guid: 0e7f019abecba294fadd3d379f725530, type: 2}
     odds: 3

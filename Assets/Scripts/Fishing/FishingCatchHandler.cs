@@ -22,6 +22,7 @@ namespace Sushi.Fishing
     {
         [Header("Wiring")]
         [SerializeField] private Sushi.Inventory.Inventory inventory;
+        private BaitData castBaitOverride;
 
         [Tooltip("Standard bait for Prototype 1. The bait shop swaps this at Milestone 2.")]
         [SerializeField] private BaitData equippedBait;
@@ -75,6 +76,11 @@ namespace Sushi.Fishing
         /// The check happens here rather than after the fight so a fish is
         /// never lost to a full bag.
         /// </summary>
+        /// 
+        public void SetBaitForThisCast(BaitData bait)
+        {
+            castBaitOverride = bait;
+        }
         public bool CanStartFishing(out string reason)
         {
             if (inventory == null)
@@ -104,7 +110,10 @@ namespace Sushi.Fishing
         /// </summary>
         public bool RollHookedFish(out float minResistance, out float maxResistance)
         {
-            hookedItem = equippedBait != null ? equippedBait.Roll() : null;
+            // Prefer the bait that was actually on the hook this cast
+            BaitData baitToUse = castBaitOverride != null ? castBaitOverride : equippedBait;
+
+            hookedItem = baitToUse != null ? baitToUse.Roll() : null;
 
             if (hookedItem == null)
             {
@@ -120,7 +129,11 @@ namespace Sushi.Fishing
         }
 
         /// <summary>Called when the fish gets away (line broke, withdrew, forced stop).</summary>
-        public void ClearHookedFish() => hookedItem = null;
+        public void ClearHookedFish()
+        {
+            hookedItem = null;
+            castBaitOverride = null; // next cast will set a fresh bait
+        }
 
         /// <summary>
         /// Called the moment FishingManager lands a fish. Scores the fight and
@@ -135,14 +148,21 @@ namespace Sushi.Fishing
             {
                 Debug.LogWarning("[FishingCatchHandler] No inventory assigned; catch discarded.", this);
                 hookedItem = null;
+                castBaitOverride = null;
                 return CaughtItem.None;
             }
 
             ItemData rolled = hookedItem;
             hookedItem = null;
 
-            // Safety net in case ResolveCatch is called without a bite roll.
-            if (rolled == null && equippedBait != null) rolled = equippedBait.Roll();
+            // Safety net: if we somehow get here without a bite roll, use the cast override
+            if (rolled == null)
+            {
+                BaitData baitToUse = castBaitOverride != null ? castBaitOverride : equippedBait;
+                if (baitToUse != null) rolled = baitToUse.Roll();
+            }
+
+            castBaitOverride = null; // Cast is consumed
 
             if (rolled == null)
             {
@@ -158,8 +178,6 @@ namespace Sushi.Fishing
                 return result;
             }
 
-            // Should be unreachable because CanStartFishing gated the cast,
-            // but a fish arriving with nowhere to go must not fail silently.
             Debug.LogWarning($"[FishingCatchHandler] No room for {result.Label} after a successful landing.", this);
             return CaughtItem.None;
         }
