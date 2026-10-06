@@ -18,6 +18,9 @@ public class SushiSlot : MonoBehaviour, IDropHandler
     private void Awake()
     {
         slotImage = GetComponent<Image>();
+        currentItem = null;
+        slotImage.sprite = null;
+        slotImage.color = new Color(1, 1, 1, 0);
     }
 
     private void Start()

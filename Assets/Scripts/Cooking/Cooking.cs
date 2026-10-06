@@ -183,9 +183,18 @@ public class Cooking : MonoBehaviour
 
     public void CloseStoveUI()
     {
+        resetSlots();
         if (stoveUIPanel != null) stoveUIPanel.SetActive(false);
     }
 
+
+    public void resetSlots()
+    {
+        foreach (SushiSlot slot in slots)
+        {
+            if (slot != null) slot.ClearSlot();
+        }
+    }
     private void RefreshActiveOrderDisplay()
     {
         RecipeData active = orderManager != null ? orderManager.ActiveRecipe : null;
