@@ -6,16 +6,6 @@ using System.Collections.Generic;
 using Sushi.Data;
 using Sushi.Inventory;
 
-// Milestone 1 flow:
-// Player walks to the stove -> a UI pops up with buttons for the different sushi types
-// (plus their current order slip for reference). Clicking a button consumes the raw
-// ingredients for that recipe and grants the finished, plated sushi item.
-// Player then carries that plated sushi to the delivery/serve station, where it's
-// checked against the accepted order (see OrderSlipUI.TryServeOrder).
-//
-// NOTE: cooking here is intentionally NOT restricted to "only the accepted recipe" —
-// matching against an order.happens *at the serve station*, not at the stove, so the
-// player can cook the wrong thing and lose ingredients for it (per your delivery notes).
 [Serializable]
 public struct StoveButtonEntry
 {
@@ -23,62 +13,69 @@ public struct StoveButtonEntry
     public RecipeData recipe;
 }
 
+[Serializable]
+public struct IngredientSourceEntry
+{
+    public IngredientSource source;
+    public ItemData itemData;
+}
+
 public class Cooking : MonoBehaviour
 {
-    [Header("Inventory Hook")]
+    [Header("Inventory")]
     public Inventory playerInventory;
 
-    [Header("Order Manager Hook")]
+    [Header("Order Manager")]
     public OrderManager orderManager;
 
     [Header("Active Order Display")]
-    [Tooltip("Shown/hidden based on whether an order is currently accepted.")]
     public GameObject activeOrderPanel;
     public Image activeOrderIcon;
     public TMP_Text activeOrderNameText;
     public TMP_Text activeOrderIngredientsText;
 
-    [Header("Craftable Sushi")]
-    [Tooltip("Each button on the stove UI paired with the recipe it cooks. " +
-             "Drag the Salmon/Tuna/Crab/Prawn/Seaweed buttons and their matching Recipe Data here " +
-             "so they can be greyed out when the player can't afford them.")]
-    public List<StoveButtonEntry> stoveButtons = new List<StoveButtonEntry>();
+    [Header("Sushi Assembler Slots")]
+    [Tooltip("Order: 0 = Top, 1 = Middle, 2 = Bottom")]
+    public SushiSlot[] slots;
 
     [Header("Stove UI")]
-    [Tooltip("The panel that pops up with the chef + sushi buttons when the player approaches.")]
     public GameObject stoveUIPanel;
 
     [Header("Trigger")]
-    [Tooltip("Tag the player object must have for the stove UI to open on approach.")]
     public string playerTag = "Player";
+
+    [Header("Ingredient Sources (Left Side)")]
+    public List<IngredientSourceEntry> ingredientSources = new List<IngredientSourceEntry>();
+
+    [Header("Recipe Book")]
+    [Tooltip("Drag all your RecipeData assets here.")]
+    public List<RecipeData> allRecipes = new List<RecipeData>();
 
     private void Start()
     {
         if (stoveUIPanel != null) stoveUIPanel.SetActive(false);
-        RefreshButtonStates();
+        RefreshIngredientSourceStates();
         RefreshActiveOrderDisplay();
     }
 
     private void OnEnable()
     {
-        if (playerInventory != null) playerInventory.OnChanged += RefreshButtonStates;
+        if (playerInventory != null) playerInventory.OnChanged += RefreshIngredientSourceStates;
         if (orderManager != null) orderManager.OnActiveOrderChanged += RefreshActiveOrderDisplay;
     }
 
     private void OnDisable()
     {
-        if (playerInventory != null) playerInventory.OnChanged -= RefreshButtonStates;
+        if (playerInventory != null) playerInventory.OnChanged -= RefreshIngredientSourceStates;
         if (orderManager != null) orderManager.OnActiveOrderChanged -= RefreshActiveOrderDisplay;
     }
 
-    // 3D trigger. If your stove/player use 2D colliders, swap these for
-    // OnTriggerEnter2D(Collider2D other) / OnTriggerExit2D(Collider2D other).
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag(playerTag)) OpenStoveUI();
     }
 
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerExit2D(Collider2D other)
     {
         if (other.CompareTag(playerTag)) CloseStoveUI();
     }
@@ -86,7 +83,7 @@ public class Cooking : MonoBehaviour
     public void OpenStoveUI()
     {
         if (stoveUIPanel != null) stoveUIPanel.SetActive(true);
-        RefreshButtonStates();
+        RefreshIngredientSourceStates();
         RefreshActiveOrderDisplay();
     }
 
@@ -95,11 +92,6 @@ public class Cooking : MonoBehaviour
         if (stoveUIPanel != null) stoveUIPanel.SetActive(false);
     }
 
-    /// <summary>
-    /// Shows the currently accepted order's name/icon/ingredients on the stove panel so the
-    /// player can see what they need to make without leaving the stove. Hides the panel
-    /// entirely when there's no active order. Runs whenever OrderManager.OnActiveOrderChanged fires.
-    /// </summary>
     private void RefreshActiveOrderDisplay()
     {
         RecipeData active = orderManager != null ? orderManager.ActiveRecipe : null;
@@ -109,7 +101,7 @@ public class Cooking : MonoBehaviour
 
         if (activeOrderNameText != null) activeOrderNameText.text = active.recipeName;
 
-        if (activeOrderIcon != null && active.mainFish != null)
+        if (activeOrderIcon != null && active.resultItem != null)
         {
             activeOrderIcon.sprite = active.resultItem.icon;
             activeOrderIcon.color = active.resultItem.tint;
@@ -117,33 +109,48 @@ public class Cooking : MonoBehaviour
 
         if (activeOrderIngredientsText != null)
         {
-            string list = active.mainFish != null ? active.mainFish.Label : "";
-            for (int i = 0; i < active.requiredIngredients.Count; i++)
-            {
-                if (list.Length > 0) list += ", ";
-                list += active.requiredIngredients[i].Label;
-            }
+            string list = "";
+            if (active.slot3BOTTOM != null) list += active.slot3BOTTOM.Label;
+            if (active.slot2MIDDLE != null) { if (list.Length > 0) list += ", "; list += active.slot2MIDDLE.Label; }
+            if (active.slot1TOP != null) { if (list.Length > 0) list += ", "; list += active.slot1TOP.Label; }
+
             activeOrderIngredientsText.text = list;
         }
     }
 
     /// <summary>
-    /// Greys out any button whose recipe the player can't currently afford,
-    /// re-run automatically whenever the inventory changes.
+    /// Greys out ingredient sources the player has run out of.
+    /// Skips infinite staples (Rice), which are always shown.
     /// </summary>
-    private void RefreshButtonStates()
+    private void RefreshIngredientSourceStates()
     {
-        foreach (StoveButtonEntry entry in stoveButtons)
+        if (playerInventory == null) return;
+
+        foreach (IngredientSourceEntry entry in ingredientSources)
         {
-            if (entry.button == null || entry.recipe == null) continue;
-            entry.button.interactable = HasIngredientsFor(entry.recipe);
+            if (entry.source == null || entry.itemData == null) continue;
+
+            // Infinite staples (Rice) are always visible
+            bool shouldBeActive = entry.itemData.isInfiniteStaple
+                || playerInventory.CountOf(entry.itemData) > 0;
+
+            // Make sure the object stays enabled so its layout slot is preserved
+            entry.source.gameObject.SetActive(true);
+
+            // Fade the visual via alpha
+            Image img = entry.source.GetComponent<Image>();
+            if (img != null)
+            {
+                Color c = img.color;
+                c.a = shouldBeActive ? 1f : 0.3f; // 30% opacity when unavailable
+                img.color = c;
+            }
+
+            // Also toggle the drag script so it can't be dragged when out of stock
+            entry.source.enabled = shouldBeActive;
         }
     }
 
-    /// <summary>
-    /// Wire this to each sushi button in the stove UI, one per RecipeData
-    /// (e.g. button.onClick.AddListener(() => ClickCraftSushiButton(recipe));).
-    /// </summary>
     public void ClickCraftSushiButton(RecipeData recipe)
     {
         if (playerInventory == null || recipe == null) return;
@@ -151,48 +158,119 @@ public class Cooking : MonoBehaviour
         if (!HasIngredientsFor(recipe))
         {
             UiPrompter.Instance.noIngredients();
-            Debug.LogWarning($"Missing ingredients to cook {recipe.recipeName}! Check your catch bag.");
+            Debug.LogWarning($"Missing ingredients to cook {recipe.recipeName}!");
             return;
         }
 
         if (recipe.resultItem == null)
         {
-            Debug.LogError($"RecipeData '{recipe.recipeName}' has no resultItem assigned — cooking aborted so ingredients aren't wasted.");
+            Debug.LogError($"RecipeData '{recipe.recipeName}' has no resultItem assigned.");
             return;
         }
 
-        // Deduct raw ingredients first
-        playerInventory.RemoveFirst(recipe.mainFish);
-        foreach (ItemData ingredient in recipe.requiredIngredients)
-        {
-            playerInventory.RemoveFirst(ingredient);
-        }
+        // Deduct ingredients, BUT skip infinite staples like Rice
+        DeductIngredient(recipe.slot1TOP);
+        DeductIngredient(recipe.slot2MIDDLE);
+        DeductIngredient(recipe.slot3BOTTOM);
 
-        // Grant the finished, plated sushi
+        // Grant the finished sushi
         bool added = playerInventory.TryAdd(recipe.resultItem);
         if (!added)
         {
-            playerInventory.TryAdd(recipe.mainFish);
-            foreach (ItemData ingredient in recipe.requiredIngredients)
-            {
-                playerInventory.TryAdd(ingredient);
-            }
-            Debug.LogError($"Could not place cooked {recipe.resultItem.name} — ingredients restored.");
+            // Refund on failure
+            RefundIngredient(recipe.slot1TOP);
+            RefundIngredient(recipe.slot2MIDDLE);
+            RefundIngredient(recipe.slot3BOTTOM);
+
+            Debug.LogError($"Could not place cooked {recipe.resultItem.name} - ingredients restored.");
             return;
         }
 
         Debug.Log($"Cooked: {recipe.recipeName} -> {recipe.resultItem.name} added to inventory.");
     }
 
+    /// <summary>
+    /// Removes one of the item from inventory, unless it's an infinite staple.
+    /// </summary>
+    private void DeductIngredient(ItemData item)
+    {
+        if (item == null) return;
+        if (item.isInfiniteStaple) return; // Don't remove rice!
+        playerInventory.RemoveFirst(item);
+    }
+
+    /// <summary>
+    /// Adds the item back to inventory, unless it's an infinite staple.
+    /// </summary>
+    private void RefundIngredient(ItemData item)
+    {
+        if (item == null) return;
+        if (item.isInfiniteStaple) return; // Don't add rice back!
+        playerInventory.TryAdd(item);
+    }
+
+    /// <summary>
+    /// Returns true if the player has all required ingredients for this recipe.
+    /// Infinite staples (Rice) are always considered available.
+    /// </summary>
     private bool HasIngredientsFor(RecipeData recipe)
     {
-        if (playerInventory.CountOf(recipe.mainFish) <= 0) return false;
-
-        foreach (ItemData ingredient in recipe.requiredIngredients)
-        {
-            if (playerInventory.CountOf(ingredient) <= 0) return false;
-        }
+        if (recipe.slot1TOP != null && !IsAvailable(recipe.slot1TOP)) return false;
+        if (recipe.slot2MIDDLE != null && !IsAvailable(recipe.slot2MIDDLE)) return false;
+        if (recipe.slot3BOTTOM != null && !IsAvailable(recipe.slot3BOTTOM)) return false;
 
         return true;
+    }
+
+    /// <summary>
+    /// Helper: returns true if the item is either an infinite staple, or the player owns at least one.
+    /// </summary>
+    private bool IsAvailable(ItemData item)
+    {
+        if (item == null) return true;
+        if (item.isInfiniteStaple) return true; // Always available
+        return playerInventory.CountOf(item) > 0;
+    }
+
+    /// <summary>
+    /// Called by the "Cook" button. Reads the 3 slots, finds a matching recipe, and crafts it.
+    /// </summary>
+    public void CheckRecipe()
+    {
+        ItemData providedTop = (slots.Length > 0 && slots[0] != null) ? slots[0].currentItem : null;
+        ItemData providedMid = (slots.Length > 1 && slots[1] != null) ? slots[1].currentItem : null;
+        ItemData providedBot = (slots.Length > 2 && slots[2] != null) ? slots[2].currentItem : null;
+
+        if (providedTop == null && providedMid == null && providedBot == null)
+        {
+            Debug.Log("No ingredients in the slots.");
+            return;
+        }
+
+        foreach (RecipeData recipe in allRecipes)
+        {
+            if (recipe.MatchesSlots(providedTop, providedMid, providedBot))
+            {
+                Debug.Log($"Match Found: {recipe.recipeName}!");
+
+                if (!HasIngredientsFor(recipe))
+                {
+                    UiPrompter.Instance.noIngredients();
+                    Debug.LogWarning($"Correct arrangement for {recipe.recipeName}, but missing raw ingredients!");
+                    return;
+                }
+
+                ClickCraftSushiButton(recipe);
+
+                foreach (SushiSlot slot in slots)
+                {
+                    if (slot != null) slot.ClearSlot();
+                }
+
+                return;
+            }
+        }
+
+        Debug.Log("No recipe matches the current slot arrangement.");
     }
 }

@@ -30,22 +30,12 @@ public class OrderManager : MonoBehaviour
     public int maxConcurrentOrders = 5;
 
     private List<GameObject> spawnedSlips = new List<GameObject>();
-
-    // NEW: tickets the player has accepted (clicked Accept on), waiting to be cooked/served.
-    // Kept separate from spawnedSlips so you can query "what's actively in progress"
-    // without touching the full board list.
     private List<GameObject> acceptedSlips = new List<GameObject>();
 
-    /// <summary>Read-only view of accepted tickets, for the serve station to check against inventory.</summary>
     public IReadOnlyList<GameObject> AcceptedTickets => acceptedSlips;
-
-    /// <summary>True while an order is accepted and not yet completed/failed � blocks accepting another.</summary>
     public bool HasActiveOrder => acceptedSlips.Count > 0;
-
-    /// <summary>The recipe of the currently accepted order, or null if none. For UI like the stove panel to display.</summary>
     public RecipeData ActiveRecipe { get; private set; }
 
-    /// <summary>Fired whenever an order is accepted, completed, or failed, so tickets can refresh their Accept button.</summary>
     public event Action OnActiveOrderChanged;
 
     private Coroutine orderRoutine;
@@ -82,6 +72,7 @@ public class OrderManager : MonoBehaviour
 
     private IEnumerator GenerationLoop()
     {
+        // NOTE: If your DayNightCycleManager uses 'currentState' (lowercase), change this back.
         while (DayNightCycleManager.Instance.currentState == GameState.RestaurantService)
         {
             float delay = UnityEngine.Random.Range(minTimeBetweenOrders, maxTimeBetweenOrders);
@@ -96,51 +87,54 @@ public class OrderManager : MonoBehaviour
 
     private void TryCreateTicket()
     {
-        // Guard 1: Check if the inspector reference is missing entirely
         if (playerInventory == null)
         {
             Debug.LogError("OrderManager: Player Inventory reference is missing in the Inspector!");
             return;
         }
 
-        // Guard 2: Check if you forgot to add recipes to your global list
         if (globalRecipeBook == null || globalRecipeBook.Count == 0)
         {
-            Debug.LogWarning("OrderManager: Your Global Recipe Book is empty! Add some Recipe Data assets in the Inspector.");
+            Debug.LogWarning("OrderManager: Your Global Recipe Book is empty!");
             return;
         }
 
-        // Guard 3: Direct inventory check. If total item count is 0, warn immediately and stop.
         if (playerInventory.Count == 0)
         {
-            Debug.LogWarning("OrderManager WARNING: Player inventory is completely empty! No orders can be generated.");
+            Debug.LogWarning("OrderManager: Player inventory is completely empty! No orders can be generated.");
             return;
         }
 
-        // 1. Find all recipes where the player has at least the primary fish in stock
+        // Find all recipes where the player has at least one NON-STAPLE ingredient in stock.
         List<RecipeData> viableRecipes = new List<RecipeData>();
 
         foreach (RecipeData recipe in globalRecipeBook)
         {
-            if (recipe == null) continue; // Safety skip if a slot in the list is empty
+            if (recipe == null) continue;
 
-            if (recipe.mainFish != null && playerInventory.CountOf(recipe.mainFish) > 0)
+            bool hasAnyIngredient = false;
+
+            if (recipe.slot1TOP != null && !recipe.slot1TOP.isInfiniteStaple && playerInventory.CountOf(recipe.slot1TOP) > 0)
+                hasAnyIngredient = true;
+            else if (recipe.slot2MIDDLE != null && !recipe.slot2MIDDLE.isInfiniteStaple && playerInventory.CountOf(recipe.slot2MIDDLE) > 0)
+                hasAnyIngredient = true;
+            else if (recipe.slot3BOTTOM != null && !recipe.slot3BOTTOM.isInfiniteStaple && playerInventory.CountOf(recipe.slot3BOTTOM) > 0)
+                hasAnyIngredient = true;
+
+            if (hasAnyIngredient)
             {
                 viableRecipes.Add(recipe);
             }
         }
 
-        // 2. If we have recipes in our book, but none match the fish currently held
         if (viableRecipes.Count == 0)
         {
-            Debug.LogWarning("OrderManager: The player has items, but none of them match the 'Main Fish' required for your recipes.");
+            Debug.LogWarning("OrderManager: Player has items, but none match the recipes. Did you forget to mark Rice as an infinite staple, or add fish to inventory?");
             return;
         }
 
-        // 3. Select a random valid recipe from the possible choices
         RecipeData selectedRecipe = viableRecipes[UnityEngine.Random.Range(0, viableRecipes.Count)];
 
-        // 4. Instantiate Visual UI Elements
         if (orderSlipPrefab == null || orderBoardContainer == null)
         {
             Debug.LogError("OrderManager: Order Slip Prefab or Order Board Container is not assigned!");
@@ -157,18 +151,13 @@ public class OrderManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Called from OrderSlipUI when the player clicks "Accept" on a ticket.
-    /// Doesn't touch inventory � just marks the ticket as in-progress.
-    /// Rejects (returns false) if another order is already active.
-    /// </summary>
     public bool AcceptOrder(RecipeData recipe, GameObject slipObj)
     {
         if (slipObj == null) return false;
 
         if (HasActiveOrder)
         {
-            Debug.LogWarning($"OrderManager: Can't accept '{recipe.recipeName}' � an order is already in progress.");
+            Debug.LogWarning($"OrderManager: Can't accept '{recipe.recipeName}' - an order is already in progress.");
             return false;
         }
 
@@ -179,10 +168,6 @@ public class OrderManager : MonoBehaviour
         return true;
     }
 
-    /// <summary>
-    /// Called from OrderSlipUI.TryServeOrder() once the plated sushi has been
-    /// deducted from inventory. Finishes the ticket the same way DismissTicket does.
-    /// </summary>
     public void CompleteOrder(GameObject slipObj)
     {
         acceptedSlips.Remove(slipObj);
@@ -191,11 +176,6 @@ public class OrderManager : MonoBehaviour
         OnActiveOrderChanged?.Invoke();
     }
 
-    /// <summary>
-    /// Called when the player serves the WRONG plated dish against this ticket.
-    /// Same cleanup as CompleteOrder, but no payout � this is the "failed" outcome
-    /// that frees the player up to accept a new order.
-    /// </summary>
     public void FailOrder(GameObject slipObj)
     {
         acceptedSlips.Remove(slipObj);

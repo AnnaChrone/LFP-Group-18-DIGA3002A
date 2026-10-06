@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: SalmonRoll
   m_EditorClassIdentifier: Assembly-CSharp::Sushi.Data.RecipeData
   recipeName: Salmon Roll
-  mainFish: {fileID: 11400000, guid: 8f36faa83af6e4749a9de766e847b473, type: 2}
-  requiredIngredients: []
+  slot1TOP: {fileID: 0}
+  slot2MIDDLE: {fileID: 11400000, guid: 8f36faa83af6e4749a9de766e847b473, type: 2}
+  slot3BOTTOM: {fileID: 11400000, guid: e5b3e4f34792135449dd4cbe2769b234, type: 2}
   resultItem: {fileID: 11400000, guid: 0a5d664d8424487498ef1718c61352dc, type: 2}
   recipeValue: 25

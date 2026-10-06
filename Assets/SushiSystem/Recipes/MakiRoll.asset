@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: MakiRoll
   m_EditorClassIdentifier: Assembly-CSharp::Sushi.Data.RecipeData
   recipeName: Maki Roll
-  mainFish: {fileID: 11400000, guid: 0e7f019abecba294fadd3d379f725530, type: 2}
-  requiredIngredients: []
+  slot1TOP: {fileID: 0}
+  slot2MIDDLE: {fileID: 11400000, guid: 0e7f019abecba294fadd3d379f725530, type: 2}
+  slot3BOTTOM: {fileID: 11400000, guid: e5b3e4f34792135449dd4cbe2769b234, type: 2}
   resultItem: {fileID: 11400000, guid: 40f96119d7a287947b767ca8c449fe03, type: 2}
   recipeValue: 25

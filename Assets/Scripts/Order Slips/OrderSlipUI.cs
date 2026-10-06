@@ -26,7 +26,6 @@ namespace Sushi.UI
         private Inventory.Inventory liveInventoryReference;
         private OrderManager runtimeManager;
 
-        // NEW: tracks whether this ticket has moved past the "waiting to be picked up" stage.
         public bool IsAccepted { get; private set; }
         public RecipeData AssignedRecipe => assignedRecipe;
 
@@ -39,11 +38,18 @@ namespace Sushi.UI
 
             if (menuTitleText != null) menuTitleText.text = recipe.recipeName;
 
-            // Displays the icon of the main fish as the layout centerpiece
-            if (menuIconDisplay != null && recipe.mainFish != null)
+            // We skip infinite staples so the ticket shows the actual fish, not rice.
+          /*  ItemData heroItem = null;
+            if (recipe.slot3 != null && !recipe.slot3.isInfiniteStaple) heroItem = recipe.slot1;
+            else if (recipe.slot2 != null && !recipe.slot2.isInfiniteStaple) heroItem = recipe.slot2;
+            else if (recipe.slot1 != null && !recipe.slot1.isInfiniteStaple) heroItem = recipe.slot3;
+
+            // Fallback: if the recipe is somehow only rice, use whatever exists
+            if (heroItem == null) heroItem = recipe.slot3 ?? recipe.slot2 ?? recipe.slot1;*/
+
+            if (menuIconDisplay != null )
             {
-                menuIconDisplay.sprite = recipe.mainFish.icon;
-                menuIconDisplay.color = recipe.mainFish.tint;
+                menuIconDisplay.sprite = recipe.resultItem.icon;
             }
 
             if (goldPayoutText != null)
@@ -51,24 +57,35 @@ namespace Sushi.UI
                 goldPayoutText.text = $"+{recipe.recipeValue} Gold";
             }
 
-            // Build a visual string listing required ingredients underneath the title
+            // Build a visual string listing required ingredients, ordered bottom-to-top.
             if (ingredientsListText != null)
             {
-                string trackingList = "Requires: ";
-                for (int i = 0; i < recipe.requiredIngredients.Count; i++)
+                string trackingList = "";
+
+                if (recipe.slot3BOTTOM != null)
                 {
-                    trackingList += recipe.requiredIngredients[i].Label;
-                    if (i < recipe.requiredIngredients.Count - 1) trackingList += ", ";
+                    trackingList += recipe.slot3BOTTOM.Label;
+                    // Optional: mark staples clearly
+                    // if (recipe.slot3.isInfiniteStaple) trackingList += " (free)";
+                }
+                if (recipe.slot2MIDDLE != null)
+                {
+                    if (trackingList.Length > 0) trackingList += ", ";
+                    trackingList += recipe.slot2MIDDLE.Label;
+                    // if (recipe.slot2.isInfiniteStaple) trackingList += " (free)";
+                }
+                if (recipe.slot1TOP != null)
+                {
+                    if (trackingList.Length > 0) trackingList += ", ";
+                    trackingList += recipe.slot1TOP.Label;
+                    // if (recipe.slot1.isInfiniteStaple) trackingList += " (free)";
                 }
 
-                ingredientsListText.text = recipe.requiredIngredients.Count > 0 ? trackingList : "";
+                ingredientsListText.text = trackingList.Length > 0 ? "Requires: " + trackingList : "";
             }
 
             if (statusText != null) statusText.text = "Awaiting Acceptance";
 
-            // Subscribe once we have a manager reference, so this ticket knows when to
-            // grey out its Accept button (another order became active) or re-enable it
-            // (the board is free again).
             if (runtimeManager != null) runtimeManager.OnActiveOrderChanged += RefreshAcceptButtonInteractable;
             RefreshAcceptButtonInteractable();
         }
@@ -84,19 +101,12 @@ namespace Sushi.UI
             acceptButton.interactable = !IsAccepted && (runtimeManager == null || !runtimeManager.HasActiveOrder);
         }
 
-        /// <summary>
-        /// Hooked up to the ticket's "Accept" button. No inventory changes happen here �
-        /// this just tells the OrderManager that this recipe is now the active order,
-        /// so Cooking.cs knows what to make and the serve window knows what to check for.
-        /// </summary>
         public void ClickAcceptOrderButton()
         {
             if (assignedRecipe == null || IsAccepted) return;
 
             if (runtimeManager == null || !runtimeManager.AcceptOrder(assignedRecipe, gameObject))
             {
-                // Rejected � another order is already active. Board should already show
-                // this button as non-interactable, but guard here in case of a stray click.
                 if (statusText != null) statusText.text = "Order In Progress...";
                 return;
             }
@@ -107,29 +117,20 @@ namespace Sushi.UI
             if (statusText != null) statusText.text = "Cooking...";
         }
 
-        /// <summary>
-        /// Called by the serve window (not by a button on this ticket anymore) once the
-        /// player has the finished plated sushi in their inventory and hits "Serve".
-        /// Returns true if the order was successfully served and the ticket dismissed.
-        /// </summary>
         public bool TryServeOrder()
         {
             if (!IsAccepted || liveInventoryReference == null || assignedRecipe == null) return false;
 
-            // ASSUMPTION: RecipeData has (or needs) a field for the finished plated item,
-            // separate from the raw ingredients � e.g. `assignedRecipe.resultItem`.
-            // Swap this out for whatever your RecipeData actually exposes.
             ItemData platedSushi = assignedRecipe.resultItem;
 
             if (platedSushi == null || liveInventoryReference.CountOf(platedSushi) <= 0)
             {
-                Debug.LogWarning($"No plated {assignedRecipe.recipeName} in inventory yet � cook it first!");
+                Debug.LogWarning($"No plated {assignedRecipe.recipeName} in inventory yet - cook it first!");
                 return false;
             }
 
             liveInventoryReference.RemoveFirst(platedSushi);
 
-            // TODO: Link up your financial inventory accounting system balance curves here!
             UiPrompter.Instance.CorrectOrder();
             Debug.Log($"Served: {assignedRecipe.recipeName}! Order complete.");
 
@@ -143,13 +144,6 @@ namespace Sushi.UI
             return true;
         }
 
-        /// <summary>
-        /// Called by the serve station when TryServeOrder() failed � i.e. the player doesn't
-        /// have the correct dish, but might be holding a WRONG plated dish and served it anyway.
-        /// If any other recipe's plated item is in the inventory, that counts as a failed
-        /// delivery: it's removed and this order is marked failed (no payout), freeing the
-        /// board up for the next Accept. Returns true if a failure was resolved this way.
-        /// </summary>
         public bool TryFailServeWithWrongDish(System.Collections.Generic.List<RecipeData> allRecipes)
         {
             if (!IsAccepted || liveInventoryReference == null || allRecipes == null) return false;
@@ -162,7 +156,7 @@ namespace Sushi.UI
                 {
                     liveInventoryReference.RemoveFirst(otherRecipe.resultItem);
 
-                    Debug.Log($"Served the wrong dish ({otherRecipe.recipeName}) for order '{assignedRecipe.recipeName}' � order failed.");
+                    Debug.Log($"Served the wrong dish ({otherRecipe.recipeName}) for order '{assignedRecipe.recipeName}' - order failed.");
                     UiPrompter.Instance.IncorrectOrder();
                     if (statusText != null) statusText.text = "Failed!";
 

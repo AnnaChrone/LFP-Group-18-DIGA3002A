@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: CrabRoll
   m_EditorClassIdentifier: Assembly-CSharp::Sushi.Data.RecipeData
   recipeName: Crab Roll
-  mainFish: {fileID: 11400000, guid: c138376bc7307ee418d1bdc72cee994e, type: 2}
-  requiredIngredients: []
+  slot1TOP: {fileID: 0}
+  slot2MIDDLE: {fileID: 11400000, guid: c138376bc7307ee418d1bdc72cee994e, type: 2}
+  slot3BOTTOM: {fileID: 11400000, guid: e5b3e4f34792135449dd4cbe2769b234, type: 2}
   resultItem: {fileID: 11400000, guid: ed41229438defa142afb8a8a9c4ba646, type: 2}
   recipeValue: 25

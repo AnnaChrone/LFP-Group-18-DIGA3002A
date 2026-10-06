@@ -25,6 +25,10 @@ namespace Sushi.Data
 
         public ItemCategory category = ItemCategory.Fish;
 
+        [Header("Availability")]
+        [Tooltip("If true, this item is always available (e.g. Rice) and is NEVER checked against or removed from inventory.")]
+        public bool isInfiniteStaple = false;
+
         [Header("Presentation")]
         public Sprite icon;
 

@@ -17437,7 +17437,7 @@ MonoBehaviour:
   reelSpeed: 10
   rodRecoverySpeed: 20
   resistanceTensionMultiplier: 5
-  highTensionThreshold: 0.9
+  highTensionThreshold: 0.75
   minimumTension: 5
   maximumTension: 45
   tensionExponent: 2.5

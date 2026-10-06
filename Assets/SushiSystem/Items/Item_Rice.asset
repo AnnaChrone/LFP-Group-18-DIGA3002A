@@ -10,12 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 66d10befa7f5553408f1e20cb8c49ca4, type: 3}
-  m_Name: Item_Seaweed
+  m_Name: Item_Rice
   m_EditorClassIdentifier: Assembly-CSharp::Sushi.Data.ItemData
-  id: seaweed
-  displayName: Seaweed
-  category: 0
-  icon: {fileID: 8333231276030249781, guid: 6239ffe51f02fb2448dc94094aba0f2f, type: 3}
+  id: rice
+  displayName: Rice
+  category: 1
+  isInfiniteStaple: 1
+  icon: {fileID: 504863131133869788, guid: e75a340ca55492b4d8eb70e0d48b8f1c, type: 3}
   tint: {r: 1, g: 1, b: 1, a: 1}
   baseValue: 10
   weight: 0.2
