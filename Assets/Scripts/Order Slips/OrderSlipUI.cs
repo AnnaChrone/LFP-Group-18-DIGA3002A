@@ -14,7 +14,7 @@ namespace Sushi.UI
         public Image menuIconDisplay;
         public TMP_Text goldPayoutText;
 
-        [Tooltip("Optional: A text sub-field to show extra requested item list strings.")]
+        [Tooltip("Kept for legacy prefab compatibility. Not used anymore - ingredients are shown on the cooking panel only.")]
         public TMP_Text ingredientsListText;
 
         [Header("Status")]
@@ -38,18 +38,11 @@ namespace Sushi.UI
 
             if (menuTitleText != null) menuTitleText.text = recipe.recipeName;
 
-            // We skip infinite staples so the ticket shows the actual fish, not rice.
-          /*  ItemData heroItem = null;
-            if (recipe.slot3 != null && !recipe.slot3.isInfiniteStaple) heroItem = recipe.slot1;
-            else if (recipe.slot2 != null && !recipe.slot2.isInfiniteStaple) heroItem = recipe.slot2;
-            else if (recipe.slot1 != null && !recipe.slot1.isInfiniteStaple) heroItem = recipe.slot3;
-
-            // Fallback: if the recipe is somehow only rice, use whatever exists
-            if (heroItem == null) heroItem = recipe.slot3 ?? recipe.slot2 ?? recipe.slot1;*/
-
-            if (menuIconDisplay != null )
+            // Show the result sushi icon on the ticket
+            if (menuIconDisplay != null && recipe.resultItem != null)
             {
                 menuIconDisplay.sprite = recipe.resultItem.icon;
+                menuIconDisplay.color = recipe.resultItem.tint;
             }
 
             if (goldPayoutText != null)
@@ -57,31 +50,10 @@ namespace Sushi.UI
                 goldPayoutText.text = $"+{recipe.recipeValue} Gold";
             }
 
-            // Build a visual string listing required ingredients, ordered bottom-to-top.
+            // Hide the ingredients list field if it's still on the prefab
             if (ingredientsListText != null)
             {
-                string trackingList = "";
-
-                if (recipe.slot3BOTTOM != null)
-                {
-                    trackingList += recipe.slot3BOTTOM.Label;
-                    // Optional: mark staples clearly
-                    // if (recipe.slot3.isInfiniteStaple) trackingList += " (free)";
-                }
-                if (recipe.slot2MIDDLE != null)
-                {
-                    if (trackingList.Length > 0) trackingList += ", ";
-                    trackingList += recipe.slot2MIDDLE.Label;
-                    // if (recipe.slot2.isInfiniteStaple) trackingList += " (free)";
-                }
-                if (recipe.slot1TOP != null)
-                {
-                    if (trackingList.Length > 0) trackingList += ", ";
-                    trackingList += recipe.slot1TOP.Label;
-                    // if (recipe.slot1.isInfiniteStaple) trackingList += " (free)";
-                }
-
-                ingredientsListText.text = trackingList.Length > 0 ? "Requires: " + trackingList : "";
+                ingredientsListText.text = "";
             }
 
             if (statusText != null) statusText.text = "Awaiting Acceptance";

@@ -105,23 +105,30 @@ public class OrderManager : MonoBehaviour
             return;
         }
 
-        // Find all recipes where the player has at least one NON-STAPLE ingredient in stock.
+        // Find all recipes where the player has:
+        //   (a) at least one NON-STAPLE raw ingredient in stock, OR
+        //   (b) the finished plated sushi already in inventory
         List<RecipeData> viableRecipes = new List<RecipeData>();
 
         foreach (RecipeData recipe in globalRecipeBook)
         {
             if (recipe == null) continue;
 
-            bool hasAnyIngredient = false;
+            bool isViable = false;
 
+            // (a) Check for raw ingredients
             if (recipe.slot1TOP != null && !recipe.slot1TOP.isInfiniteStaple && playerInventory.CountOf(recipe.slot1TOP) > 0)
-                hasAnyIngredient = true;
+                isViable = true;
             else if (recipe.slot2MIDDLE != null && !recipe.slot2MIDDLE.isInfiniteStaple && playerInventory.CountOf(recipe.slot2MIDDLE) > 0)
-                hasAnyIngredient = true;
+                isViable = true;
             else if (recipe.slot3BOTTOM != null && !recipe.slot3BOTTOM.isInfiniteStaple && playerInventory.CountOf(recipe.slot3BOTTOM) > 0)
-                hasAnyIngredient = true;
+                isViable = true;
 
-            if (hasAnyIngredient)
+            // (b) Check for the finished product
+            if (!isViable && recipe.resultItem != null && playerInventory.CountOf(recipe.resultItem) > 0)
+                isViable = true;
+
+            if (isViable)
             {
                 viableRecipes.Add(recipe);
             }
@@ -150,7 +157,6 @@ public class OrderManager : MonoBehaviour
             slipUI.InitializeRecipeTicket(selectedRecipe, playerInventory, this);
         }
     }
-
     public bool AcceptOrder(RecipeData recipe, GameObject slipObj)
     {
         if (slipObj == null) return false;
