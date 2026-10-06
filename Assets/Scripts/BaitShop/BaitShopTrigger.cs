@@ -5,7 +5,7 @@ public class BaitShopTrigger : MonoBehaviour
 {
     [Header("UI Panels")]
     [SerializeField] private GameObject shopUIPanel;
-    [SerializeField] private GameObject interactPromptText; // Drag your "Press E" text here
+    [SerializeField] private GameObject interactPromptText;
 
     private bool playerInRange = false;
 
@@ -18,7 +18,6 @@ public class BaitShopTrigger : MonoBehaviour
             bool isShopActive = shopUIPanel.activeSelf;
             shopUIPanel.SetActive(!isShopActive);
 
-            // Hide the prompt text if the shop is open, show it if closed
             interactPromptText.SetActive(isShopActive);
         }
     }
@@ -29,7 +28,6 @@ public class BaitShopTrigger : MonoBehaviour
         {
             playerInRange = true;
 
-            // Only show prompt if the shop isn't already open
             if (!shopUIPanel.activeSelf)
             {
                 interactPromptText.SetActive(true);
@@ -43,7 +41,7 @@ public class BaitShopTrigger : MonoBehaviour
         {
             playerInRange = false;
             shopUIPanel.SetActive(false);
-            interactPromptText.SetActive(false); // Cleanly hide prompt when walking away
+            interactPromptText.SetActive(false);
         }
     }
 }

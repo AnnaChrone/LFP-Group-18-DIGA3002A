@@ -39,7 +39,7 @@ public class OrderManager : MonoBehaviour
     /// <summary>Read-only view of accepted tickets, for the serve station to check against inventory.</summary>
     public IReadOnlyList<GameObject> AcceptedTickets => acceptedSlips;
 
-    /// <summary>True while an order is accepted and not yet completed/failed — blocks accepting another.</summary>
+    /// <summary>True while an order is accepted and not yet completed/failed ï¿½ blocks accepting another.</summary>
     public bool HasActiveOrder => acceptedSlips.Count > 0;
 
     /// <summary>The recipe of the currently accepted order, or null if none. For UI like the stove panel to display.</summary>
@@ -55,7 +55,6 @@ public class OrderManager : MonoBehaviour
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
         counter = 0;
-
     }
 
     public void StartServiceOrders()
@@ -160,7 +159,7 @@ public class OrderManager : MonoBehaviour
 
     /// <summary>
     /// Called from OrderSlipUI when the player clicks "Accept" on a ticket.
-    /// Doesn't touch inventory — just marks the ticket as in-progress.
+    /// Doesn't touch inventory ï¿½ just marks the ticket as in-progress.
     /// Rejects (returns false) if another order is already active.
     /// </summary>
     public bool AcceptOrder(RecipeData recipe, GameObject slipObj)
@@ -169,7 +168,7 @@ public class OrderManager : MonoBehaviour
 
         if (HasActiveOrder)
         {
-            Debug.LogWarning($"OrderManager: Can't accept '{recipe.recipeName}' — an order is already in progress.");
+            Debug.LogWarning($"OrderManager: Can't accept '{recipe.recipeName}' ï¿½ an order is already in progress.");
             return false;
         }
 
@@ -186,7 +185,6 @@ public class OrderManager : MonoBehaviour
     /// </summary>
     public void CompleteOrder(GameObject slipObj)
     {
-
         acceptedSlips.Remove(slipObj);
         ActiveRecipe = null;
         DismissTicket(slipObj);
@@ -195,7 +193,7 @@ public class OrderManager : MonoBehaviour
 
     /// <summary>
     /// Called when the player serves the WRONG plated dish against this ticket.
-    /// Same cleanup as CompleteOrder, but no payout — this is the "failed" outcome
+    /// Same cleanup as CompleteOrder, but no payout ï¿½ this is the "failed" outcome
     /// that frees the player up to accept a new order.
     /// </summary>
     public void FailOrder(GameObject slipObj)

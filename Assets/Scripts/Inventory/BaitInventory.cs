@@ -13,7 +13,7 @@ namespace Sushi.Inventory
         // Tracks bait type asset -> current quantity stacked
         private readonly Dictionary<BaitData, int> baitCounts = new Dictionary<BaitData, int>();
 
-        // Event for your 3 UI slots to listen to so they know when to redraw
+        // Event for 3 UI slots to listen to so they know when to redraw
         public event Action OnBaitInventoryChanged;
 
         private void Awake()

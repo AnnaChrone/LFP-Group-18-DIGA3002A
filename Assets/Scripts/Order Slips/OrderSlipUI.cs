@@ -85,7 +85,7 @@ namespace Sushi.UI
         }
 
         /// <summary>
-        /// Hooked up to the ticket's "Accept" button. No inventory changes happen here —
+        /// Hooked up to the ticket's "Accept" button. No inventory changes happen here ï¿½
         /// this just tells the OrderManager that this recipe is now the active order,
         /// so Cooking.cs knows what to make and the serve window knows what to check for.
         /// </summary>
@@ -95,7 +95,7 @@ namespace Sushi.UI
 
             if (runtimeManager == null || !runtimeManager.AcceptOrder(assignedRecipe, gameObject))
             {
-                // Rejected — another order is already active. Board should already show
+                // Rejected ï¿½ another order is already active. Board should already show
                 // this button as non-interactable, but guard here in case of a stray click.
                 if (statusText != null) statusText.text = "Order In Progress...";
                 return;
@@ -117,13 +117,13 @@ namespace Sushi.UI
             if (!IsAccepted || liveInventoryReference == null || assignedRecipe == null) return false;
 
             // ASSUMPTION: RecipeData has (or needs) a field for the finished plated item,
-            // separate from the raw ingredients — e.g. `assignedRecipe.resultItem`.
+            // separate from the raw ingredients ï¿½ e.g. `assignedRecipe.resultItem`.
             // Swap this out for whatever your RecipeData actually exposes.
             ItemData platedSushi = assignedRecipe.resultItem;
 
             if (platedSushi == null || liveInventoryReference.CountOf(platedSushi) <= 0)
             {
-                Debug.LogWarning($"No plated {assignedRecipe.recipeName} in inventory yet — cook it first!");
+                Debug.LogWarning($"No plated {assignedRecipe.recipeName} in inventory yet ï¿½ cook it first!");
                 return false;
             }
 
@@ -144,7 +144,7 @@ namespace Sushi.UI
         }
 
         /// <summary>
-        /// Called by the serve station when TryServeOrder() failed — i.e. the player doesn't
+        /// Called by the serve station when TryServeOrder() failed ï¿½ i.e. the player doesn't
         /// have the correct dish, but might be holding a WRONG plated dish and served it anyway.
         /// If any other recipe's plated item is in the inventory, that counts as a failed
         /// delivery: it's removed and this order is marked failed (no payout), freeing the
@@ -162,7 +162,7 @@ namespace Sushi.UI
                 {
                     liveInventoryReference.RemoveFirst(otherRecipe.resultItem);
 
-                    Debug.Log($"Served the wrong dish ({otherRecipe.recipeName}) for order '{assignedRecipe.recipeName}' — order failed.");
+                    Debug.Log($"Served the wrong dish ({otherRecipe.recipeName}) for order '{assignedRecipe.recipeName}' ï¿½ order failed.");
                     UiPrompter.Instance.IncorrectOrder();
                     if (statusText != null) statusText.text = "Failed!";
 
