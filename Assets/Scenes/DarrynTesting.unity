@@ -2669,7 +2669,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1608330358}
   m_Father: {fileID: 810392947}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -9036,7 +9037,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1814698901}
-  - {fileID: 1608330358}
   - {fileID: 810392947}
   m_Father: {fileID: 420876669}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -16858,6 +16858,7 @@ GameObject:
   - component: {fileID: 1608330361}
   - component: {fileID: 1608330360}
   - component: {fileID: 1608330359}
+  - component: {fileID: 1608330364}
   m_Layer: 5
   m_Name: FillBar
   m_TagString: Untagged
@@ -16878,11 +16879,11 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1150849483}
-  m_Father: {fileID: 837706396}
+  m_Father: {fileID: 356379030}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 232, y: 26}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 192, y: -165}
   m_SizeDelta: {x: 300, y: 22.5}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1608330359
@@ -16897,8 +16898,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61528e880ff0f5544a31d1b6d476a35e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Sushi.UI.FillBarVisibility
-  tabGroup: {fileID: 0}
-  inventoryTabIndex: 0
   hideDuringNight: 1
 --- !u!225 &1608330360
 CanvasGroup:
@@ -16971,6 +16970,26 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1608330357}
   m_CullTransparentMesh: 1
+--- !u!114 &1608330364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1608330357}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.LayoutElement
+  m_IgnoreLayout: 1
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: -1
+  m_PreferredHeight: -1
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!1 &1617552762
 GameObject:
   m_ObjectHideFlags: 0
