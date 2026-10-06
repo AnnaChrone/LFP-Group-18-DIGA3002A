@@ -7,15 +7,19 @@ using Sushi.Data;
 namespace Sushi.UI
 {
     /// <summary>
-    /// The Inventory tab's whole display: one row per distinct species
-    /// currently held, each showing an icon, a count, and the total weight.
-    ///
-    /// Row prefab convention: each row prefab needs children named exactly
-    /// "Icon" (Image), "CountLabel" (TMP_Text) and "WeightLabel" (TMP_Text).
-    /// WeightLabel is optional; if it's missing, the weight is just not shown.
+    /// One row per distinct item held: icon, count, optional total weight.
+    /// Use one instance per tab and set the Filter on each.
+    /// Row prefab needs direct children named exactly "Icon" (Image),
+    /// "CountLabel" (TMP_Text) and "WeightLabel" (TMP_Text, optional).
     /// </summary>
     public class InventoryUI : MonoBehaviour
     {
+        public enum CategoryFilter
+        {
+            ExcludeSushi, // Inventory tab: fish and ingredients only
+            OnlySushi     // Sushi tab: made sushi only
+        }
+
         private const string IconChildName = "Icon";
         private const string CountLabelChildName = "CountLabel";
         private const string WeightLabelChildName = "WeightLabel";
@@ -23,10 +27,14 @@ namespace Sushi.UI
         [Header("Wiring")]
         [SerializeField] private Sushi.Inventory.Inventory inventory;
         [SerializeField] private GameObject rowPrefab;
-        [Tooltip("A RectTransform with a Vertical Layout Group on it.")]
+        [Tooltip("The Content object with a Vertical Layout Group on it.")]
         [SerializeField] private RectTransform rowParent;
 
+        [Header("Filter")]
+        [SerializeField] private CategoryFilter filter = CategoryFilter.ExcludeSushi;
+
         [Header("Display")]
+        [SerializeField] private bool showWeight = true;
         [SerializeField] private string weightFormat = "0.0";
         [SerializeField] private string weightUnit = "kg";
 
@@ -39,8 +47,6 @@ namespace Sushi.UI
         }
 
         private readonly List<Row> pooledRows = new List<Row>();
-
-        // Reused every refresh to avoid per-frame allocations.
         private readonly List<ItemData> speciesOrder = new List<ItemData>();
         private readonly Dictionary<ItemData, int> counts = new Dictionary<ItemData, int>();
         private readonly Dictionary<ItemData, float> weights = new Dictionary<ItemData, float>();
@@ -72,39 +78,38 @@ namespace Sushi.UI
 
             for (int i = 0; i < pooledRows.Count; i++)
             {
-                if (i < speciesOrder.Count)
+                bool used = i < speciesOrder.Count;
+                if (used)
                 {
                     ItemData species = speciesOrder[i];
                     ApplyToRow(pooledRows[i], species, counts[species], weights[species]);
-                    pooledRows[i].root.SetActive(true);
                 }
-                else
-                {
-                    pooledRows[i].root.SetActive(false);
-                }
+                pooledRows[i].root.SetActive(used);
             }
+
+            LayoutRebuilder.ForceRebuildLayoutImmediate(rowParent);
         }
 
         private Row SpawnRow()
         {
             GameObject instance = Instantiate(rowPrefab, rowParent);
 
-            Transform iconTransform = instance.transform.Find(IconChildName);
-            Transform labelTransform = instance.transform.Find(CountLabelChildName);
-            Transform weightTransform = instance.transform.Find(WeightLabelChildName);
+            Transform iconT = instance.transform.Find(IconChildName);
+            Transform countT = instance.transform.Find(CountLabelChildName);
+            Transform weightT = instance.transform.Find(WeightLabelChildName);
 
-            if (iconTransform == null || labelTransform == null)
+            if (iconT == null || countT == null)
             {
-                Debug.LogError($"[InventoryUI] Row prefab '{rowPrefab.name}' needs a child named " +
-                               $"'{IconChildName}' and a child named '{CountLabelChildName}'.", rowPrefab);
+                Debug.LogError($"[InventoryUI] Row prefab '{rowPrefab.name}' needs children named " +
+                               $"'{IconChildName}' and '{CountLabelChildName}'.", rowPrefab);
             }
 
             return new Row
             {
                 root = instance,
-                icon = iconTransform != null ? iconTransform.GetComponent<Image>() : null,
-                countLabel = labelTransform != null ? labelTransform.GetComponent<TMP_Text>() : null,
-                weightLabel = weightTransform != null ? weightTransform.GetComponent<TMP_Text>() : null
+                icon = iconT != null ? iconT.GetComponent<Image>() : null,
+                countLabel = countT != null ? countT.GetComponent<TMP_Text>() : null,
+                weightLabel = weightT != null ? weightT.GetComponent<TMP_Text>() : null
             };
         }
 
@@ -124,7 +129,17 @@ namespace Sushi.UI
             if (row.countLabel != null) row.countLabel.text = count.ToString();
 
             if (row.weightLabel != null)
-                row.weightLabel.text = $"{totalWeight.ToString(weightFormat)} {weightUnit}";
+            {
+                row.weightLabel.gameObject.SetActive(showWeight);
+                if (showWeight)
+                    row.weightLabel.text = $"{totalWeight.ToString(weightFormat)} {weightUnit}";
+            }
+        }
+
+        private bool PassesFilter(ItemData data)
+        {
+            bool isSushi = data.category == ItemCategory.Sushi;
+            return filter == CategoryFilter.OnlySushi ? isSushi : !isSushi;
         }
 
         private void BuildCounts()
@@ -137,7 +152,7 @@ namespace Sushi.UI
             for (int i = 0; i < items.Count; i++)
             {
                 ItemData species = items[i].data;
-                if (species == null) continue;
+                if (species == null || !PassesFilter(species)) continue;
 
                 if (!counts.ContainsKey(species))
                 {
@@ -146,15 +161,8 @@ namespace Sushi.UI
                     speciesOrder.Add(species);
                 }
                 counts[species]++;
-                weights[species] += GetWeight(items[i]);
+                weights[species] += items[i].weight;
             }
-        }
-
-        // CHANGE THIS LINE if your weight field is named differently,
-        // or lives on ItemData (e.g. return catchItem.data.weight;).
-        private static float GetWeight(Sushi.Inventory.CaughtItem catchItem)
-        {
-            return catchItem.weight;
         }
     }
 }
