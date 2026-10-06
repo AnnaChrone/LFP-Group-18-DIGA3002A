@@ -15,6 +15,7 @@ MonoBehaviour:
   id: crab
   displayName: Crab
   category: 0
+  isInfiniteStaple: 1
   icon: {fileID: -1346631492182877755, guid: d266202cae897714aaa877350e303076, type: 3}
   tint: {r: 1, g: 1, b: 1, a: 1}
   baseValue: 10

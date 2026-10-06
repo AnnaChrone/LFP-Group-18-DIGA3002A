@@ -9,6 +9,10 @@ public class SushiSlot : MonoBehaviour, IDropHandler
     [Header("Current State")]
     public ItemData currentItem;
 
+    [Header("Manager Reference")]
+    [Tooltip("The Cooking manager this slot reports to. Auto-finds if left empty.")]
+    public Cooking cookingManager;
+
     private Image slotImage;
 
     private void Awake()
@@ -16,10 +20,14 @@ public class SushiSlot : MonoBehaviour, IDropHandler
         slotImage = GetComponent<Image>();
     }
 
+    private void Start()
+    {
+        if (cookingManager == null)
+            cookingManager = FindObjectOfType<Cooking>();
+    }
+
     public void OnDrop(PointerEventData eventData)
     {
-        // The dragged object is the SOURCE (e.g. "Rice"), not the ghost.
-        // So we read ItemData straight from its IngredientSource component.
         IngredientSource source = eventData.pointerDrag?.GetComponent<IngredientSource>();
 
         if (source == null || source.itemData == null)
@@ -28,14 +36,15 @@ public class SushiSlot : MonoBehaviour, IDropHandler
             return;
         }
 
-        // Store the data
         currentItem = source.itemData;
-
-        // Update the visual
         slotImage.sprite = currentItem.icon;
         slotImage.color = currentItem.tint;
 
         Debug.Log($"Slot {gameObject.name} now contains: {currentItem.displayName}");
+
+        // Notify the manager to update the Make Sushi button
+        if (cookingManager != null)
+            cookingManager.RefreshMatchedRecipe();
     }
 
     public void ClearSlot()
@@ -43,5 +52,8 @@ public class SushiSlot : MonoBehaviour, IDropHandler
         currentItem = null;
         slotImage.sprite = null;
         slotImage.color = new Color(1, 1, 1, 0);
+
+        if (cookingManager != null)
+            cookingManager.RefreshMatchedRecipe();
     }
 }

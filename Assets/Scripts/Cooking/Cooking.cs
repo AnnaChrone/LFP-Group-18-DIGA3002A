@@ -51,11 +51,23 @@ public class Cooking : MonoBehaviour
     [Tooltip("Drag all your RecipeData assets here.")]
     public List<RecipeData> allRecipes = new List<RecipeData>();
 
+    [Header("Make Sushi Button")]
+    [Tooltip("The button the player presses to finalize the sushi.")]
+    public Button makeSushiButton;
+
+    [Tooltip("The Image component on the button that shows the result icon.")]
+    public Image makeSushiButtonIcon;
+
+    // Cached recipe currently matching the slot arrangement
+    private RecipeData currentMatchedRecipe;
+
     private void Start()
     {
         if (stoveUIPanel != null) stoveUIPanel.SetActive(false);
         RefreshIngredientSourceStates();
         RefreshActiveOrderDisplay();
+        RefreshMatchedRecipe(); // Ensure button starts in a clean state
+
     }
 
     private void OnEnable()
@@ -68,6 +80,88 @@ public class Cooking : MonoBehaviour
     {
         if (playerInventory != null) playerInventory.OnChanged -= RefreshIngredientSourceStates;
         if (orderManager != null) orderManager.OnActiveOrderChanged -= RefreshActiveOrderDisplay;
+    }
+
+    public void RefreshMatchedRecipe()
+    {
+        //  Read the 3 slots
+        ItemData providedTop = (slots.Length > 0 && slots[0] != null) ? slots[0].currentItem : null;
+        ItemData providedMid = (slots.Length > 1 && slots[1] != null) ? slots[1].currentItem : null;
+        ItemData providedBot = (slots.Length > 2 && slots[2] != null) ? slots[2].currentItem : null;
+
+        //  Default state: no match
+        currentMatchedRecipe = null;
+
+        //  Search the recipe book for a match
+        if (providedTop != null || providedMid != null || providedBot != null)
+        {
+            foreach (RecipeData recipe in allRecipes)
+            {
+                if (recipe == null) continue;
+
+                if (recipe.MatchesSlots(providedTop, providedMid, providedBot))
+                {
+                    currentMatchedRecipe = recipe;
+                    break;
+                }
+            }
+        }
+
+        // 4. Update the button visual
+        if (makeSushiButton == null) return;
+
+        if (currentMatchedRecipe != null && currentMatchedRecipe.resultItem != null)
+        {
+            // Show the sushi icon
+            if (makeSushiButtonIcon != null)
+            {
+                makeSushiButtonIcon.sprite = currentMatchedRecipe.resultItem.icon;
+                makeSushiButtonIcon.color = currentMatchedRecipe.resultItem.tint;
+                makeSushiButtonIcon.enabled = true;
+            }
+
+            // Enable the button if the player has the required non-staple ingredients
+            makeSushiButton.interactable = HasIngredientsFor(currentMatchedRecipe);
+        }
+        else
+        {
+            // No match: hide the icon and disable the button
+            if (makeSushiButtonIcon != null)
+            {
+                makeSushiButtonIcon.sprite = null;
+                makeSushiButtonIcon.enabled = false;
+            }
+
+            makeSushiButton.interactable = false;
+        }
+    }
+
+    /// <summary>
+    /// Called by the Make Sushi button. Uses the cached matched recipe.
+    /// If you want, this can replace your old CheckRecipe() entirely.
+    /// </summary>
+    public void MakeMatchedSushi()
+    {
+        if (currentMatchedRecipe == null)
+        {
+            Debug.Log("No valid recipe in the slots.");
+            return;
+        }
+
+        if (!HasIngredientsFor(currentMatchedRecipe))
+        {
+            UiPrompter.Instance.noIngredients();
+            return;
+        }
+
+        // Use the existing crafting logic (deducts ingredients, adds result)
+        ClickCraftSushiButton(currentMatchedRecipe);
+
+        // Clear the slots (which will also call RefreshMatchedRecipe -> button hides)
+        foreach (SushiSlot slot in slots)
+        {
+            if (slot != null) slot.ClearSlot();
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)

@@ -4554,6 +4554,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SushiSlot
   currentItem: {fileID: 0}
+  cookingManager: {fileID: 0}
 --- !u!1 &322088058
 GameObject:
   m_ObjectHideFlags: 0
@@ -12100,6 +12101,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SushiSlot
   currentItem: {fileID: 0}
+  cookingManager: {fileID: 0}
 --- !u!1 &1162206740
 GameObject:
   m_ObjectHideFlags: 0
@@ -14795,6 +14797,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: eab4aeb215244904d9b9a4930efdc67d, type: 2}
   - {fileID: 11400000, guid: 155cd0805f0e2c14eab9d07466302440, type: 2}
   - {fileID: 11400000, guid: 79d4c416995a1f347ab0c671ca5c4fa3, type: 2}
+  makeSushiButton: {fileID: 1480953578}
+  makeSushiButtonIcon: {fileID: 1480953579}
 --- !u!1 &1323587100
 GameObject:
   m_ObjectHideFlags: 0
@@ -15278,6 +15282,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SushiSlot
   currentItem: {fileID: 0}
+  cookingManager: {fileID: 0}
 --- !u!1 &1383787385
 GameObject:
   m_ObjectHideFlags: 0
@@ -16161,7 +16166,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1480953579}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1321642323}
+        m_TargetAssemblyTypeName: Cooking, Assembly-CSharp
+        m_MethodName: MakeMatchedSushi
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1480953579
 MonoBehaviour:
   m_ObjectHideFlags: 0
