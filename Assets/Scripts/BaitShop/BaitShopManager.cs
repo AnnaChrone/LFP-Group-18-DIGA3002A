@@ -40,20 +40,24 @@ public class BaitShopManager : MonoBehaviour
     }
 
     public void TryPurchaseBait(BaitData bait)
+{
+    if (playerGold >= bait.price)
     {
-        if (playerGold >= bait.price)
+        playerGold -= bait.price;
+        Debug.Log($"Purchased {bait.displayName}! Remaining Gold: {playerGold}");
+        
+        // HOOK INTO NEW SYSTEM: Add 1 bait to the player's dedicated bait slots
+        if (Sushi.Inventory.BaitInventory.Instance != null)
         {
-            playerGold -= bait.price;
-            Debug.Log($"Purchased {bait.displayName}! Remaining Gold: {playerGold}");
-            
-            // TODO: Invoke an Inventory system callback here to add the item
-            // e.g., PlayerInventory.Instance.AddBait(bait);
-        }
-        else
-        {
-            Debug.Log("Not enough gold!");
+            Sushi.Inventory.BaitInventory.Instance.AddBait(bait, 1);
         }
     }
+    else
+    {
+        Debug.Log("Not enough gold!");
+    }
+}
+
 
     public void ShowTooltip(BaitData bait, Vector3 slotPosition)
     {
