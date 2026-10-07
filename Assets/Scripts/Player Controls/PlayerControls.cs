@@ -19,15 +19,16 @@ public class PlayerControls : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
-    private void FixedUpdate()
+    void FixedUpdate()
     {
-        rb.linearVelocity = moveInput * moveSpeed;
-
-        if (moveInput.x > 0 && facingDirection == -1 ||
-            moveInput.x < 0 && facingDirection == 1)
+        if (fishingManager.busyFishing)
         {
-            //Flip();
+            rb.linearVelocity = Vector2.zero;
+            return;
         }
+
+        // normal movement
+        rb.linearVelocity = moveInput * moveSpeed;
     }
 
     /*void Flip() WHEN WE HAVE A SPRITE
@@ -43,6 +44,12 @@ public class PlayerControls : MonoBehaviour
         if (fishingManager.busyFishing == false)
         {
             moveInput = context.ReadValue<Vector2>();
+
+        } else
+        {
+            moveInput = new Vector2(0f, 0f);
+            moveSpeed = 0f;
+            rb.linearVelocity = Vector2.zero; 
 
         }
     }
