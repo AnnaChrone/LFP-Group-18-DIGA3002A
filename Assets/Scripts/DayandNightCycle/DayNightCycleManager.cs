@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-using UnityEngine.UI; 
+using UnityEngine.UI;
 using TMPro;
 
 public enum GameState { Daytime, Nighttime, RestaurantService }
@@ -11,7 +11,7 @@ public class DayNightCycleManager : MonoBehaviour
 
     [Header("State Settings")]
     public GameState currentState = GameState.Daytime;
-    public float serviceDuration = 60f; 
+    public float serviceDuration = 60f;
 
     [Header("Teleport Locations")]
     public Transform dockSpawnPoint;
@@ -30,23 +30,29 @@ public class DayNightCycleManager : MonoBehaviour
     public TMP_Text countdownText;
     public GameObject countdownDisplayObject; // Parent object of the clock to hide/show it
 
-        [Header("References")]
+    // --- ADDED: DAY COUNTER ---
+    [Header("Day Counter")]
+    public TMP_Text dayText;
+    public int dayCount = 0;
+    // --- END ADDED ---
+
+    [Header("References")]
     public GameObject player;
     private MonoBehaviour playerMovementComponent; // Acts as a handle to freeze movement
 
-    
-   private void Start()
+
+    private void Start()
     {
         // 1. Automatically find the movement script attached to the player object
         if (player != null)
         {
-            playerMovementComponent = player.GetComponent<MonoBehaviour>(); 
+            playerMovementComponent = player.GetComponent<MonoBehaviour>();
         }
 
         // 2. Clear visual overlays on startup
         screenFaderCanvasGroup.alpha = 0f;
         if (countdownDisplayObject != null) countdownDisplayObject.SetActive(false);
-        
+
         TransitionToDaytimeDirect();
     }
 
@@ -75,6 +81,19 @@ public class DayNightCycleManager : MonoBehaviour
 #endif
         }
     }
+
+    // --- ADDED: DAY COUNTER FUNCTIONS ---
+    private void StartNewDay()
+    {
+        dayCount++;
+        UpdateDayUI();
+    }
+
+    private void UpdateDayUI()
+    {
+        if (dayText != null) dayText.text = "Day " + dayCount;
+    }
+    // --- END ADDED ---
 
     // --- BUTTON TRIGGER FUNCTIONS ---
 
@@ -114,23 +133,25 @@ public class DayNightCycleManager : MonoBehaviour
         if (nextState == GameState.Nighttime)
         {
             SequenceText.text = "Loading Sushi...";
-        } else
+        }
+        else
         {
             SequenceText.text = "Loading Dock...";
         }
-            while (screenFaderCanvasGroup.alpha < 1f)
-            {
-                screenFaderCanvasGroup.alpha += Time.deltaTime * fadeSpeed;
-                yield return null;
-            }
+        while (screenFaderCanvasGroup.alpha < 1f)
+        {
+            screenFaderCanvasGroup.alpha += Time.deltaTime * fadeSpeed;
+            yield return null;
+        }
         screenFaderCanvasGroup.alpha = 1f;
 
         // Perform World Modifications Safely While Screen is Dark
         player.transform.position = targetPosition;
         currentState = nextState;
+        if (nextState == GameState.Daytime) StartNewDay(); // ADDED: count a new day on return to the dock
 
         // Small stall to give Cinemachine or camera scripts a frame to update positioning
-        yield return new WaitForSeconds(0.2f); 
+        yield return new WaitForSeconds(0.2f);
 
         // Fade Back to Gameplay
         while (screenFaderCanvasGroup.alpha > 0f)
@@ -143,13 +164,13 @@ public class DayNightCycleManager : MonoBehaviour
     }
 
     // Handles the active shift countdown timer before cycling back home
-      private IEnumerator RunRestaurantServiceSequence()
+    private IEnumerator RunRestaurantServiceSequence()
     {
         currentState = GameState.RestaurantService;
         SetPlayerControls(true);
-        
+
         if (countdownDisplayObject != null) countdownDisplayObject.SetActive(true);
-        
+
         // --- HOOK: ACTIVATE THE TIMED GENERATION DISPATCHER ---
         if (OrderManager.Instance != null) OrderManager.Instance.StartServiceOrders();
 
@@ -157,7 +178,7 @@ public class DayNightCycleManager : MonoBehaviour
         while (timeRemaining > 0)
         {
             timeRemaining -= Time.deltaTime;
-            float displayTime = Mathf.Max(0, timeRemaining); 
+            float displayTime = Mathf.Max(0, timeRemaining);
 
             if (countdownText != null)
             {
@@ -180,6 +201,8 @@ public class DayNightCycleManager : MonoBehaviour
     {
         currentState = GameState.Daytime;
         player.transform.position = dockSpawnPoint.position;
+        dayCount = 1; // ADDED: every session starts on Day 1
+        UpdateDayUI();
     }
 
 
