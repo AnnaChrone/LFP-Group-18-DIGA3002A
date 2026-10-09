@@ -1,2 +1,19 @@
 fileFormatVersion: 2
 guid: 0d7c67d9fc9b0394fa38c5e1e822d1e6
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - backgroundMusic: {instanceID: 0}
+  - castSound: {instanceID: 0}
+  - splashSound: {instanceID: 0}
+  - reelSound: {instanceID: 0}
+  - catchSound: {instanceID: 0}
+  - walkSound: {instanceID: 0}
+  - clickSound: {instanceID: 0}
+  - coinSound: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

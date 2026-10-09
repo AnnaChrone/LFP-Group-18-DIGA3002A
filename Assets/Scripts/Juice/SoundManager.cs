@@ -1,11 +1,10 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Central sound manager: music, ambience, footsteps and "juice" SFX.
-/// Add to an empty GameObject in your first scene. Assign clips in the Inspector.
-/// Call from anywhere:  SoundManager.Instance.PlayCoin();
+/// Simple sound manager: one slot per sound, assign each clip in the Inspector.
+/// Add to an empty GameObject in your first scene.
+/// Call from anywhere, e.g.  SoundManager.Instance.PlayCatch();
 /// </summary>
 public class SoundManager : MonoBehaviour
 {
@@ -15,68 +14,37 @@ public class SoundManager : MonoBehaviour
     [Header("Volumes")]
     [Range(0f, 1f)] public float masterVolume = 1f;
     [Range(0f, 1f)] public float musicVolume = 0.5f;
-    [Range(0f, 1f)] public float ambienceVolume = 0.6f;
     [Range(0f, 1f)] public float sfxVolume = 1f;
 
-    // ------------------------------------------------------- Music & Ambience
-    [Header("Music & Ambience")]
-    public AudioClip[] musicTracks;
-    public AudioClip ambienceLoop;           // wind, birds, water, etc.
+    // ------------------------------------------------------------- Background
+    [Header("Background Music")]
+    public AudioClip backgroundMusic;
     public bool playMusicOnStart = true;
-    public bool playAmbienceOnStart = true;
     public float fadeTime = 1.5f;
 
-    // -------------------------------------------------------------- Footsteps
-    [System.Serializable]
-    public class SurfaceFootsteps
-    {
-        public string surfaceName = "Default";   // match this to a tag or name you pass in
-        public AudioClip[] clips;
-    }
+    // ---------------------------------------------------------------- Fishing
+    [Header("Fishing Sounds")]
+    public AudioClip castSound;     // rod is cast
+    public AudioClip splashSound;   // rod lands in the water
+    public AudioClip reelSound;     // reeling in
+    public AudioClip catchSound;    // fish caught
 
-    [Header("Footsteps")]
-    public SurfaceFootsteps[] surfaces;           // first entry is the fallback
-    public float walkStepInterval = 0.5f;
-    public float runStepInterval = 0.3f;
-    [Range(0f, 1f)] public float footstepVolume = 0.6f;
-
-    // ------------------------------------------------------------- Juice SFX
-    [Header("Coins")]
-    public AudioClip[] coinClips;
-    public float coinComboWindow = 1f;            // time to keep the combo alive
-    public float coinPitchStep = 0.06f;           // pitch rise per coin in a combo
-    public float coinMaxPitch = 1.8f;
-
-    [Header("Fishing")]
-    public AudioClip castClip;
-    public AudioClip splashClip;
-    public AudioClip biteClip;
-    public AudioClip[] catchClips;
-    public AudioClip rareCatchClip;
-
-    [Header("Spawn / Misc")]
-    public AudioClip[] spawnClips;
-    public AudioClip jumpClip;
-    public AudioClip landClip;
-    public AudioClip uiClickClip;
-    public AudioClip levelUpClip;
-
-    [Header("Pool")]
-    public int sfxPoolSize = 12;
+    // ------------------------------------------------- Player / UI / Restaurant
+    [Header("Other Sounds")]
+    public AudioClip walkSound;     // loops while the player is moving
+    public AudioClip clickSound;    // UI click / open / close
+    public AudioClip coinSound;     // coin earned in the restaurant
 
     // --------------------------------------------------------------- Internals
     AudioSource musicSource;
-    AudioSource ambienceSource;
-    readonly List<AudioSource> sfxPool = new List<AudioSource>();
-    int poolIndex;
-
-    float stepTimer;
-    int coinCombo;
-    float lastCoinTime = -999f;
-    int lastMusicIndex = -1;
+    AudioSource sfxSource;
+    AudioSource walkSource;
+    AudioSource reelSource;
     Coroutine musicRoutine;
 
-    // ----------------------------------------------------------------- Setup
+    float SfxVol => sfxVolume * masterVolume;
+
+    // ------------------------------------------------------------------ Setup
     void Awake()
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
@@ -86,16 +54,14 @@ public class SoundManager : MonoBehaviour
         LoadVolumes();
 
         musicSource = CreateSource("Music", true);
-        ambienceSource = CreateSource("Ambience", true);
-
-        for (int i = 0; i < sfxPoolSize; i++)
-            sfxPool.Add(CreateSource("SFX_" + i, false));
+        sfxSource = CreateSource("SFX", false);
+        walkSource = CreateSource("Walk", true);
+        reelSource = CreateSource("Reel", true);
     }
 
     void Start()
     {
-        if (playMusicOnStart) PlayRandomMusic();
-        if (playAmbienceOnStart) PlayAmbience(ambienceLoop);
+        if (playMusicOnStart) PlayMusic(backgroundMusic);
     }
 
     AudioSource CreateSource(string objName, bool loop)
@@ -105,218 +71,154 @@ public class SoundManager : MonoBehaviour
         var src = go.AddComponent<AudioSource>();
         src.playOnAwake = false;
         src.loop = loop;
-        src.spatialBlend = 0f; // 2D by default
+        src.spatialBlend = 0f; // 2D
         return src;
     }
 
-    // ---------------------------------------------------------- Core SFX call
-    /// <summary>Plays a one-shot with optional pitch/volume randomness.</summary>
-    public void PlaySFX(AudioClip clip, float volume = 1f, float pitch = 1f,
-                        float pitchVariance = 0f, Vector3? worldPos = null)
+    void PlayOneShot(AudioClip clip, float volume = 1f)
     {
         if (clip == null) return;
-
-        var src = GetFreeSource();
-        src.transform.position = worldPos ?? transform.position;
-        src.spatialBlend = worldPos.HasValue ? 1f : 0f;
-        src.pitch = pitch + Random.Range(-pitchVariance, pitchVariance);
-        src.volume = volume * sfxVolume * masterVolume;
-        src.clip = clip;
-        src.Play();
+        sfxSource.PlayOneShot(clip, volume * SfxVol);
     }
 
-    public void PlayRandomSFX(AudioClip[] clips, float volume = 1f, float pitch = 1f,
-                              float pitchVariance = 0f, Vector3? worldPos = null)
-    {
-        if (clips == null || clips.Length == 0) return;
-        PlaySFX(clips[Random.Range(0, clips.Length)], volume, pitch, pitchVariance, worldPos);
-    }
+    // ---------------------------------------------------------------- Fishing
+    public void PlayCast() => PlayOneShot(castSound);
+    public void PlaySplash() => PlayOneShot(splashSound);
+    public void PlayCatch() => PlayOneShot(catchSound);
 
-    AudioSource GetFreeSource()
+    // Kept so older calls like PlayFishCaught() still work.
+    public void PlayFishCaught(bool rare = false) => PlayCatch();
+
+    /// <summary>One-shot reel sound.</summary>
+    public void PlayReel() => PlayOneShot(reelSound);
+
+    /// <summary>Looping reel sound: call Start when reeling begins, Stop when it ends.</summary>
+    public void StartReel()
     {
-        // Prefer an idle source, otherwise steal the next one round-robin.
-        for (int i = 0; i < sfxPool.Count; i++)
+        if (reelSound == null) return;
+        if (!reelSource.isPlaying)
         {
-            var s = sfxPool[(poolIndex + i) % sfxPool.Count];
-            if (!s.isPlaying)
+            reelSource.clip = reelSound;
+            reelSource.volume = SfxVol;
+            reelSource.Play();
+        }
+    }
+
+    public void StopReel()
+    {
+        if (reelSource.isPlaying) reelSource.Stop();
+    }
+
+    // ---------------------------------------------------------------- UI & coin
+    public void PlayClick() => PlayOneShot(clickSound);
+    public void PlayUIClick() => PlayClick();   // kept for older calls
+
+    public void PlayCoin() => PlayOneShot(coinSound);
+
+    // ---------------------------------------------------------------- Walking
+    /// <summary>
+    /// Call every frame from the player controller:
+    /// SoundManager.Instance.SetWalking(moveInput != Vector2.zero);
+    /// The sound loops while true and stops when false.
+    /// </summary>
+    public void SetWalking(bool isWalking)
+    {
+        if (walkSound == null) return;
+
+        if (isWalking)
+        {
+            if (!walkSource.isPlaying)
             {
-                poolIndex = (poolIndex + i + 1) % sfxPool.Count;
-                return s;
+                walkSource.clip = walkSound;
+                walkSource.volume = SfxVol;
+                walkSource.Play();
             }
         }
-        var stolen = sfxPool[poolIndex];
-        poolIndex = (poolIndex + 1) % sfxPool.Count;
-        return stolen;
+        else if (walkSource.isPlaying)
+        {
+            walkSource.Stop();
+        }
     }
 
-    // ------------------------------------------------------------ Footsteps
-    /// <summary>
-    /// Call every frame from your player controller.
-    /// Example: SoundManager.Instance.UpdateFootsteps(isGrounded && moving, isSprinting, surfaceName);
-    /// </summary>
+    // Kept so older calls like UpdateFootsteps(moving, running, surface) still work.
     public void UpdateFootsteps(bool isMoving, bool isRunning = false, string surface = "Default")
     {
-        if (!isMoving) { stepTimer = 0f; return; }
-
-        stepTimer -= Time.deltaTime;
-        if (stepTimer <= 0f)
-        {
-            PlayFootstep(surface);
-            stepTimer = isRunning ? runStepInterval : walkStepInterval;
-        }
+        SetWalking(isMoving);
     }
 
-    public void PlayFootstep(string surface = "Default")
-    {
-        AudioClip[] clips = null;
-
-        if (surfaces != null && surfaces.Length > 0)
-        {
-            clips = surfaces[0].clips; // fallback
-            foreach (var s in surfaces)
-                if (s.surfaceName == surface) { clips = s.clips; break; }
-        }
-
-        PlayRandomSFX(clips, footstepVolume, 1f, 0.1f);
-    }
-
-    // ---------------------------------------------------------------- Coins
-    /// <summary>Pitch climbs as the player grabs coins in quick succession.</summary>
-    public void PlayCoin()
-    {
-        if (Time.time - lastCoinTime > coinComboWindow) coinCombo = 0;
-        lastCoinTime = Time.time;
-
-        float pitch = Mathf.Min(1f + coinCombo * coinPitchStep, coinMaxPitch);
-        coinCombo++;
-
-        PlayRandomSFX(coinClips, 0.9f, pitch, 0.02f);
-    }
-
-    // -------------------------------------------------------------- Fishing
-    public void PlayCast() => PlaySFX(castClip, 0.8f, 1f, 0.05f);
-    public void PlaySplash() => PlaySFX(splashClip, 0.9f, 1f, 0.1f);
-    public void PlayBite() => PlaySFX(biteClip, 1f, 1f, 0.03f);
-
-    public void PlayFishCaught(bool rare = false)
-    {
-        if (rare && rareCatchClip != null)
-        {
-            PlaySFX(rareCatchClip, 1f);
-            // little sparkle layered on top
-            PlayRandomSFX(coinClips, 0.7f, 1.4f);
-        }
-        else
-        {
-            PlayRandomSFX(catchClips, 1f, 1f, 0.05f);
-        }
-    }
-
-    // ----------------------------------------------------------- Spawn & misc
-    public void PlaySpawn(Vector3? worldPos = null) =>
-        PlayRandomSFX(spawnClips, 0.9f, 1f, 0.08f, worldPos);
-
-    public void PlayJump() => PlaySFX(jumpClip, 0.7f, 1f, 0.05f);
-    public void PlayLand() => PlaySFX(landClip, 0.8f, 1f, 0.1f);
-    public void PlayUIClick() => PlaySFX(uiClickClip, 0.6f, 1f, 0.03f);
-    public void PlayLevelUp() => PlaySFX(levelUpClip, 1f);
-
-    // ---------------------------------------------------------------- Music
-    public void PlayRandomMusic()
-    {
-        if (musicTracks == null || musicTracks.Length == 0) return;
-
-        int idx;
-        do { idx = Random.Range(0, musicTracks.Length); }
-        while (musicTracks.Length > 1 && idx == lastMusicIndex);
-
-        lastMusicIndex = idx;
-        PlayMusic(musicTracks[idx]);
-    }
-
+    // ------------------------------------------------------------------ Music
     public void PlayMusic(AudioClip clip)
     {
         if (clip == null) return;
         if (musicRoutine != null) StopCoroutine(musicRoutine);
-        musicRoutine = StartCoroutine(SwapTrack(musicSource, clip, () => musicVolume));
+        musicRoutine = StartCoroutine(SwapTrack(clip));
     }
 
-    public void PlayAmbience(AudioClip clip)
+    public void StopMusic()
     {
-        if (clip == null) return;
-        StartCoroutine(SwapTrack(ambienceSource, clip, () => ambienceVolume));
+        if (musicRoutine != null) StopCoroutine(musicRoutine);
+        musicRoutine = StartCoroutine(FadeOut());
     }
 
-    public void StopMusic() => StartCoroutine(FadeOut(musicSource));
-    public void StopAmbience() => StartCoroutine(FadeOut(ambienceSource));
-
-    IEnumerator SwapTrack(AudioSource src, AudioClip clip, System.Func<float> targetVol)
+    IEnumerator SwapTrack(AudioClip clip)
     {
-        // fade out current
-        if (src.isPlaying) yield return FadeOut(src);
+        if (musicSource.isPlaying) yield return FadeOut();
 
-        src.clip = clip;
-        src.volume = 0f;
-        src.Play();
+        musicSource.clip = clip;
+        musicSource.volume = 0f;
+        musicSource.Play();
 
-        // fade in
         float t = 0f;
         while (t < fadeTime)
         {
             t += Time.unscaledDeltaTime;
-            src.volume = Mathf.Lerp(0f, targetVol() * masterVolume, t / fadeTime);
+            musicSource.volume = Mathf.Lerp(0f, musicVolume * masterVolume, t / fadeTime);
             yield return null;
         }
-        src.volume = targetVol() * masterVolume;
+        musicSource.volume = musicVolume * masterVolume;
     }
 
-    IEnumerator FadeOut(AudioSource src)
+    IEnumerator FadeOut()
     {
-        float start = src.volume;
+        float start = musicSource.volume;
+        float half = Mathf.Max(0.01f, fadeTime * 0.5f);
         float t = 0f;
-        while (t < fadeTime * 0.5f)
+        while (t < half)
         {
             t += Time.unscaledDeltaTime;
-            src.volume = Mathf.Lerp(start, 0f, t / (fadeTime * 0.5f));
+            musicSource.volume = Mathf.Lerp(start, 0f, t / half);
             yield return null;
         }
-        src.Stop();
+        musicSource.Stop();
     }
 
-    void Update()
-    {
-        // Auto-advance to the next track when the current one ends.
-        if (musicSource != null && musicTracks != null && musicTracks.Length > 1 &&
-            musicRoutine != null && !musicSource.isPlaying && musicSource.clip != null)
-        {
-            PlayRandomMusic();
-        }
-    }
-
-    // ----------------------------------------------------- Volume settings
-    public void SetMasterVolume(float v) { masterVolume = v; ApplyVolumes(); }
-    public void SetMusicVolume(float v) { musicVolume = v; ApplyVolumes(); }
-    public void SetAmbienceVolume(float v) { ambienceVolume = v; ApplyVolumes(); }
-    public void SetSFXVolume(float v) { sfxVolume = v; ApplyVolumes(); }
+    // -------------------------------------------------------- Volume settings
+    public void SetMasterVolume(float v) { masterVolume = v; ApplyVolumes(); SaveVolumes(); }
+    public void SetMusicVolume(float v) { musicVolume = v; ApplyVolumes(); SaveVolumes(); }
+    public void SetSFXVolume(float v) { sfxVolume = v; ApplyVolumes(); SaveVolumes(); }
 
     void ApplyVolumes()
     {
         if (musicSource != null && musicSource.isPlaying)
             musicSource.volume = musicVolume * masterVolume;
-        if (ambienceSource != null && ambienceSource.isPlaying)
-            ambienceSource.volume = ambienceVolume * masterVolume;
+        if (walkSource != null && walkSource.isPlaying)
+            walkSource.volume = SfxVol;
+        if (reelSource != null && reelSource.isPlaying)
+            reelSource.volume = SfxVol;
+    }
 
-        PlayerPrefs.SetFloat("vol_master", masterVolume);
-        PlayerPrefs.SetFloat("vol_music", musicVolume);
-        PlayerPrefs.SetFloat("vol_ambience", ambienceVolume);
-        PlayerPrefs.SetFloat("vol_sfx", sfxVolume);
+    void SaveVolumes()
+    {
+        PlayerPrefs.SetFloat("Vol_Master", masterVolume);
+        PlayerPrefs.SetFloat("Vol_Music", musicVolume);
+        PlayerPrefs.SetFloat("Vol_SFX", sfxVolume);
     }
 
     void LoadVolumes()
     {
-        masterVolume = PlayerPrefs.GetFloat("vol_master", masterVolume);
-        musicVolume = PlayerPrefs.GetFloat("vol_music", musicVolume);
-        ambienceVolume = PlayerPrefs.GetFloat("vol_ambience", ambienceVolume);
-        sfxVolume = PlayerPrefs.GetFloat("vol_sfx", sfxVolume);
+        // Falls back to the Inspector values if nothing has been saved yet.
+        masterVolume = PlayerPrefs.GetFloat("Vol_Master", masterVolume);
+        musicVolume = PlayerPrefs.GetFloat("Vol_Music", musicVolume);
+        sfxVolume = PlayerPrefs.GetFloat("Vol_SFX", sfxVolume);
     }
 }

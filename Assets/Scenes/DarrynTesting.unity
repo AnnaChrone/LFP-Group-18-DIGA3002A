@@ -9283,32 +9283,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SoundManager
   masterVolume: 1
   musicVolume: 0.5
-  ambienceVolume: 0.6
   sfxVolume: 1
-  musicTracks: []
-  ambienceLoop: {fileID: 0}
+  backgroundMusic: {fileID: 0}
   playMusicOnStart: 1
-  playAmbienceOnStart: 1
   fadeTime: 1.5
-  surfaces: []
-  walkStepInterval: 0.5
-  runStepInterval: 0.3
-  footstepVolume: 0.6
-  coinClips: []
-  coinComboWindow: 1
-  coinPitchStep: 0.06
-  coinMaxPitch: 1.8
-  castClip: {fileID: 0}
-  splashClip: {fileID: 0}
-  biteClip: {fileID: 0}
-  catchClips: []
-  rareCatchClip: {fileID: 0}
-  spawnClips: []
-  jumpClip: {fileID: 0}
-  landClip: {fileID: 0}
-  uiClickClip: {fileID: 0}
-  levelUpClip: {fileID: 0}
-  sfxPoolSize: 12
+  castSound: {fileID: 8300000, guid: fefd82d888a5239408c5702e89234393, type: 3}
+  splashSound: {fileID: 8300000, guid: 25134bda48e01974aa1ece7b8012072f, type: 3}
+  reelSound: {fileID: 8300000, guid: e8a9b5fe048bc724c8f7af81b4320a25, type: 3}
+  catchSound: {fileID: 8300000, guid: 969c4037c0883a443843e68d1728f490, type: 3}
+  walkSound: {fileID: 8300000, guid: a66bd4f6e4334b14785708cc1c9b1925, type: 3}
+  clickSound: {fileID: 8300000, guid: 829ab1f7e9110364381a83c6298db5b4, type: 3}
+  coinSound: {fileID: 8300000, guid: 1086b5651231b7a4687e64f2ebb86b68, type: 3}
 --- !u!4 &818301918
 Transform:
   m_ObjectHideFlags: 0
@@ -9526,7 +9511,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Inventory
+  m_text: Catch
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a8a9e092e08610d4a85589a2a377fc6d, type: 2}
   m_sharedMaterial: {fileID: 4309174638318901998, guid: a8a9e092e08610d4a85589a2a377fc6d, type: 2}

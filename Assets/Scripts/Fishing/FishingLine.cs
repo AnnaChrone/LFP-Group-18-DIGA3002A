@@ -12,5 +12,6 @@ public class FishingLine : MonoBehaviour
 
         line.SetPosition(0, bobberpoint.position);
         line.SetPosition(1, rodpoint.position);
+
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine;
 public class FishingManager : MonoBehaviour
 {
     public FishingState currentState = FishingState.NotFishing;
-    
+
     [Header("Inventory")]
     public FishingCatchHandler catchHandler;
 
@@ -77,6 +77,10 @@ public class FishingManager : MonoBehaviour
     public Transform BobberStart;
     public Transform BobberEnd;
     public float bobberDipAmount = 0.5f;
+
+    // ADDED: delay between the cast sound and the splash sound
+    [Header("Sound")]
+    public float splashDelay = 0.4f;
 
     // Fight telemetry, read by the fish quality system to decide how heavy the catch is.
     private float fightDuration;
@@ -250,8 +254,19 @@ public class FishingManager : MonoBehaviour
         ActiveFishingRod.SetActive(true);
         //new rod here
         PressSpace.text = "Wait for fish to bite...";
+
+        SoundManager.Instance?.PlayCast();                 // ADDED: cast sound
+        Invoke(nameof(PlaySplashSound), splashDelay);      // ADDED: splash when the bobber lands
+
         StartWaitingForFish();
 
+    }
+
+
+    // ADDED: small helper so Invoke can call the splash sound
+    private void PlaySplashSound()
+    {
+        SoundManager.Instance?.PlaySplash();
     }
 
 
@@ -285,7 +300,7 @@ public class FishingManager : MonoBehaviour
 
         Debug.Log("FISH HOOKED!");
         PressSpace.text = "Hold [SPACEBAR] to reel fish! Make sure rod tension doesnt get too high!";
-        Bobber.transform.Translate(0f,-bobberDipAmount,0f,Space.World);
+        Bobber.transform.Translate(0f, -bobberDipAmount, 0f, Space.World);
 
         fishDistance = maximumFishDistance; //gives the distance the fish is from being reeled in
         rodTension = 0f;
@@ -315,6 +330,7 @@ public class FishingManager : MonoBehaviour
     private void StartReeling()
     {
         isReeling = true;
+        SoundManager.Instance?.StartReel();   // ADDED: looping reel sound
 
         Debug.Log("Started reeling");
     }
@@ -323,6 +339,7 @@ public class FishingManager : MonoBehaviour
     private void StopReeling()
     {
         isReeling = false;
+        SoundManager.Instance?.StopReel();    // ADDED
 
         Debug.Log("Stopped reeling");
     }
@@ -415,7 +432,7 @@ public class FishingManager : MonoBehaviour
 
         fishDistance = Mathf.Min(fishDistance, maximumFishDistance);
 
-       // Debug.Log("Not reeling | Distance: " + fishDistance + " | Tension: " + rodTension);
+        // Debug.Log("Not reeling | Distance: " + fishDistance + " | Tension: " + rodTension);
     }
 
     private void UpdateBobberPosition()
@@ -451,6 +468,7 @@ public class FishingManager : MonoBehaviour
         Debug.Log("Line broke :(");
 
         isReeling = false;
+        SoundManager.Instance?.StopReel();    // ADDED
         //play anim for line break here
 
         // The fish got away.
@@ -474,6 +492,8 @@ public class FishingManager : MonoBehaviour
     {
         fishDistance = 0f;
         isReeling = false;
+        SoundManager.Instance?.StopReel();    // ADDED
+        SoundManager.Instance?.PlayCatch();   // ADDED: catch sound
 
         // The species was already decided on the bite. The handler scores the
         // fight and stores the fish, so this file needs no changes for new
@@ -511,6 +531,7 @@ public class FishingManager : MonoBehaviour
         currentState = FishingState.Withdrawing;
 
         isReeling = false;
+        SoundManager.Instance?.StopReel();    // ADDED
 
         // Reeling the line in early lets the hooked fish go.
         if (catchHandler != null) catchHandler.ClearHookedFish();
@@ -543,6 +564,7 @@ public class FishingManager : MonoBehaviour
     public void ForceStopFishing()
     {
         isReeling = false;
+        SoundManager.Instance?.StopReel();    // ADDED
         rodTension = 0f;
         fishDistance = maximumFishDistance;
 

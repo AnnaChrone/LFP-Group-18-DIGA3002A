@@ -29,6 +29,9 @@ public class PlayerControls : MonoBehaviour
 
         // normal movement
         rb.linearVelocity = moveInput * moveSpeed;
+
+        SoundManager.Instance.SetWalking(moveInput != Vector2.zero);
+
     }
 
     /*void Flip() WHEN WE HAVE A SPRITE
