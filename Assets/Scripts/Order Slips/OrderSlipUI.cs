@@ -76,7 +76,6 @@ namespace Sushi.UI
 
         private void Update()
         {
-            // Listen for [E] inputs when approaching the specific counter plate
             if (playerInRange && Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame)
             {
                 if (!IsAccepted)
@@ -194,28 +193,22 @@ namespace Sushi.UI
                 if (interactPromptVisual != null) interactPromptVisual.SetActive(false);
             }
         }
-                // Place this new method inside your OrderSlipUI class:
-
-        /// <summary>
-        /// Hook this to the OnClick() event handler of your new 'X' Button on the Prefab.
-        /// </summary>
-        public void ClickRejectOrderButton()
+                     public void ClickRejectOrderButton()
         {
-            // Optional: If you only want players to reject orders that haven't been accepted/cooked yet:
-            if (IsAccepted)
-            {
-                Debug.LogWarning("Cannot reject an order that is already in progress/cooking!");
-                return;
-            }
-
-            Debug.Log($"Order '{assignedRecipe.recipeName}' was rejected by the player.");
+            Debug.Log($"Order '{assignedRecipe.recipeName}' was rejected/cancelled by the player.");
 
             if (runtimeManager != null)
             {
-                // 1. Free up the 0-4 plate slot tracking array matrix
+                // 1. If this specific ticket was already accepted/cooking, notify the manager to cancel its active state
+                if (IsAccepted)
+                {
+                    runtimeManager.CancelActiveOrder(gameObject);
+                }
+
+                // 2. Free up the 0-4 plate slot tracking array matrix
                 runtimeManager.FreeUpPlateSlot(occupiedPlateIndex);
 
-                // 2. Dismiss the ticket visual object completely from the running boards
+                // 3. Dismiss the ticket visual object completely from the running board slots
                 runtimeManager.DismissTicket(gameObject);
             }
         }

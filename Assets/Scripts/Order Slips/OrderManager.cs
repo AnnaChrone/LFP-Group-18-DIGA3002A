@@ -129,7 +129,7 @@ public class OrderManager : MonoBehaviour
             }
         }
 
-        if (freePlateIndices.Count == 0) return; // Counter is packed!
+        if (freePlateIndices.Count == 0) return;
 
         List<RecipeData> viableRecipes = new List<RecipeData>();
 
@@ -215,6 +215,19 @@ public class OrderManager : MonoBehaviour
         DismissTicket(slipObj);
         OnActiveOrderChanged?.Invoke();
     }
+
+    public void CancelActiveOrder(GameObject slipObj)
+    {
+        if (acceptedSlips.Contains(slipObj))
+        {
+            acceptedSlips.Remove(slipObj);
+        }
+        
+        ActiveRecipe = null;
+        Debug.Log("Active order was cancelled. Kitchen is now free to accept a new order.");
+        OnActiveOrderChanged?.Invoke();
+    }
+
 
     public void FreeUpPlateSlot(int slotIndex)
     {

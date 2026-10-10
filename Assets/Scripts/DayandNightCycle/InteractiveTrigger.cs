@@ -7,7 +7,7 @@ public class InteractiveTrigger : MonoBehaviour
 {
     [Header("Configuration")]
     public InteractionTargetType triggerType;
-    public GameObject interactPromptText; // "Press E to Interact" canvas floating label element
+    public GameObject interactPromptText;
 
     private bool playerInRange = false;
 
@@ -54,18 +54,27 @@ public class InteractiveTrigger : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+        private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
             // Extra constraint validation check logic to avoid prompt pollution
-            if (triggerType == InteractionTargetType.MenuStartShift && DayNightCycleManager.Instance.currentState != GameState.Nighttime) return;
             if (triggerType == InteractionTargetType.DockToRestaurantDoor && DayNightCycleManager.Instance.currentState != GameState.Daytime) return;
+            
+            // --- UPDATED: Block prompt display if they've already served today ---
+            if (triggerType == InteractionTargetType.MenuStartShift)
+            {
+                if (DayNightCycleManager.Instance.currentState != GameState.Nighttime || DayNightCycleManager.Instance.hasServedToday)
+                {
+                    return; 
+                }
+            }
 
             playerInRange = true;
             if (interactPromptText != null) interactPromptText.SetActive(true);
         }
     }
+
 
     private void OnTriggerExit2D(Collider2D collision)
     {

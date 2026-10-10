@@ -13,6 +13,10 @@ public class DayNightCycleManager : MonoBehaviour
     public GameState currentState = GameState.Daytime;
     public float serviceDuration = 60f; 
 
+    // --- NEW: DAY SHIFT LOCKOUT FLAG ---
+    [HideInInspector] 
+    public bool hasServedToday = false; 
+
     [Header("Teleport Locations")]
     public Transform dockSpawnPoint;
     public Transform restaurantSpawnPoint;
@@ -20,10 +24,9 @@ public class DayNightCycleManager : MonoBehaviour
     [Header("UI Panels")]
     public GameObject restaurantTransitionPanel;
     public GameObject startServicePanel;
-    public GameObject endDayPromptPanel; // New Panel: "Are you ready to end the day?"
+    public GameObject endDayPromptPanel; 
 
     [Header("Visual Transition Settings")]
-    [Tooltip("This canvas group should now be on your Sunset Fader image.")]
     public CanvasGroup screenFaderCanvasGroup;
     public float fadeSpeed = 2f;
 
@@ -71,7 +74,6 @@ public class DayNightCycleManager : MonoBehaviour
         }
     }
 
-    // --- DOOR TO RESTAURANT PROMPTS ---
     public void PromptGoToRestaurant()
     {
         SetPlayerControls(false); 
@@ -91,9 +93,15 @@ public class DayNightCycleManager : MonoBehaviour
         }
     }
 
-    // --- MENU INTERACTION SHIFT PROMPTS ---
     public void PromptStartService()
     {
+        // Safety guard: Reject immediately if player has already served dinner tonight
+        if (hasServedToday)
+        {
+            Debug.Log("You have already run restaurant service for tonight!");
+            return;
+        }
+
         SetPlayerControls(false); 
         startServicePanel.SetActive(true);
     }
@@ -111,7 +119,6 @@ public class DayNightCycleManager : MonoBehaviour
         }
     }
 
-    // --- END DAY RESTAURANT DOOR PROMPTS ---
     public void PromptEndDay()
     {
         SetPlayerControls(false);
@@ -123,13 +130,15 @@ public class DayNightCycleManager : MonoBehaviour
         endDayPromptPanel.SetActive(false);
         if (choice)
         {
-            // If they are busy with service, force clean up remaining tickets out of slots
             if (currentState == GameState.RestaurantService && OrderManager.Instance != null)
             {
                 OrderManager.Instance.StopServiceOrders();
             }
             
             if (countdownDisplayObject != null) countdownDisplayObject.SetActive(false);
+
+            // --- RESET FLAG: Player goes back to the dock, meaning a new day resets the lockout ---
+            hasServedToday = false; 
 
             StartCoroutine(TeleportSequence(dockSpawnPoint.position, GameState.Daytime));
         }
@@ -139,12 +148,10 @@ public class DayNightCycleManager : MonoBehaviour
         }
     }
 
-    // --- TIMED TRANSITIONS SEQUENCES ---
     private IEnumerator TeleportSequence(Vector3 targetPosition, GameState nextState)
     {
         SetPlayerControls(false); 
 
-        // Sunset visual fade overlay calculation loop
         while (screenFaderCanvasGroup.alpha < 1f)
         {
             screenFaderCanvasGroup.alpha += Time.deltaTime * fadeSpeed;
@@ -155,7 +162,7 @@ public class DayNightCycleManager : MonoBehaviour
         player.transform.position = targetPosition;
         currentState = nextState;
 
-        yield return new WaitForSeconds(0.4f); // Slightly elongated to display sunset graphic clearly
+        yield return new WaitForSeconds(0.4f); 
 
         while (screenFaderCanvasGroup.alpha > 0f)
         {
@@ -170,6 +177,10 @@ public class DayNightCycleManager : MonoBehaviour
     private IEnumerator RunRestaurantServiceSequence()
     {
         currentState = GameState.RestaurantService;
+        
+        // --- LOCKOUT TRIGGERS: Service is locked in for the rest of this night sequence ---
+        hasServedToday = true; 
+        
         SetPlayerControls(true); 
         
         if (countdownDisplayObject != null) countdownDisplayObject.SetActive(true);
@@ -178,7 +189,6 @@ public class DayNightCycleManager : MonoBehaviour
         float timeRemaining = serviceDuration;
         while (timeRemaining > 0)
         {
-            // If player exits mid-shift using the door, terminate this coroutine routine execution early
             if (currentState == GameState.Daytime) yield break;
 
             timeRemaining -= Time.deltaTime;
@@ -196,14 +206,14 @@ public class DayNightCycleManager : MonoBehaviour
         if (countdownDisplayObject != null) countdownDisplayObject.SetActive(false);
         if (OrderManager.Instance != null) OrderManager.Instance.StopServiceOrders();
 
-        // INJECTION POINT OVERRIDE: Instead of automatic dock teleporting, flip state back to plain idle Nighttime
         currentState = GameState.Nighttime;
-        Debug.Log("Restaurant shift complete! Walking around freely active.");
+        Debug.Log("Restaurant shift complete! Walking around freely active. Menu interactions disabled.");
     }
 
     private void TransitionToDaytimeDirect()
     {
         currentState = GameState.Daytime;
+        hasServedToday = false; 
         player.transform.position = dockSpawnPoint.position;
         SetPlayerControls(true);
     }

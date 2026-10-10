@@ -4055,6 +4055,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DayNightCycleManager
   currentState: 0
   serviceDuration: 60
+  hasServedToday: 0
   dockSpawnPoint: {fileID: 954513403}
   restaurantSpawnPoint: {fileID: 1731195337}
   restaurantTransitionPanel: {fileID: 1490023422}
@@ -19322,7 +19323,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8269f728adc96194f979c6df8844573d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OrderSlipBoard
-  interactPromptText: {fileID: 655382834}
+  interactPromptText: {fileID: 0}
 --- !u!61 &1404887793
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -19588,7 +19589,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractiveTrigger
   triggerType: 1
-  interactPromptText: {fileID: 0}
+  interactPromptText: {fileID: 1136728221}
 --- !u!1 &1409813259
 GameObject:
   m_ObjectHideFlags: 0
