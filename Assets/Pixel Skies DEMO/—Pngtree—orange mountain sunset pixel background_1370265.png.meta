@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 6bd03b1dc0b4e01459ab26f5a097107c
+guid: 3a8b39e652099ff4bb657d532eff76df
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7822112587111204412
-    second: 3-removebg-preview_0
+      213: -329075044978828953
+    second: "\u2014Pngtree\u2014orange mountain sunset pixel background_1370265_0"
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,53 +96,27 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: 3-removebg-preview_0
+      name: "\u2014Pngtree\u2014orange mountain sunset pixel background_1370265_0"
       rect:
         serializedVersion: 2
-        x: 12
-        y: 3
-        width: 279
-        height: 363
+        x: 0
+        y: 0
+        width: 4961
+        height: 3543
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c3600e364f9bd8c60800000000000000
-      internalID: 7822112587111204412
+      spriteID: 76957977df3ee6bf0800000000000000
+      internalID: -329075044978828953
       vertices: []
       indices: 
       edges: []
@@ -151,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: f021dcfd47f5ca94f86d7a1fe99f3c37
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -161,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      3-removebg-preview_0: 7822112587111204412
+      "\u2014Pngtree\u2014orange mountain sunset pixel background_1370265_0": -329075044978828953
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

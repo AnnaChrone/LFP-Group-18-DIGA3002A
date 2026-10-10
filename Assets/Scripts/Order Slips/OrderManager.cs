@@ -32,7 +32,7 @@ public class OrderManager : MonoBehaviour
     public float minTimeBetweenOrders = 4f;
     public float maxTimeBetweenOrders = 10f;
 
-    // Fixed array tracking active tickets placed on the 5 physical plates
+    // Fixed array tracking active tickets placed on 5 physical plates
     private GameObject[] activePlateSlots = new GameObject[5];
     private List<GameObject> spawnedSlips = new List<GameObject>();
     private List<GameObject> acceptedSlips = new List<GameObject>();
@@ -119,7 +119,7 @@ public class OrderManager : MonoBehaviour
             return;
         }
 
-        // 1. Locate which of your 5 plates are empty
+        // 1. Locate which of the 5 plates are empty
         List<int> freePlateIndices = new List<int>();
         for (int i = 0; i < activePlateSlots.Length; i++)
         {
@@ -131,7 +131,6 @@ public class OrderManager : MonoBehaviour
 
         if (freePlateIndices.Count == 0) return; // Counter is packed!
 
-        // 2. Exact preservation of your original validation block structure
         List<RecipeData> viableRecipes = new List<RecipeData>();
 
         foreach (RecipeData recipe in globalRecipeBook)
@@ -180,7 +179,6 @@ public class OrderManager : MonoBehaviour
         OrderSlipUI slipUI = newSlip.GetComponent<OrderSlipUI>();
         if (slipUI != null)
         {
-            // Injected dynamic assignment tracker interface
             slipUI.InitializeRecipeTicket(selectedRecipe, playerInventory, this, chosenPlateIndex);
         }
     }

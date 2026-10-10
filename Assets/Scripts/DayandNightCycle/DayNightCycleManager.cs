@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-using UnityEngine.UI;
+using UnityEngine.UI; 
 using TMPro;
 
 public enum GameState { Daytime, Nighttime, RestaurantService }
@@ -11,7 +11,7 @@ public class DayNightCycleManager : MonoBehaviour
 
     [Header("State Settings")]
     public GameState currentState = GameState.Daytime;
-    public float serviceDuration = 60f;
+    public float serviceDuration = 60f; 
 
     [Header("Teleport Locations")]
     public Transform dockSpawnPoint;
@@ -20,41 +20,21 @@ public class DayNightCycleManager : MonoBehaviour
     [Header("UI Panels")]
     public GameObject restaurantTransitionPanel;
     public GameObject startServicePanel;
-    public TextMeshProUGUI SequenceText;
+    public GameObject endDayPromptPanel; // New Panel: "Are you ready to end the day?"
 
     [Header("Visual Transition Settings")]
+    [Tooltip("This canvas group should now be on your Sunset Fader image.")]
     public CanvasGroup screenFaderCanvasGroup;
     public float fadeSpeed = 2f;
 
     [Header("Visual Countdown Settings")]
-    public TMP_Text countdownText;
-    public GameObject countdownDisplayObject; // Parent object of the clock to hide/show it
-
-    // --- ADDED: DAY COUNTER ---
-    [Header("Day Counter")]
-    public TMP_Text dayText;
-    public int dayCount = 0;
-    // --- END ADDED ---
+    public TMP_Text countdownText; 
+    public GameObject countdownDisplayObject; 
 
     [Header("References")]
     public GameObject player;
-    private MonoBehaviour playerMovementComponent; // Acts as a handle to freeze movement
-
-
-    private void Start()
-    {
-        // 1. Automatically find the movement script attached to the player object
-        if (player != null)
-        {
-            playerMovementComponent = player.GetComponent<MonoBehaviour>();
-        }
-
-        // 2. Clear visual overlays on startup
-        screenFaderCanvasGroup.alpha = 0f;
-        if (countdownDisplayObject != null) countdownDisplayObject.SetActive(false);
-
-        TransitionToDaytimeDirect();
-    }
+    
+    private MonoBehaviour playerMovementComponent; 
 
     private void Awake()
     {
@@ -62,15 +42,24 @@ public class DayNightCycleManager : MonoBehaviour
         else Destroy(gameObject);
     }
 
-    // --- HELPER FUNCTION TO FREEZE/UNFREEZE PLAYER ---
-    public void SetPlayerControls(bool state)
+    private void Start()
     {
-        if (playerMovementComponent != null)
+        if (player != null)
         {
-            playerMovementComponent.enabled = state;
+            playerMovementComponent = player.GetComponent<MonoBehaviour>(); 
         }
 
-        // Stops sliding momentum when frozen if the player uses a Rigidbody2D
+        screenFaderCanvasGroup.alpha = 0f;
+        if (countdownDisplayObject != null) countdownDisplayObject.SetActive(false);
+        if (endDayPromptPanel != null) endDayPromptPanel.SetActive(false);
+        
+        TransitionToDaytimeDirect();
+    }
+
+    public void SetPlayerControls(bool state)
+    {
+        if (playerMovementComponent != null) playerMovementComponent.enabled = state;
+
         Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
         if (rb != null && !state)
         {
@@ -82,23 +71,10 @@ public class DayNightCycleManager : MonoBehaviour
         }
     }
 
-    // --- ADDED: DAY COUNTER FUNCTIONS ---
-    private void StartNewDay()
-    {
-        dayCount++;
-        UpdateDayUI();
-    }
-
-    private void UpdateDayUI()
-    {
-        if (dayText != null) dayText.text = "Day " + dayCount;
-    }
-    // --- END ADDED ---
-
-    // --- BUTTON TRIGGER FUNCTIONS ---
-
+    // --- DOOR TO RESTAURANT PROMPTS ---
     public void PromptGoToRestaurant()
     {
+        SetPlayerControls(false); 
         restaurantTransitionPanel.SetActive(true);
     }
 
@@ -109,10 +85,16 @@ public class DayNightCycleManager : MonoBehaviour
         {
             StartCoroutine(TeleportSequence(restaurantSpawnPoint.position, GameState.Nighttime));
         }
+        else
+        {
+            SetPlayerControls(true); 
+        }
     }
 
+    // --- MENU INTERACTION SHIFT PROMPTS ---
     public void PromptStartService()
     {
+        SetPlayerControls(false); 
         startServicePanel.SetActive(true);
     }
 
@@ -123,21 +105,46 @@ public class DayNightCycleManager : MonoBehaviour
         {
             StartCoroutine(RunRestaurantServiceSequence());
         }
+        else
+        {
+            SetPlayerControls(true); 
+        }
     }
 
-    // --- CO-ROUTINES FOR VISUALS & TRANSITIONS ---
-
-    // Unified transition handler that fades out, teleports, and fades back in safely
-    private IEnumerator TeleportSequence(Vector3 targetPosition, GameState nextState)
+    // --- END DAY RESTAURANT DOOR PROMPTS ---
+    public void PromptEndDay()
     {
-        if (nextState == GameState.Nighttime)
+        SetPlayerControls(false);
+        endDayPromptPanel.SetActive(true);
+    }
+
+    public void ConfirmEndDay(bool choice)
+    {
+        endDayPromptPanel.SetActive(false);
+        if (choice)
         {
-            SequenceText.text = "Loading Sushi...";
+            // If they are busy with service, force clean up remaining tickets out of slots
+            if (currentState == GameState.RestaurantService && OrderManager.Instance != null)
+            {
+                OrderManager.Instance.StopServiceOrders();
+            }
+            
+            if (countdownDisplayObject != null) countdownDisplayObject.SetActive(false);
+
+            StartCoroutine(TeleportSequence(dockSpawnPoint.position, GameState.Daytime));
         }
         else
         {
-            SequenceText.text = "Loading Dock...";
+            SetPlayerControls(true);
         }
+    }
+
+    // --- TIMED TRANSITIONS SEQUENCES ---
+    private IEnumerator TeleportSequence(Vector3 targetPosition, GameState nextState)
+    {
+        SetPlayerControls(false); 
+
+        // Sunset visual fade overlay calculation loop
         while (screenFaderCanvasGroup.alpha < 1f)
         {
             screenFaderCanvasGroup.alpha += Time.deltaTime * fadeSpeed;
@@ -145,15 +152,11 @@ public class DayNightCycleManager : MonoBehaviour
         }
         screenFaderCanvasGroup.alpha = 1f;
 
-        // Perform World Modifications Safely While Screen is Dark
         player.transform.position = targetPosition;
         currentState = nextState;
-        if (nextState == GameState.Daytime) StartNewDay(); // ADDED: count a new day on return to the dock
 
-        // Small stall to give Cinemachine or camera scripts a frame to update positioning
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.4f); // Slightly elongated to display sunset graphic clearly
 
-        // Fade Back to Gameplay
         while (screenFaderCanvasGroup.alpha > 0f)
         {
             screenFaderCanvasGroup.alpha -= Time.deltaTime * fadeSpeed;
@@ -161,24 +164,25 @@ public class DayNightCycleManager : MonoBehaviour
         }
         screenFaderCanvasGroup.alpha = 0f;
 
+        SetPlayerControls(true); 
     }
 
-    // Handles the active shift countdown timer before cycling back home
     private IEnumerator RunRestaurantServiceSequence()
     {
         currentState = GameState.RestaurantService;
-        SetPlayerControls(true);
-
+        SetPlayerControls(true); 
+        
         if (countdownDisplayObject != null) countdownDisplayObject.SetActive(true);
-
-        // --- HOOK: ACTIVATE THE TIMED GENERATION DISPATCHER ---
         if (OrderManager.Instance != null) OrderManager.Instance.StartServiceOrders();
 
         float timeRemaining = serviceDuration;
         while (timeRemaining > 0)
         {
+            // If player exits mid-shift using the door, terminate this coroutine routine execution early
+            if (currentState == GameState.Daytime) yield break;
+
             timeRemaining -= Time.deltaTime;
-            float displayTime = Mathf.Max(0, timeRemaining);
+            float displayTime = Mathf.Max(0, timeRemaining); 
 
             if (countdownText != null)
             {
@@ -190,20 +194,17 @@ public class DayNightCycleManager : MonoBehaviour
         }
 
         if (countdownDisplayObject != null) countdownDisplayObject.SetActive(false);
-
-        // --- HOOK: TERMINATE THE REQUISITIONS LOOP & FLUSH REMAINING SLIPS ---
         if (OrderManager.Instance != null) OrderManager.Instance.StopServiceOrders();
 
-        yield return StartCoroutine(TeleportSequence(dockSpawnPoint.position, GameState.Daytime));
+        // INJECTION POINT OVERRIDE: Instead of automatic dock teleporting, flip state back to plain idle Nighttime
+        currentState = GameState.Nighttime;
+        Debug.Log("Restaurant shift complete! Walking around freely active.");
     }
 
     private void TransitionToDaytimeDirect()
     {
         currentState = GameState.Daytime;
         player.transform.position = dockSpawnPoint.position;
-        dayCount = 1; // ADDED: every session starts on Day 1
-        UpdateDayUI();
+        SetPlayerControls(true);
     }
-
-
 }

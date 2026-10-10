@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEngine.InputSystem; // Injected for New Input System Keyboard tracking mapping
+using UnityEngine.InputSystem;
 using Sushi.Data;
 using Sushi.Inventory;
 
@@ -42,7 +42,6 @@ namespace Sushi.UI
             if (interactPromptVisual != null) interactPromptVisual.SetActive(false);
         }
 
-        // Updated signature mapping layer structure to dynamically retain slot configurations
         public void InitializeRecipeTicket(RecipeData recipe, Inventory.Inventory inventory, OrderManager manager, int plateIndex)
         {
             assignedRecipe = recipe;
@@ -141,7 +140,7 @@ namespace Sushi.UI
 
             if (runtimeManager != null)
             {
-                runtimeManager.FreeUpPlateSlot(occupiedPlateIndex); // Clean plate tracker assignment allocation array map
+                runtimeManager.FreeUpPlateSlot(occupiedPlateIndex); // Plate tracker assignment allocation array map
                 runtimeManager.CompleteOrder(gameObject);
                 runtimeManager.counter = runtimeManager.counter + assignedRecipe.recipeValue;
                 runtimeManager.coinCounter.text = runtimeManager.counter.ToString();
@@ -168,7 +167,7 @@ namespace Sushi.UI
 
                     if (runtimeManager != null) 
                     {
-                        runtimeManager.FreeUpPlateSlot(occupiedPlateIndex); // Clean plate tracker layout map assignment
+                        runtimeManager.FreeUpPlateSlot(occupiedPlateIndex); // Plate tracker layout map assignment
                         runtimeManager.FailOrder(gameObject);
                     }
                     return true;
