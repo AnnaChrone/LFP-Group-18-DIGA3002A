@@ -65,6 +65,12 @@ TagManager:
   - name: Front
     uniqueID: 453152809
     locked: 0
+  - name: Chairs
+    uniqueID: 2509385129
+    locked: 0
+  - name: OrderSlips
+    uniqueID: 517301337
+    locked: 0
   m_RenderingLayers:
   - Default
   m_MigratedRenderPipelines: []

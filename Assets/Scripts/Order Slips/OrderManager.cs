@@ -16,8 +16,12 @@ public class OrderManager : MonoBehaviour
     public TextMeshProUGUI coinCounter;
     public int counter;
 
-    [Header("Visual Prefabs & Boards")]
-    public Transform orderBoardContainer;
+    [Header("Counter Plate Spawn Points")]
+    [Tooltip("Assign your 5 plate transforms from your scene layout here.")]
+    public Transform[] plateSpawnPoints = new Transform[5];
+
+    [Header("Visual Prefabs")]
+    [Tooltip("Your updated physical world-space Order Slip Prefab.")]
     public GameObject orderSlipPrefab;
 
     [Header("Recipe Database")]
@@ -27,8 +31,9 @@ public class OrderManager : MonoBehaviour
     [Header("Timing Loops")]
     public float minTimeBetweenOrders = 4f;
     public float maxTimeBetweenOrders = 10f;
-    public int maxConcurrentOrders = 5;
 
+    // Fixed array tracking active tickets placed on the 5 physical plates
+    private GameObject[] activePlateSlots = new GameObject[5];
     private List<GameObject> spawnedSlips = new List<GameObject>();
     private List<GameObject> acceptedSlips = new List<GameObject>();
 
@@ -67,18 +72,27 @@ public class OrderManager : MonoBehaviour
         }
         spawnedSlips.Clear();
         acceptedSlips.Clear();
+        
+        for (int i = 0; i < activePlateSlots.Length; i++)
+        {
+            activePlateSlots[i] = null;
+        }
+        
         ActiveRecipe = null;
     }
 
     private IEnumerator GenerationLoop()
     {
-        // NOTE: If your DayNightCycleManager uses 'currentState' (lowercase), change this back.
+        // --- INSTANT SWAP CAPTURE: Instantly spawn the first ticket immediately upon startup ---
+        TryCreateTicket();
+
         while (DayNightCycleManager.Instance.currentState == GameState.RestaurantService)
         {
             float delay = UnityEngine.Random.Range(minTimeBetweenOrders, maxTimeBetweenOrders);
             yield return new WaitForSeconds(delay);
 
-            if (spawnedSlips.Count < maxConcurrentOrders)
+            // Let orders keep accumulating up to 5 on the counter plates
+            if (spawnedSlips.Count < 5)
             {
                 TryCreateTicket();
             }
@@ -105,9 +119,19 @@ public class OrderManager : MonoBehaviour
             return;
         }
 
-        // Find all recipes where the player has:
-        //   (a) at least one NON-STAPLE raw ingredient in stock, OR
-        //   (b) the finished plated sushi already in inventory
+        // 1. Locate which of your 5 plates are empty
+        List<int> freePlateIndices = new List<int>();
+        for (int i = 0; i < activePlateSlots.Length; i++)
+        {
+            if (activePlateSlots[i] == null && plateSpawnPoints[i] != null)
+            {
+                freePlateIndices.Add(i);
+            }
+        }
+
+        if (freePlateIndices.Count == 0) return; // Counter is packed!
+
+        // 2. Exact preservation of your original validation block structure
         List<RecipeData> viableRecipes = new List<RecipeData>();
 
         foreach (RecipeData recipe in globalRecipeBook)
@@ -116,7 +140,6 @@ public class OrderManager : MonoBehaviour
 
             bool isViable = false;
 
-            // (a) Check for raw ingredients
             if (recipe.slot1TOP != null && !recipe.slot1TOP.isInfiniteStaple && playerInventory.CountOf(recipe.slot1TOP) > 0)
                 isViable = true;
             else if (recipe.slot2MIDDLE != null && !recipe.slot2MIDDLE.isInfiniteStaple && playerInventory.CountOf(recipe.slot2MIDDLE) > 0)
@@ -124,7 +147,6 @@ public class OrderManager : MonoBehaviour
             else if (recipe.slot3BOTTOM != null && !recipe.slot3BOTTOM.isInfiniteStaple && playerInventory.CountOf(recipe.slot3BOTTOM) > 0)
                 isViable = true;
 
-            // (b) Check for the finished product
             if (!isViable && recipe.resultItem != null && playerInventory.CountOf(recipe.resultItem) > 0)
                 isViable = true;
 
@@ -136,27 +158,33 @@ public class OrderManager : MonoBehaviour
 
         if (viableRecipes.Count == 0)
         {
-            Debug.LogWarning("OrderManager: Player has items, but none match the recipes. Did you forget to mark Rice as an infinite staple, or add fish to inventory?");
+            Debug.LogWarning("OrderManager: Player has items, but none match the recipes.");
             return;
         }
 
-        RecipeData selectedRecipe = viableRecipes[UnityEngine.Random.Range(0, viableRecipes.Count)];
-
-        if (orderSlipPrefab == null || orderBoardContainer == null)
+        if (orderSlipPrefab == null)
         {
-            Debug.LogError("OrderManager: Order Slip Prefab or Order Board Container is not assigned!");
+            Debug.LogError("OrderManager: Order Slip Prefab is not assigned!");
             return;
         }
 
-        GameObject newSlip = Instantiate(orderSlipPrefab, orderBoardContainer);
+        // 3. Selection & World Space instantiation onto the chosen target plate
+        int chosenPlateIndex = freePlateIndices[UnityEngine.Random.Range(0, freePlateIndices.Count)];
+        RecipeData selectedRecipe = viableRecipes[UnityEngine.Random.Range(0, viableRecipes.Count)];
+        Transform spawnTarget = plateSpawnPoints[chosenPlateIndex];
+
+        GameObject newSlip = Instantiate(orderSlipPrefab, spawnTarget.position, Quaternion.identity, spawnTarget);
         spawnedSlips.Add(newSlip);
+        activePlateSlots[chosenPlateIndex] = newSlip;
 
         OrderSlipUI slipUI = newSlip.GetComponent<OrderSlipUI>();
         if (slipUI != null)
         {
-            slipUI.InitializeRecipeTicket(selectedRecipe, playerInventory, this);
+            // Injected dynamic assignment tracker interface
+            slipUI.InitializeRecipeTicket(selectedRecipe, playerInventory, this, chosenPlateIndex);
         }
     }
+
     public bool AcceptOrder(RecipeData recipe, GameObject slipObj)
     {
         if (slipObj == null) return false;
@@ -188,6 +216,14 @@ public class OrderManager : MonoBehaviour
         ActiveRecipe = null;
         DismissTicket(slipObj);
         OnActiveOrderChanged?.Invoke();
+    }
+
+    public void FreeUpPlateSlot(int slotIndex)
+    {
+        if (slotIndex >= 0 && slotIndex < activePlateSlots.Length)
+        {
+            activePlateSlots[slotIndex] = null;
+        }
     }
 
     public void DismissTicket(GameObject slipObj)

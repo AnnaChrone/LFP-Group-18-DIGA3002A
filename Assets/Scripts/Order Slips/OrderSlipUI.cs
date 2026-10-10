@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.InputSystem; // Injected for New Input System Keyboard tracking mapping
 using Sushi.Data;
 using Sushi.Inventory;
 
@@ -22,23 +23,36 @@ namespace Sushi.UI
         public TMP_Text statusText;
         public Button acceptButton;
 
+        [Header("Counter Interactivity Overlay")]
+        [Tooltip("A floating game object child like 'Press E to Interact' shown when standing near the plate.")]
+        [SerializeField] private GameObject interactPromptVisual;
+
         private RecipeData assignedRecipe;
         private Inventory.Inventory liveInventoryReference;
         private OrderManager runtimeManager;
 
+        private int occupiedPlateIndex = -1;
+        private bool playerInRange = false;
+
         public bool IsAccepted { get; private set; }
         public RecipeData AssignedRecipe => assignedRecipe;
 
-        public void InitializeRecipeTicket(RecipeData recipe, Inventory.Inventory inventory, OrderManager manager)
+        private void Start()
+        {
+            if (interactPromptVisual != null) interactPromptVisual.SetActive(false);
+        }
+
+        // Updated signature mapping layer structure to dynamically retain slot configurations
+        public void InitializeRecipeTicket(RecipeData recipe, Inventory.Inventory inventory, OrderManager manager, int plateIndex)
         {
             assignedRecipe = recipe;
             liveInventoryReference = inventory;
             runtimeManager = manager;
+            occupiedPlateIndex = plateIndex;
             IsAccepted = false;
 
             if (menuTitleText != null) menuTitleText.text = recipe.recipeName;
 
-            // Show the result sushi icon on the ticket
             if (menuIconDisplay != null && recipe.resultItem != null)
             {
                 menuIconDisplay.sprite = recipe.resultItem.icon;
@@ -50,7 +64,6 @@ namespace Sushi.UI
                 goldPayoutText.text = $"+{recipe.recipeValue} Gold";
             }
 
-            // Hide the ingredients list field if it's still on the prefab
             if (ingredientsListText != null)
             {
                 ingredientsListText.text = "";
@@ -60,6 +73,26 @@ namespace Sushi.UI
 
             if (runtimeManager != null) runtimeManager.OnActiveOrderChanged += RefreshAcceptButtonInteractable;
             RefreshAcceptButtonInteractable();
+        }
+
+        private void Update()
+        {
+            // Listen for [E] inputs when approaching the specific counter plate
+            if (playerInRange && Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame)
+            {
+                if (!IsAccepted)
+                {
+                    ClickAcceptOrderButton();
+                }
+                else
+                {
+                    bool served = TryServeOrder();
+                    if (!served && runtimeManager != null)
+                    {
+                        TryFailServeWithWrongDish(runtimeManager.globalRecipeBook);
+                    }
+                }
+            }
         }
 
         private void OnDestroy()
@@ -108,6 +141,7 @@ namespace Sushi.UI
 
             if (runtimeManager != null)
             {
+                runtimeManager.FreeUpPlateSlot(occupiedPlateIndex); // Clean plate tracker assignment allocation array map
                 runtimeManager.CompleteOrder(gameObject);
                 runtimeManager.counter = runtimeManager.counter + assignedRecipe.recipeValue;
                 runtimeManager.coinCounter.text = runtimeManager.counter.ToString();
@@ -132,12 +166,60 @@ namespace Sushi.UI
                     UiPrompter.Instance.IncorrectOrder();
                     if (statusText != null) statusText.text = "Failed!";
 
-                    if (runtimeManager != null) runtimeManager.FailOrder(gameObject);
+                    if (runtimeManager != null) 
+                    {
+                        runtimeManager.FreeUpPlateSlot(occupiedPlateIndex); // Clean plate tracker layout map assignment
+                        runtimeManager.FailOrder(gameObject);
+                    }
                     return true;
                 }
             }
 
             return false;
         }
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.CompareTag("Player"))
+            {
+                playerInRange = true;
+                if (interactPromptVisual != null) interactPromptVisual.SetActive(true);
+            }
+        }
+
+        private void OnTriggerExit2D(Collider2D collision)
+        {
+            if (collision.CompareTag("Player"))
+            {
+                playerInRange = false;
+                if (interactPromptVisual != null) interactPromptVisual.SetActive(false);
+            }
+        }
+                // Place this new method inside your OrderSlipUI class:
+
+        /// <summary>
+        /// Hook this to the OnClick() event handler of your new 'X' Button on the Prefab.
+        /// </summary>
+        public void ClickRejectOrderButton()
+        {
+            // Optional: If you only want players to reject orders that haven't been accepted/cooked yet:
+            if (IsAccepted)
+            {
+                Debug.LogWarning("Cannot reject an order that is already in progress/cooking!");
+                return;
+            }
+
+            Debug.Log($"Order '{assignedRecipe.recipeName}' was rejected by the player.");
+
+            if (runtimeManager != null)
+            {
+                // 1. Free up the 0-4 plate slot tracking array matrix
+                runtimeManager.FreeUpPlateSlot(occupiedPlateIndex);
+
+                // 2. Dismiss the ticket visual object completely from the running boards
+                runtimeManager.DismissTicket(gameObject);
+            }
+        }
+
     }
 }
