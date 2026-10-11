@@ -1,5 +1,6 @@
 using Sushi.Data;
 using Sushi.Fishing;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -87,10 +88,13 @@ public class FishingManager : MonoBehaviour
     private float timeAtHighTension; // seconds spent at or above the threshold
     private float resistanceTimeSum; // resistance * time, for the fight's average
 
-
     [Header("Instruction UI")]
     public TextMeshProUGUI PressE;
     public TextMeshProUGUI PressSpace;
+
+    // ADDED: how long the "fish caught!" / "line broke!" message lingers
+    [Header("Message Timing")]
+    public float resultMessageDuration = 3f;
 
     public static FishingManager Instance { get; private set; }
 
@@ -98,6 +102,7 @@ public class FishingManager : MonoBehaviour
     {
         Instance = this;
     }
+
     private void Start()
     {
         Bobber.SetActive(false);
@@ -119,7 +124,6 @@ public class FishingManager : MonoBehaviour
         ActiveFishingRod.transform.localRotation = Quaternion.Euler(0f, isReeling ? 0f : 180f, 0f);
     }
 
-
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Fishing"))
@@ -131,7 +135,6 @@ public class FishingManager : MonoBehaviour
         }
     }
 
-
     private void OnTriggerExit2D(Collider2D other)
     {
         if (other.CompareTag("Fishing"))
@@ -139,18 +142,15 @@ public class FishingManager : MonoBehaviour
             inFishingRange = false;
             PressE.text = "";
 
-
             Debug.Log("Out of fishing range");
         }
     }
-
 
     public void InteractPressed() //seperated logic for fishing and sitting/standing from fishing
     {
         if (currentState == FishingState.NotFishing)
         {
             SitDown();
-
             busyFishing = true;
         }
         else if (currentState == FishingState.Sitting)
@@ -168,8 +168,6 @@ public class FishingManager : MonoBehaviour
         }
     }
 
-
-
     public void FishPressed()
     {
         if (currentState == FishingState.Sitting)
@@ -181,7 +179,6 @@ public class FishingManager : MonoBehaviour
             StartReeling();
         }
     }
-
 
     public void FishReleased()
     {
@@ -200,9 +197,7 @@ public class FishingManager : MonoBehaviour
         Debug.Log("Player sat down");
         PressSpace.text = "Press [SPACEBAR] to cast your line";
         PressE.text = "Press E to stop fishing";
-
     }
-
 
     private void StandUp()
     {
@@ -218,14 +213,13 @@ public class FishingManager : MonoBehaviour
         PressE.text = "Press E to sit down";
     }
 
-
     private void Cast()
     {
         // Must have bait on the hook
         if (baitHook == null || baitHook.attachedBait == null)
         {
             Debug.Log("Cannot cast: no bait on the hook!");
-            // Optional: UiPrompter or a message
+            PressSpace.text = "Cannot cast: no bait on the hook!";
             return;
         }
 
@@ -258,23 +252,19 @@ public class FishingManager : MonoBehaviour
         baitingPanel.SetActive(false);
         baitedRod.SetActive(false);
         ActiveFishingRod.SetActive(true);
-        //new rod here
         PressSpace.text = "Wait for fish to bite...";
 
-        SoundManager.Instance?.PlayCast();                 // ADDED: cast sound
-        Invoke(nameof(PlaySplashSound), splashDelay);      // ADDED: splash when the bobber lands
+        SoundManager.Instance?.PlayCast();
+        Invoke(nameof(PlaySplashSound), splashDelay);
 
         StartWaitingForFish();
-
     }
-
 
     // ADDED: small helper so Invoke can call the splash sound
     private void PlaySplashSound()
     {
         SoundManager.Instance?.PlaySplash();
     }
-
 
     private void StartWaitingForFish()
     {
@@ -288,7 +278,6 @@ public class FishingManager : MonoBehaviour
         Debug.Log("Waiting for fish to bite...");
     }
 
-
     private void WaitForFish()
     {
         biteTimer -= Time.deltaTime;
@@ -298,7 +287,6 @@ public class FishingManager : MonoBehaviour
             HookFish();
         }
     }
-
 
     private void HookFish()
     {
@@ -329,27 +317,23 @@ public class FishingManager : MonoBehaviour
         currentResistance = Random.Range(activeMinResistance, activeMaxResistance);
         SetNewResistanceTarget();
         Debug.Log("Fish resistance: " + currentResistance);
-
     }
-
 
     private void StartReeling()
     {
         isReeling = true;
-        SoundManager.Instance?.StartReel();   // ADDED: looping reel sound
+        SoundManager.Instance?.StartReel();
 
         Debug.Log("Started reeling");
     }
 
-
     private void StopReeling()
     {
         isReeling = false;
-        SoundManager.Instance?.StopReel();    // ADDED
+        SoundManager.Instance?.StopReel();
 
         Debug.Log("Stopped reeling");
     }
-
 
     private void UpdateFishing()
     {
@@ -376,7 +360,6 @@ public class FishingManager : MonoBehaviour
         CheckRodTension();
         CheckFishDistance();
         UpdateBobberPosition();
-
     }
 
     private void UpdateResistance()
@@ -395,34 +378,21 @@ public class FishingManager : MonoBehaviour
     {
         targetResistance = Random.Range(activeMinResistance, activeMaxResistance);
 
-        resistanceChangeTimer = Random.Range(minimumResistanceChangeTime, maximumResistanceChangeTime); //decides how long the resistance change should take
-
+        resistanceChangeTimer = Random.Range(minimumResistanceChangeTime, maximumResistanceChangeTime);
     }
 
     private void ReelFish()
     {
-        /*
-         * The higher the resistance, the less effective the reeling is.
-         * Resistance of 0 = effortless (seaweed).
-         * Resistance of 1.0 = difficult to reel.
-         */
-
         float effectiveReelSpeed = reelSpeed * (1f - currentResistance);
 
         fishDistance -= effectiveReelSpeed * Time.deltaTime;
 
-
-        // Power curve on absolute resistance (0-1): low resistance stays low,
-        // high resistance spikes. Absolute rather than range-normalised so a
-        // species with a narrow range does not swing through the whole curve.
         float curvedResistance = Mathf.Pow(Mathf.Clamp01(currentResistance), tensionExponent);
 
         float tensionIncrease = Mathf.Lerp(minimumTension, maximumTension, curvedResistance);
 
         rodTension += tensionIncrease * Time.deltaTime;
-
     }
-
 
     private void ReleaseLine()
     {
@@ -430,23 +400,16 @@ public class FishingManager : MonoBehaviour
 
         rodTension = Mathf.Max(rodTension, 0f);
 
-        //Higher resistance = stronger pull away from fish
-
         float effectivePullSpeed = fishPullSpeed * currentResistance;
 
         fishDistance += effectivePullSpeed * Time.deltaTime;
 
         fishDistance = Mathf.Min(fishDistance, maximumFishDistance);
-
-        // Debug.Log("Not reeling | Distance: " + fishDistance + " | Tension: " + rodTension);
     }
 
     private void UpdateBobberPosition()
     {
-        // 0 = fish is at maximum distance
-        // 1 = fish is fully reeled in
-        float reelPercentage =
-            1f - (fishDistance / maximumFishDistance);
+        float reelPercentage = 1f - (fishDistance / maximumFishDistance);
 
         float newX = Mathf.Lerp(
             BobberStart.position.x,
@@ -473,9 +436,12 @@ public class FishingManager : MonoBehaviour
     {
         Debug.Log("Line broke :(");
 
+        // Show the message immediately
+        PressSpace.text = "Fishing line broke! Tension reached maximum";
+
         isReeling = false;
-        SoundManager.Instance?.StopReel();    // ADDED
-        //play anim for line break here
+        SoundManager.Instance?.StopReel();
+        // play anim for line break here
 
         // The fish got away.
         if (catchHandler != null) catchHandler.ClearHookedFish();
@@ -483,7 +449,11 @@ public class FishingManager : MonoBehaviour
         rodTension = 0f;
         currentState = FishingState.Withdrawing;
 
+        // Do the state reset right away
         FinishWithdrawing();
+
+        // But restore the instruction text after the delay
+        StartCoroutine(RestorePromptAfterDelay(resultMessageDuration));
     }
 
     private void CheckFishDistance()
@@ -498,12 +468,9 @@ public class FishingManager : MonoBehaviour
     {
         fishDistance = 0f;
         isReeling = false;
-        SoundManager.Instance?.StopReel();    // ADDED
-        SoundManager.Instance?.PlayCatch();   // ADDED: catch sound
+        SoundManager.Instance?.StopReel();
+        SoundManager.Instance?.PlayCatch();
 
-        // The species was already decided on the bite. The handler scores the
-        // fight and stores the fish, so this file needs no changes for new
-        // fish or bait.
         if (catchHandler != null)
         {
             float averageResistance = fightDuration > 0f
@@ -519,6 +486,7 @@ public class FishingManager : MonoBehaviour
             if (stored.IsValid)
             {
                 Debug.Log("Caught and stored: " + stored.Label);
+                PressSpace.text = "Fish caught!";
             }
         }
         else
@@ -528,8 +496,24 @@ public class FishingManager : MonoBehaviour
 
         rodTension = 0f;
         currentState = FishingState.Withdrawing;
+
+        // Do the state reset right away
         FinishWithdrawing();
 
+        // But restore the instruction text after the delay
+        StartCoroutine(RestorePromptAfterDelay(resultMessageDuration));
+    }
+
+    private IEnumerator RestorePromptAfterDelay(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+
+        // Only restore the prompt if the player is still sitting. If they stood up
+        // or something else changed the state, don't touch the text.
+        if (currentState == FishingState.Sitting)
+        {
+            PressSpace.text = "Press [SPACEBAR] to cast your line";
+        }
     }
 
     private void WithdrawLine()
@@ -537,7 +521,7 @@ public class FishingManager : MonoBehaviour
         currentState = FishingState.Withdrawing;
 
         isReeling = false;
-        SoundManager.Instance?.StopReel();    // ADDED
+        SoundManager.Instance?.StopReel();
 
         // Reeling the line in early lets the hooked fish go.
         if (catchHandler != null) catchHandler.ClearHookedFish();
@@ -549,7 +533,6 @@ public class FishingManager : MonoBehaviour
         FinishWithdrawing();
     }
 
-
     private void FinishWithdrawing()
     {
         currentState = FishingState.Sitting;
@@ -558,9 +541,8 @@ public class FishingManager : MonoBehaviour
         baitedRod.SetActive(true);
         baitingPanel.SetActive(true);
         Debug.Log("Line withdrawn");
-        PressSpace.text = "Press [SPACEBAR] to cast your line";
+        // NOTE: PressSpace.text is set by the caller now
     }
-
 
     /// <summary>
     /// Hard stop, called by DayNightController when the night phase begins.
@@ -570,7 +552,7 @@ public class FishingManager : MonoBehaviour
     public void ForceStopFishing()
     {
         isReeling = false;
-        SoundManager.Instance?.StopReel();    // ADDED
+        SoundManager.Instance?.StopReel();
         rodTension = 0f;
         fishDistance = maximumFishDistance;
 
