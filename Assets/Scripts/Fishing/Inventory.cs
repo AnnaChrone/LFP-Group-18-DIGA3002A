@@ -204,6 +204,81 @@ namespace Sushi.Inventory
             return total;
         }
 
+        /// <summary>
+        /// Total weight of all held items matching the given ItemData.
+        /// Infinite staples (like rice) are treated as having "infinite" weight for
+        /// recipe checks — see IsAvailable in Cooking.cs.
+        /// </summary>
+        public float TotalWeightOf(ItemData item)
+        {
+            if (item == null) return 0f;
+            float total = 0f;
+            for (int i = 0; i < items.Count; i++)
+                if (items[i].data == item) total += items[i].weight;
+            return total;
+        }
+
+        /// <summary>
+        /// Consumes exactly 'targetWeight' worth of the given item, splitting a
+        /// catch if necessary. Modifies the partial catch's weight in place.
+        /// Returns the actual weight consumed (which should equal targetWeight
+        /// whenever the player has enough; less otherwise).
+        ///
+        /// Order of consumption: smallest catch first, so big pieces stay intact
+        /// for future recipes.
+        /// </summary>
+        public float TryConsumeWeight(ItemData item, float targetWeight)
+        {
+            if (item == null || targetWeight <= 0f) return 0f;
+
+            float remaining = targetWeight;
+
+            while (remaining > 0f)
+            {
+                // Find the smallest catch of this item that is still > 0
+                int bestIndex = -1;
+                float bestWeight = float.MaxValue;
+
+                for (int i = 0; i < items.Count; i++)
+                {
+                    if (items[i].data != item) continue;
+                    float w = items[i].weight;
+                    if (w <= 0f) continue;
+
+                    if (w < bestWeight)
+                    {
+                        bestWeight = w;
+                        bestIndex = i;
+                    }
+                }
+
+                // No more of this item available
+                if (bestIndex < 0) break;
+
+                CaughtItem target = items[bestIndex];
+
+                if (target.weight <= remaining)
+                {
+                    // Consume the whole catch
+                    remaining -= target.weight;
+                    RemoveAt(bestIndex);
+                }
+                else
+                {
+                    // Split: reduce the catch's weight by 'remaining'
+                    target.weight -= remaining;
+                    items[bestIndex] = target;
+                    remaining = 0f;
+
+                    // Fire OnChanged so UI redraws (weight changed even
+                    // though the catch wasn't fully removed)
+                    RaiseChanged();
+                }
+            }
+
+            return targetWeight - remaining;
+        }
+
         //Internals
 
         private void RaiseChanged()

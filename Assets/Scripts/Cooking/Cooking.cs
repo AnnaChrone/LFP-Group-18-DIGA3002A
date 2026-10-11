@@ -62,6 +62,10 @@ public class Cooking : MonoBehaviour
     [Tooltip("The Image component on the button that shows the result icon.")]
     public Image makeSushiButtonIcon;
 
+    [Header("Requirement Display")]
+    [Tooltip("shows what weight you're short on for the matched recipe.")]
+    public TMP_Text requirementText;
+
     // Cached recipe currently matching the slot arrangement
     private RecipeData currentMatchedRecipe;
 
@@ -88,15 +92,15 @@ public class Cooking : MonoBehaviour
 
     public void RefreshMatchedRecipe()
     {
-        //  Read the 3 slots
+        // Read the 3 slots
         ItemData providedTop = (slots.Length > 0 && slots[0] != null) ? slots[0].currentItem : null;
         ItemData providedMid = (slots.Length > 1 && slots[1] != null) ? slots[1].currentItem : null;
         ItemData providedBot = (slots.Length > 2 && slots[2] != null) ? slots[2].currentItem : null;
 
-        //  Default state: no match
+        // Default state
         currentMatchedRecipe = null;
 
-        //  Search the recipe book for a match
+        // Find a matching recipe
         if (providedTop != null || providedMid != null || providedBot != null)
         {
             foreach (RecipeData recipe in allRecipes)
@@ -111,7 +115,7 @@ public class Cooking : MonoBehaviour
             }
         }
 
-        // 4. Update the button visual
+        // Update button visual
         if (makeSushiButton == null) return;
 
         if (currentMatchedRecipe != null && currentMatchedRecipe.resultItem != null)
@@ -124,12 +128,25 @@ public class Cooking : MonoBehaviour
                 makeSushiButtonIcon.enabled = true;
             }
 
-            // Enable the button if the player has the required non-staple ingredients
-            makeSushiButton.interactable = HasIngredientsFor(currentMatchedRecipe);
+            bool canAfford = HasIngredientsFor(currentMatchedRecipe);
+            makeSushiButton.interactable = canAfford;
+
+            // Update requirement text
+            if (requirementText != null)
+            {
+                if (canAfford)
+                {
+                    requirementText.text = "";
+                }
+                else
+                {
+                    requirementText.text = BuildShortfallText(currentMatchedRecipe);
+                }
+            }
         }
         else
         {
-            // No match: hide the icon and disable the button
+            // No match
             if (makeSushiButtonIcon != null)
             {
                 makeSushiButtonIcon.sprite = null;
@@ -137,7 +154,39 @@ public class Cooking : MonoBehaviour
             }
 
             makeSushiButton.interactable = false;
+
+            if (requirementText != null)
+                requirementText.text = "";
         }
+    }
+
+    /// <summary>
+    /// Builds a human-readable string listing which slots are short on weight,
+    /// e.g. "Need: 0.3 more Tuna, 0.1 more Seaweed".
+    /// Returns empty string if nothing is short.
+    /// </summary>
+    private string BuildShortfallText(RecipeData recipe)
+    {
+        string result = "";
+
+        AppendShortfall(ref result, recipe.slot1TOP, recipe.slot1Weight);
+        AppendShortfall(ref result, recipe.slot2MIDDLE, recipe.slot2Weight);
+        AppendShortfall(ref result, recipe.slot3BOTTOM, recipe.slot3Weight);
+
+        return result.Length > 0 ? "Need: " + result : "";
+    }
+
+    private void AppendShortfall(ref string result, ItemData item, float requiredWeight)
+    {
+        if (item == null) return;
+        if (item.isInfiniteStaple) return;
+
+        float held = playerInventory.TotalWeightOf(item);
+        if (held >= requiredWeight) return;
+
+        float missing = requiredWeight - held;
+        if (result.Length > 0) result += ", ";
+        result += $"{missing:0.##} more {item.Label}";
     }
 
     /// <summary>
@@ -231,8 +280,9 @@ public class Cooking : MonoBehaviour
     }
 
     /// <summary>
-    /// Greys out ingredient sources the player has run out of.
+    /// Greys out ingredient sources only when the player has zero weight of that item.
     /// Skips infinite staples (Rice), which are always shown.
+    /// Weight-per-recipe checks happen on the Make Sushi button instead.
     /// </summary>
     private void RefreshIngredientSourceStates()
     {
@@ -242,23 +292,24 @@ public class Cooking : MonoBehaviour
         {
             if (entry.source == null || entry.itemData == null) continue;
 
-            // Infinite staples (Rice) are always visible
+            // Infinite staples are always available.
+            // Otherwise, we only grey out if the player has literally none.
             bool shouldBeActive = entry.itemData.isInfiniteStaple
-                || playerInventory.CountOf(entry.itemData) > 0;
+                || playerInventory.TotalWeightOf(entry.itemData) > 0f;
 
-            // Make sure the object stays enabled so its layout slot is preserved
+            // Keep the object active so it holds its layout slot
             entry.source.gameObject.SetActive(true);
 
-            // Fade the visual via alpha
+            // Fade via alpha
             Image img = entry.source.GetComponent<Image>();
             if (img != null)
             {
                 Color c = img.color;
-                c.a = shouldBeActive ? 1f : 0.3f; // 30% opacity when unavailable
+                c.a = shouldBeActive ? 1f : 0.3f;
                 img.color = c;
             }
 
-            // Also toggle the drag script so it can't be dragged when out of stock
+            // Toggle drag so it can't be picked up when empty
             entry.source.enabled = shouldBeActive;
         }
     }
@@ -267,6 +318,7 @@ public class Cooking : MonoBehaviour
     {
         if (playerInventory == null || recipe == null) return;
 
+        // 1. Check ingredients (weight-based)
         if (!HasIngredientsFor(recipe))
         {
             UiPrompter.Instance.noIngredients();
@@ -280,21 +332,25 @@ public class Cooking : MonoBehaviour
             return;
         }
 
-        // Deduct ingredients, BUT skip infinite staples like Rice
-        DeductIngredient(recipe.slot1TOP);
-        DeductIngredient(recipe.slot2MIDDLE);
-        DeductIngredient(recipe.slot3BOTTOM);
+        // 2. Check capacity BEFORE consuming anything
+        if (!playerInventory.CanAccept(recipe.resultItem))
+        {
+            UiPrompter.Instance.noIngredients();
+            Debug.LogWarning("Not enough room in the bag for the cooked sushi!");
+            return;
+        }
 
-        // Grant the finished sushi
+        // 3. Deduct ingredients by weight (rice and other infinite staples are skipped)
+        DeductIngredient(recipe.slot1TOP, recipe.slot1Weight);
+        DeductIngredient(recipe.slot2MIDDLE, recipe.slot2Weight);
+        DeductIngredient(recipe.slot3BOTTOM, recipe.slot3Weight);
+
+        // 4. Grant the finished sushi (guaranteed to fit, since we pre-checked)
         bool added = playerInventory.TryAdd(recipe.resultItem);
         if (!added)
         {
-            // Refund on failure
-            RefundIngredient(recipe.slot1TOP);
-            RefundIngredient(recipe.slot2MIDDLE);
-            RefundIngredient(recipe.slot3BOTTOM);
-
-            Debug.LogError($"Could not place cooked {recipe.resultItem.name} - ingredients restored.");
+            // Shouldn't happen thanks to step 2, but if it does, log and bail.
+            Debug.LogError($"Could not place cooked {recipe.resultItem.name} — ingredients lost.");
             return;
         }
 
@@ -304,11 +360,11 @@ public class Cooking : MonoBehaviour
     /// <summary>
     /// Removes one of the item from inventory, unless it's an infinite staple.
     /// </summary>
-    private void DeductIngredient(ItemData item)
+    private void DeductIngredient(ItemData item, float requiredWeight)
     {
         if (item == null) return;
-        if (item.isInfiniteStaple) return; // Don't remove rice!
-        playerInventory.RemoveFirst(item);
+        if (item.isInfiniteStaple) return;
+        playerInventory.TryConsumeWeight(item, requiredWeight);
     }
 
     /// <summary>
@@ -327,11 +383,17 @@ public class Cooking : MonoBehaviour
     /// </summary>
     private bool HasIngredientsFor(RecipeData recipe)
     {
-        if (recipe.slot1TOP != null && !IsAvailable(recipe.slot1TOP)) return false;
-        if (recipe.slot2MIDDLE != null && !IsAvailable(recipe.slot2MIDDLE)) return false;
-        if (recipe.slot3BOTTOM != null && !IsAvailable(recipe.slot3BOTTOM)) return false;
-
+        if (recipe.slot1TOP != null && !HasWeight(recipe.slot1TOP, recipe.slot1Weight)) return false;
+        if (recipe.slot2MIDDLE != null && !HasWeight(recipe.slot2MIDDLE, recipe.slot2Weight)) return false;
+        if (recipe.slot3BOTTOM != null && !HasWeight(recipe.slot3BOTTOM, recipe.slot3Weight)) return false;
         return true;
+    }
+
+    private bool HasWeight(ItemData item, float requiredWeight)
+    {
+        if (item == null) return true;
+        if (item.isInfiniteStaple) return true; // Rice is "free" and infinite
+        return playerInventory.TotalWeightOf(item) >= requiredWeight;
     }
 
     /// <summary>
