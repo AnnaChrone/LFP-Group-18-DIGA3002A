@@ -36,7 +36,12 @@ public class DayNightCycleManager : MonoBehaviour
 
     [Header("Visual Countdown Settings")]
     public TMP_Text countdownText; 
-    public GameObject countdownDisplayObject; 
+    public GameObject countdownDisplayObject;
+
+    [Tooltip("Color used for the countdown text under 30 seconds.")]
+    public Color warningColor = Color.red;
+
+    private Color normalCountdownColor = Color.black;
 
     [Header("References")]
     public GameObject player;
@@ -53,13 +58,17 @@ public class DayNightCycleManager : MonoBehaviour
     {
         if (player != null)
         {
-            playerMovementComponent = player.GetComponent<MonoBehaviour>(); 
+            playerMovementComponent = player.GetComponent<MonoBehaviour>();
         }
 
         screenFaderCanvasGroup.alpha = 0f;
         if (countdownDisplayObject != null) countdownDisplayObject.SetActive(false);
         if (endDayPromptPanel != null) endDayPromptPanel.SetActive(false);
-        
+
+        // Cache the countdown's original color
+        if (countdownText != null)
+            normalCountdownColor = countdownText.color;
+
         TransitionToDaytimeDirect();
     }
 
@@ -216,13 +225,24 @@ public class DayNightCycleManager : MonoBehaviour
             if (currentState == GameState.Daytime) yield break;
 
             timeRemaining -= Time.deltaTime;
-            float displayTime = Mathf.Max(0, timeRemaining); 
+            float displayTime = Mathf.Max(0, timeRemaining);
 
             if (countdownText != null)
             {
                 int minutes = Mathf.FloorToInt(displayTime / 60f);
                 int seconds = Mathf.FloorToInt(displayTime % 60f);
                 countdownText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+
+                // Turn red at 30s or less
+                if (displayTime <= 30f)
+                {
+                    float pulse = 0.5f + 0.5f * Mathf.Sin(Time.time * 6f); // 0..1
+                    countdownText.color = Color.Lerp(Color.white, warningColor, pulse);
+                }
+                else
+                {
+                    countdownText.color = normalCountdownColor;
+                }
             }
             yield return null;
         }
