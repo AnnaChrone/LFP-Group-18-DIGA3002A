@@ -20,4 +20,4 @@ MonoBehaviour:
   slot3BOTTOM: {fileID: 11400000, guid: e5b3e4f34792135449dd4cbe2769b234, type: 2}
   slot3Weight: 0.3
   resultItem: {fileID: 11400000, guid: 0a5d664d8424487498ef1718c61352dc, type: 2}
-  recipeValue: 25
+  recipeValue: 20

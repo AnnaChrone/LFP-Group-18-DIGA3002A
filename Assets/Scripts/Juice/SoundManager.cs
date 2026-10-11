@@ -28,6 +28,7 @@ public class SoundManager : MonoBehaviour
     public AudioClip splashSound;   // rod lands in the water
     public AudioClip reelSound;     // reeling in
     public AudioClip catchSound;    // fish caught
+    public AudioClip linebreakSound;
 
     // ------------------------------------------------- Player / UI / Restaurant
     [Header("Other Sounds")]
@@ -86,6 +87,8 @@ public class SoundManager : MonoBehaviour
     public void PlayCast() => PlayOneShot(castSound);
     public void PlaySplash() => PlayOneShot(splashSound);
     public void PlayCatch() => PlayOneShot(catchSound);
+
+    public void PlayBreak() => PlayOneShot(linebreakSound);
 
     // Kept so older calls like PlayFishCaught() still work.
     public void PlayFishCaught(bool rare = false) => PlayCatch();
