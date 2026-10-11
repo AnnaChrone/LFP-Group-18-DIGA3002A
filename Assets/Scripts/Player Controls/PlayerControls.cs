@@ -7,11 +7,15 @@ public class PlayerControls : MonoBehaviour
     private Rigidbody2D rb;
     private Vector2 moveInput;
     private int facingDirection = 1;
+    [SerializeField] public bool GamePaused = false;
 
     [Header("Fishing Variables")]
     public FishingManager fishingManager;
     public Cooking cooking;
     public ServeStation serveStation;
+
+    [Header("Pause UI")]
+    public PauseMenu pauseFunctions;
 
 
     private void Awake()
@@ -21,6 +25,7 @@ public class PlayerControls : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (GamePaused) return;
         if (fishingManager.busyFishing)
         {
             rb.linearVelocity = Vector2.zero;
@@ -44,6 +49,8 @@ public class PlayerControls : MonoBehaviour
 
     public void OnMovement(InputAction.CallbackContext context)
     {
+        if (GamePaused) return;
+
         if (fishingManager.busyFishing == false)
         {
             moveInput = context.ReadValue<Vector2>();
@@ -60,6 +67,8 @@ public class PlayerControls : MonoBehaviour
 
     public void OnInteract(InputAction.CallbackContext context)
     {
+        if (GamePaused) return;
+
         if (!fishingManager.inFishingRange)
         {
             return;
@@ -73,6 +82,8 @@ public class PlayerControls : MonoBehaviour
 
     public void OnFish(InputAction.CallbackContext context)
     {
+        if (GamePaused) return;
+
         if (!fishingManager.inFishingRange)
         {
             return;
@@ -87,6 +98,24 @@ public class PlayerControls : MonoBehaviour
         {
             fishingManager.FishReleased();
         }
+    }
+
+    public void OnPause(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        GamePaused = !GamePaused;
+        pauseFunctions.togglePauseMenu(GamePaused);
+        if (GamePaused)
+        {
+            Time.timeScale = 0f;
+
+        }
+        else
+        {
+            Time.timeScale = 1f;
+
+        }
+
     }
 
 
@@ -118,4 +147,6 @@ public class PlayerControls : MonoBehaviour
             Debug.Log("closing serve");
         }
     }
+
+    
 }
