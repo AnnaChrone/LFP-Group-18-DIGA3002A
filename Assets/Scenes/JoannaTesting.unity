@@ -12238,8 +12238,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 0
+  m_fontSizeBase: 0
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -17723,6 +17723,7 @@ MonoBehaviour:
   baitData: {fileID: 11400000, guid: 5b2d60476a29e164080dbf556e0be20a, type: 2}
   Baitcount: {fileID: 1522439295}
   dragPrefab: {fileID: 8875126969702030610, guid: bd99c572b42396f42a0a943e76b78d31, type: 3}
+  unavailableAlpha: 0.3
 --- !u!114 &1055909828
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31625,6 +31626,7 @@ MonoBehaviour:
   baitData: {fileID: 11400000, guid: dbd747b6271e1ce4f93b3f67ef03563c, type: 2}
   Baitcount: {fileID: 326844861}
   dragPrefab: {fileID: 8875126969702030610, guid: bd99c572b42396f42a0a943e76b78d31, type: 3}
+  unavailableAlpha: 0.3
 --- !u!114 &1954809999
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31887,6 +31889,7 @@ MonoBehaviour:
   baitData: {fileID: 11400000, guid: da87d717f1a3d5546881b175bd522f3d, type: 2}
   Baitcount: {fileID: 722761816}
   dragPrefab: {fileID: 8875126969702030610, guid: bd99c572b42396f42a0a943e76b78d31, type: 3}
+  unavailableAlpha: 0.3
 --- !u!114 &1964749207
 MonoBehaviour:
   m_ObjectHideFlags: 0

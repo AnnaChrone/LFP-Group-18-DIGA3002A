@@ -16,16 +16,26 @@ public class BaitSource : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
     public TextMeshProUGUI Baitcount;
     public GameObject dragPrefab;
 
+    [Header("Availability")]
+    [Tooltip("Opacity when the player has none of this bait.")]
+    [Range(0f, 1f)] public float unavailableAlpha = 0.3f;
+
     private GameObject currentDragObject;
+    private Image sourceImage;
+
+    private void Awake()
+    {
+        sourceImage = GetComponent<Image>();
+    }
 
     private void Start()
     {
         if (baitData != null && baitData.icon != null)
         {
-            GetComponent<Image>().sprite = baitData.icon;
-            UpdateBaitCount();
-            
+            sourceImage.sprite = baitData.icon;
         }
+
+        UpdateBaitCount();
     }
 
     private void FixedUpdate()
@@ -35,21 +45,42 @@ public class BaitSource : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
     public void UpdateBaitCount()
     {
+        if (baitData == null || BaitInventory.Instance == null) return;
+
         int count = BaitInventory.Instance.GetBaitCount(baitData);
 
-        // Update the UI text to show the numerical stack size
+        // Infinite bait (ownedFromStart) is always treated as available
+        bool available = baitData.ownedFromStart || count > 0;
+
+        // Update the count text
         if (Baitcount != null)
         {
-            Baitcount.text = count.ToString();
+            // Show a dash for infinite bait instead of the fake int.MaxValue
+            Baitcount.text = baitData.ownedFromStart ? "-" : count.ToString();
+            Baitcount.color = available ? Color.white : new Color(1f, 1f, 1f, 0.4f);
+        }
 
-            // Fade out the text slightly if the player has 0 
-            Baitcount.color = count > 0 ? Color.white : new Color(1f, 1f, 1f, 0.4f);
+        // Grey out the source image when unavailable
+        if (sourceImage != null)
+        {
+            Color c = sourceImage.color;
+            c.a = available ? 1f : unavailableAlpha;
+            sourceImage.color = c;
         }
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (baitData == null || dragPrefab == null) return;
+
+        // Block dragging if the player has none (unless it's infinite bait)
+        if (!baitData.ownedFromStart)
+        {
+            if (BaitInventory.Instance == null || BaitInventory.Instance.GetBaitCount(baitData) <= 0)
+            {
+                return;
+            }
+        }
 
         Canvas canvas = GetComponentInParent<Canvas>();
         currentDragObject = Instantiate(dragPrefab, canvas.transform);
