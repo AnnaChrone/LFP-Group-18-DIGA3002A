@@ -1,13 +1,28 @@
+using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour
 {
 
-    [Header("UI Panels")]
+    [Header("UI Panels and sprites")]
     public GameObject PauseMenuPanel;
     public GameObject AudioSettingsPanel;
     public GameObject KeybindsPanel;
+    public Image PauseButtonSprite;
+    public Sprite PausedSprite;
+    public Sprite UnPausedSprite;
+
+    [Header("Audio Sliders")]
+    public Slider masterSlider;
+    public Slider musicSlider;
+    public Slider sfxSlider;
+
+    [Header("Volume Labels")]
+    public TextMeshProUGUI masterLabel;
+    public TextMeshProUGUI musicLabel;
+    public TextMeshProUGUI sfxLabel;
 
     [Header("Controller booleans")]
     [SerializeField] private bool AudioOpen =false;
@@ -18,12 +33,56 @@ public class PauseMenu : MonoBehaviour
     void Start()
     {
         PauseMenuPanel.SetActive(false);
+        SetupAudioSliders();
+
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+    void SetupAudioSliders()
+    {
+        if (SoundManager.Instance == null) return;
+
+        masterSlider.minValue = 0f; masterSlider.maxValue = 1f;
+        musicSlider.minValue = 0f; musicSlider.maxValue = 1f;
+        sfxSlider.minValue = 0f; sfxSlider.maxValue = 1f;
+
+        masterSlider.value = SoundManager.Instance.masterVolume;
+        musicSlider.value = SoundManager.Instance.musicVolume;
+        sfxSlider.value = SoundManager.Instance.sfxVolume;
+
+        // Initial label text
+        UpdateLabel(masterLabel, masterSlider.value);
+        UpdateLabel(musicLabel, musicSlider.value);
+        UpdateLabel(sfxLabel, sfxSlider.value);
+
+        // Slider -> SoundManager + label
+        masterSlider.onValueChanged.AddListener(v =>
+        {
+            SoundManager.Instance.SetMasterVolume(v);
+            UpdateLabel(masterLabel, v);
+        });
+
+        musicSlider.onValueChanged.AddListener(v =>
+        {
+            SoundManager.Instance.SetMusicVolume(v);
+            UpdateLabel(musicLabel, v);
+        });
+
+        sfxSlider.onValueChanged.AddListener(v =>
+        {
+            SoundManager.Instance.SetSFXVolume(v);
+            UpdateLabel(sfxLabel, v);
+        });
+    }
+
+    void UpdateLabel(TMP_Text label, float value)
+    {
+        if (label == null) return;
+        label.text = Mathf.RoundToInt(value * 100f) + "%";
     }
 
     public void togglePauseMenu(bool paused)
@@ -37,15 +96,14 @@ public class PauseMenu : MonoBehaviour
             AudioOpen = false;
             KeybindOpen = false;
             Time.timeScale = 0f;
-
-            //here can change the sprite of pause buttom
+            PauseButtonSprite.sprite = PausedSprite;
 
         }
         else
         {
             //disable
             PauseMenuPanel.SetActive(false);
-            //here can change sprite of pause button
+            PauseButtonSprite.sprite = UnPausedSprite;
             Time.timeScale = 1f;
 
         }
