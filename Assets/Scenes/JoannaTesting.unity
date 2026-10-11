@@ -9132,7 +9132,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DayNightCycleManager
   currentState: 0
-  serviceDuration: 60
+  serviceDuration: 120
   hasServedToday: 0
   dayText: {fileID: 1935608227}
   dayCount: 0

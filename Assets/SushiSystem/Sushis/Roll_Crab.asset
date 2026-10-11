@@ -15,7 +15,12 @@ MonoBehaviour:
   id: crabroll
   displayName: Crab Roll
   category: 2
+  isInfiniteStaple: 0
   icon: {fileID: 21300000, guid: bfaced186ffd943409a2562e83c91ffe, type: 3}
   tint: {r: 1, g: 1, b: 1, a: 1}
-  baseValue: 10
+  baseValue: 15
   weight: 1
+  minWeight: 0.5
+  maxWeight: 1.5
+  minResistance: 0.2
+  maxResistance: 0.6
