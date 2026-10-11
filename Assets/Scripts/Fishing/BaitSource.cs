@@ -1,7 +1,9 @@
+using Sushi.Data;
+using Sushi.Inventory;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using Sushi.Data;
 
 [RequireComponent(typeof(Image))]
 public class BaitSource : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
@@ -11,6 +13,7 @@ public class BaitSource : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
     public BaitData baitData;
 
     [Header("Drag Settings")]
+    public TextMeshProUGUI Baitcount;
     public GameObject dragPrefab;
 
     private GameObject currentDragObject;
@@ -20,6 +23,27 @@ public class BaitSource : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
         if (baitData != null && baitData.icon != null)
         {
             GetComponent<Image>().sprite = baitData.icon;
+            UpdateBaitCount();
+            
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        UpdateBaitCount();
+    }
+
+    public void UpdateBaitCount()
+    {
+        int count = BaitInventory.Instance.GetBaitCount(baitData);
+
+        // Update the UI text to show the numerical stack size
+        if (Baitcount != null)
+        {
+            Baitcount.text = count.ToString();
+
+            // Fade out the text slightly if the player has 0 
+            Baitcount.color = count > 0 ? Color.white : new Color(1f, 1f, 1f, 0.4f);
         }
     }
 

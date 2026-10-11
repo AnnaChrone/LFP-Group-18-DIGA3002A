@@ -92,6 +92,12 @@ public class FishingManager : MonoBehaviour
     public TextMeshProUGUI PressE;
     public TextMeshProUGUI PressSpace;
 
+    public static FishingManager Instance { get; private set; }
+
+    private void Awake()
+    {
+        Instance = this;
+    }
     private void Start()
     {
         Bobber.SetActive(false);

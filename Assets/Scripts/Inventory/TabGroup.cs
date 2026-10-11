@@ -19,6 +19,10 @@ namespace Sushi.UI
 
         [Tooltip("Tick for the Sushi tab. It stays hidden and unselectable while at the dock (GameState.Daytime).")]
         public bool restaurantOnly;
+
+        [Tooltip("Tick for the bait tab. It stays hidden and unselectable while fishing.")]
+        public bool dockOnly;
+
     }
 
     /// <summary>
@@ -44,6 +48,7 @@ namespace Sushi.UI
         private int activeIndex = -1;
         private GameState lastKnownState;
         private bool hasCheckedState;
+        private bool lastKnownFishing;
 
         public event Action<int> OnTabChanged;
 
@@ -71,11 +76,13 @@ namespace Sushi.UI
         private void Update()
         {
             GameState current = CurrentState();
+            bool fishing = IsPlayerFishing();
 
-            if (!hasCheckedState || current != lastKnownState)
+            if (!hasCheckedState || current != lastKnownState || fishing != lastKnownFishing)
             {
                 hasCheckedState = true;
                 lastKnownState = current;
+                lastKnownFishing = fishing;
 
                 ApplyTabAvailability();
 
@@ -86,7 +93,6 @@ namespace Sushi.UI
                 }
             }
         }
-
         private GameState CurrentState()
         {
             return DayNightCycleManager.Instance != null
@@ -98,10 +104,11 @@ namespace Sushi.UI
         {
             foreach (var tab in tabs)
             {
-                bool available = !tab.restaurantOnly || IsAvailable(tab);
+                bool available = IsAvailable(tab);
                 if (tab.button != null) tab.button.gameObject.SetActive(available);
             }
         }
+
 
         // Restaurant-only tabs count as available once the player has left
         // the dock at all (Nighttime or actively serving), not only during
@@ -110,8 +117,15 @@ namespace Sushi.UI
         // should stay hidden until the countdown actually starts.
         private bool IsAvailable(TabEntry tab)
         {
-            if (!tab.restaurantOnly) return true;
-            return CurrentState() != GameState.Daytime;
+            if (tab.restaurantOnly && CurrentState() == GameState.Daytime) return false;
+            if (tab.dockOnly && IsPlayerFishing()) return false;
+            return true;
+        }
+
+        private bool IsPlayerFishing()
+        {
+            return FishingManager.Instance != null
+                && FishingManager.Instance.currentState != FishingState.NotFishing;
         }
 
         private int FirstAvailableIndex()

@@ -36,7 +36,7 @@ namespace Sushi.UI
         [Header("Display")]
         [SerializeField] private bool showWeight = true;
         [SerializeField] private string weightFormat = "0.0";
-        [SerializeField] private string weightUnit = "kg";
+        [SerializeField] private string weightUnit = "lb";
 
         private struct Row
         {
