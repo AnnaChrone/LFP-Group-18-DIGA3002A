@@ -27,7 +27,8 @@ public class DayNightCycleManager : MonoBehaviour
     [Header("UI Panels")]
     public GameObject restaurantTransitionPanel;
     public GameObject startServicePanel;
-    public GameObject endDayPromptPanel; 
+    public GameObject endDayPromptPanel;
+    public GameObject raycastBlocker;
 
     [Header("Visual Transition Settings")]
     public CanvasGroup screenFaderCanvasGroup;
@@ -137,6 +138,7 @@ public class DayNightCycleManager : MonoBehaviour
         startServicePanel.SetActive(false);
         if (choice)
         {
+            raycastBlocker.SetActive(false);
             StartCoroutine(RunRestaurantServiceSequence());
         }
         else
@@ -252,6 +254,8 @@ public class DayNightCycleManager : MonoBehaviour
 
         currentState = GameState.Nighttime;
         Debug.Log("Restaurant shift complete!");
+        raycastBlocker.SetActive(true);
+
     }
 
     private void TransitionToDaytimeDirect()
