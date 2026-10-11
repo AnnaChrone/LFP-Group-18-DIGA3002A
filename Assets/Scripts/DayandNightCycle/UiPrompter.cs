@@ -15,8 +15,7 @@ public class UiPrompter : MonoBehaviour
     public CanvasGroup OrdercompleteFade;
     public TextMeshProUGUI OrdercompleteText;
 
-    public TextMeshProUGUI noingredientsText;
-    public CanvasGroup noIngredientsFade;
+    public TextMeshProUGUI PressEStoveText;
 
     private Coroutine orderMessageCoroutine;
     private Coroutine ingredientMessageCoroutine;
@@ -29,7 +28,6 @@ public class UiPrompter : MonoBehaviour
         FullBagText.SetActive(false);
 
         OrdercompleteFade.alpha = 0f;
-        noIngredientsFade.alpha = 0f;
     }
 
     void Update()
@@ -68,17 +66,22 @@ public class UiPrompter : MonoBehaviour
         orderMessageCoroutine = StartCoroutine(FadeMessage(OrdercompleteFade));
     }
 
-    public void noIngredients()
+
+    public void StoveText(bool inRange)
     {
-        noingredientsText.text = "Not enough ingredients";
-
-        if (ingredientMessageCoroutine != null)
+        if (inRange)
         {
-            StopCoroutine(ingredientMessageCoroutine);
-        }
+            PressEStoveText.text = "Press [E] to open Sushi Bar";
 
-        ingredientMessageCoroutine = StartCoroutine(FadeMessage(noIngredientsFade));
+        }
+        else
+        {
+
+            PressEStoveText.text = "";
+
+        }
     }
+ 
 
     private IEnumerator FadeMessage(CanvasGroup canvasGroup)
     {

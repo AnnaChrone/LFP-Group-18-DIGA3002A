@@ -18,6 +18,7 @@ public class PlayerControls : MonoBehaviour
     public PauseMenu pauseFunctions;
     public GameObject BaitShopPanel;
 
+    private bool inStoveRange = false;
 
     private void Awake()
     {
@@ -33,50 +34,46 @@ public class PlayerControls : MonoBehaviour
             return;
         }
 
-        // normal movement
         rb.linearVelocity = moveInput * moveSpeed;
-
         SoundManager.Instance.SetWalking(moveInput != Vector2.zero);
     }
 
-    /*void Flip() WHEN WE HAVE A SPRITE
-    {
-        facingDirection *= -1;
-        Vector3 scale = transform.localScale;
-        scale.x *= -1;
-        transform.localScale = scale;
-    }*/
-
     public void OnMovement(InputAction.CallbackContext context)
     {
-        // Always store the raw input. Gating happens in FixedUpdate.
         moveInput = context.ReadValue<Vector2>();
     }
-
 
     public void OnInteract(InputAction.CallbackContext context)
     {
         if (GamePaused) return;
+        if (!context.started) return;
 
-        if (!fishingManager.inFishingRange)
+        // Fishing takes priority if the player is in a fishing zone
+        if (fishingManager.inFishingRange)
         {
+            fishingManager.InteractPressed();
             return;
         }
 
-        if (context.started)
+        // Otherwise, toggle the stove if in range
+        if (inStoveRange)
         {
-            fishingManager.InteractPressed();
+            // If the stove UI is open, close it; otherwise open it.
+            if (cooking.stoveUIPanel != null && cooking.stoveUIPanel.activeInHierarchy)
+            {
+                cooking.CloseStoveUI();
+            }
+            else
+            {
+                cooking.OpenStoveUI();
+            }
         }
     }
 
     public void OnFish(InputAction.CallbackContext context)
     {
         if (GamePaused) return;
-
-        if (!fishingManager.inFishingRange)
-        {
-            return;
-        }
+        if (!fishingManager.inFishingRange) return;
 
         if (context.started)
         {
@@ -97,18 +94,17 @@ public class PlayerControls : MonoBehaviour
         {
             rb.linearVelocity = Vector2.zero;
             SoundManager.Instance.SetWalking(false);
-
         }
-            pauseFunctions.togglePauseMenu(GamePaused);
+        pauseFunctions.togglePauseMenu(GamePaused);
     }
-
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Stove"))
         {
-            cooking.OpenStoveUI();
-            Debug.Log("Opening stove");
+            inStoveRange = true;
+            Debug.Log("In stove range — press E to open");
+            UiPrompter.Instance.StoveText(inStoveRange);
         }
         else if (other.CompareTag("Serve"))
         {
@@ -117,14 +113,14 @@ public class PlayerControls : MonoBehaviour
         }
     }
 
-
     private void OnTriggerExit2D(Collider2D other)
     {
         if (other.CompareTag("Stove"))
         {
+            inStoveRange = false;
             cooking.CloseStoveUI();
-            Debug.Log("Closing stove");
-
+            Debug.Log("Left stove range — closing UI");
+            UiPrompter.Instance.StoveText(inStoveRange);
         }
         else if (other.CompareTag("Serve"))
         {

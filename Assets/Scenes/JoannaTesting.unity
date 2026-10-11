@@ -4556,7 +4556,6 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2127420301}
   - {fileID: 1627372323}
   - {fileID: 1201926525}
   m_Father: {fileID: 896247061}
@@ -10166,6 +10165,7 @@ Transform:
   - {fileID: 282264166}
   - {fileID: 1702736872}
   - {fileID: 1980949563}
+  - {fileID: 2127420301}
   m_Father: {fileID: 684618801}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &646816645
@@ -14274,9 +14274,9 @@ RectTransform:
   m_LocalScale: {x: 1.9984999, y: 2, z: 1.0003755}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1693403250}
   - {fileID: 1516639564}
   - {fileID: 262937051}
-  - {fileID: 1693403250}
   m_Father: {fileID: 51107019}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -14346,7 +14346,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!1 &898391256
 GameObject:
@@ -16115,7 +16115,7 @@ GameObject:
   - component: {fileID: 980660486}
   - component: {fileID: 980660485}
   m_Layer: 5
-  m_Name: No ingredients
+  m_Name: SushiPressE
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16137,7 +16137,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -847.63, y: -533.6}
+  m_AnchoredPosition: {x: -847.63, y: -538.6}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &980660485
@@ -16160,7 +16160,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: No ingredients for recipe!
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -16187,8 +16187,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 70
-  m_fontSizeBase: 70
+  m_fontSize: 80
+  m_fontSizeBase: 80
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -16861,8 +16861,7 @@ MonoBehaviour:
   FullBagText: {fileID: 262937050}
   OrdercompleteFade: {fileID: 1201926526}
   OrdercompleteText: {fileID: 58613188}
-  noingredientsText: {fileID: 980660485}
-  noIngredientsFade: {fileID: 1693403251}
+  PressEStoveText: {fileID: 980660485}
 --- !u!114 &1013820992
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28150,7 +28149,6 @@ GameObject:
   - component: {fileID: 1693403250}
   - component: {fileID: 1693403253}
   - component: {fileID: 1693403252}
-  - component: {fileID: 1693403251}
   m_Layer: 5
   m_Name: NoIngredients
   m_TagString: Untagged
@@ -28165,7 +28163,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1693403249}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -3.0672706e-10, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -28175,21 +28173,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0.015625}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!225 &1693403251
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1693403249}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 0
-  m_IgnoreParentGroups: 0
 --- !u!114 &1693403252
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28204,7 +28190,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -34306,11 +34292,11 @@ Transform:
   m_GameObject: {fileID: 2127420300}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -3.0672706e-10, w: 1}
-  m_LocalPosition: {x: -844.7267, y: -537.44006, z: 23.11805}
-  m_LocalScale: {x: 2.013841, y: 1.8531675, z: 1}
+  m_LocalPosition: {x: 2.6474, y: -1.6493933, z: 0}
+  m_LocalScale: {x: 2.0138412, y: 1.8531675, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 262937051}
+  m_Father: {fileID: 620326496}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2127420302
 SpriteRenderer:
@@ -34359,7 +34345,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 6075286665788860881, guid: bfd4947ca55399c4aa65a133a1afb7a3, type: 3}
   m_Color: {r: 0.6150943, g: 0.58840156, b: 0.58840156, a: 0.69411767}

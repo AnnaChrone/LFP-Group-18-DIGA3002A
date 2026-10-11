@@ -203,7 +203,6 @@ public class Cooking : MonoBehaviour
 
         if (!HasIngredientsFor(currentMatchedRecipe))
         {
-            UiPrompter.Instance.noIngredients();
             return;
         }
 
@@ -321,7 +320,6 @@ public class Cooking : MonoBehaviour
         // 1. Check ingredients (weight-based)
         if (!HasIngredientsFor(recipe))
         {
-            UiPrompter.Instance.noIngredients();
             Debug.LogWarning($"Missing ingredients to cook {recipe.recipeName}!");
             return;
         }
@@ -335,7 +333,6 @@ public class Cooking : MonoBehaviour
         // 2. Check capacity BEFORE consuming anything
         if (!playerInventory.CanAccept(recipe.resultItem))
         {
-            UiPrompter.Instance.noIngredients();
             Debug.LogWarning("Not enough room in the bag for the cooked sushi!");
             return;
         }
@@ -429,7 +426,6 @@ public class Cooking : MonoBehaviour
 
                 if (!HasIngredientsFor(recipe))
                 {
-                    UiPrompter.Instance.noIngredients();
                     Debug.LogWarning($"Correct arrangement for {recipe.recipeName}, but missing raw ingredients!");
                     return;
                 }
