@@ -15,16 +15,22 @@ namespace Sushi.UI
         public Image menuIconDisplay;
         public TMP_Text goldPayoutText;
 
-        [Tooltip("Kept for legacy prefab compatibility. Not used anymore - ingredients are shown on the cooking panel only.")]
+        [Tooltip("Kept for legacy prefab compatibility. Not used anymore.")]
         public TMP_Text ingredientsListText;
 
         [Header("Status")]
         [Tooltip("Optional: label to flip to 'Cooking...' / 'Ready to Serve' once accepted.")]
         public TMP_Text statusText;
-        public Button acceptButton;
+
+        [Header("Acceptance Visual")]
+        [Tooltip("The main background Image of the slip. Tinted green when accepted.")]
+        public Image slipBackground;
+
+        [Tooltip("Tint applied when the order is accepted.")]
+        public Color acceptedTint = new Color(0.7f, 1f, 0.7f, 1f);
 
         [Header("Counter Interactivity Overlay")]
-        [Tooltip("A floating game object child like 'Press E to Interact' shown when standing near the plate.")]
+        [Tooltip("A floating game object like 'Press E to Interact' shown when standing near the plate.")]
         [SerializeField] private GameObject interactPromptVisual;
 
         private RecipeData assignedRecipe;
@@ -34,12 +40,17 @@ namespace Sushi.UI
         private int occupiedPlateIndex = -1;
         private bool playerInRange = false;
 
+        private Color originalSlipColor = Color.white;
+
         public bool IsAccepted { get; private set; }
         public RecipeData AssignedRecipe => assignedRecipe;
 
         private void Start()
         {
             if (interactPromptVisual != null) interactPromptVisual.SetActive(false);
+
+            if (slipBackground != null)
+                originalSlipColor = slipBackground.color;
         }
 
         public void InitializeRecipeTicket(RecipeData recipe, Inventory.Inventory inventory, OrderManager manager, int plateIndex)
@@ -50,6 +61,10 @@ namespace Sushi.UI
             occupiedPlateIndex = plateIndex;
             IsAccepted = false;
 
+            // Reset tint in case the prefab was tinted in the Inspector
+            if (slipBackground != null)
+                slipBackground.color = originalSlipColor;
+
             if (menuTitleText != null) menuTitleText.text = recipe.recipeName;
 
             if (menuIconDisplay != null && recipe.resultItem != null)
@@ -59,49 +74,37 @@ namespace Sushi.UI
             }
 
             if (goldPayoutText != null)
-            {
                 goldPayoutText.text = $"+{recipe.recipeValue} Gold";
-            }
 
             if (ingredientsListText != null)
-            {
                 ingredientsListText.text = "";
-            }
 
-            if (statusText != null) statusText.text = "Awaiting Acceptance";
-
-            if (runtimeManager != null) runtimeManager.OnActiveOrderChanged += RefreshAcceptButtonInteractable;
-            RefreshAcceptButtonInteractable();
+            if (statusText != null) statusText.text = "Press E to Accept";
         }
 
         private void Update()
         {
-            if (playerInRange && Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame)
+            if (!playerInRange) return;
+            if (Keyboard.current == null) return;
+            if (!Keyboard.current.eKey.wasPressedThisFrame) return;
+
+            if (!IsAccepted)
             {
-                if (!IsAccepted)
+                ClickAcceptOrderButton();
+            }
+            else
+            {
+                bool served = TryServeOrder();
+                if (!served && runtimeManager != null)
                 {
-                    ClickAcceptOrderButton();
-                }
-                else
-                {
-                    bool served = TryServeOrder();
-                    if (!served && runtimeManager != null)
-                    {
-                        TryFailServeWithWrongDish(runtimeManager.globalRecipeBook);
-                    }
+                    TryFailServeWithWrongDish(runtimeManager.globalRecipeBook);
                 }
             }
         }
 
         private void OnDestroy()
         {
-            if (runtimeManager != null) runtimeManager.OnActiveOrderChanged -= RefreshAcceptButtonInteractable;
-        }
-
-        private void RefreshAcceptButtonInteractable()
-        {
-            if (acceptButton == null) return;
-            acceptButton.interactable = !IsAccepted && (runtimeManager == null || !runtimeManager.HasActiveOrder);
+            // no event subscription anymore
         }
 
         public void ClickAcceptOrderButton()
@@ -116,8 +119,11 @@ namespace Sushi.UI
 
             IsAccepted = true;
 
-            if (acceptButton != null) acceptButton.interactable = false;
             if (statusText != null) statusText.text = "Cooking...";
+
+            // Green tint on acceptance
+            if (slipBackground != null)
+                slipBackground.color = acceptedTint;
         }
 
         public bool TryServeOrder()
@@ -139,7 +145,7 @@ namespace Sushi.UI
 
             if (runtimeManager != null)
             {
-                runtimeManager.FreeUpPlateSlot(occupiedPlateIndex); // Plate tracker assignment allocation array map
+                runtimeManager.FreeUpPlateSlot(occupiedPlateIndex);
                 runtimeManager.CompleteOrder(gameObject);
                 runtimeManager.counter = runtimeManager.counter + assignedRecipe.recipeValue;
                 runtimeManager.coinCounter.text = runtimeManager.counter.ToString();
@@ -164,9 +170,13 @@ namespace Sushi.UI
                     UiPrompter.Instance.IncorrectOrder();
                     if (statusText != null) statusText.text = "Failed!";
 
-                    if (runtimeManager != null) 
+                    // Reset tint before dismissal (optional)
+                    if (slipBackground != null)
+                        slipBackground.color = originalSlipColor;
+
+                    if (runtimeManager != null)
                     {
-                        runtimeManager.FreeUpPlateSlot(occupiedPlateIndex); // Plate tracker layout map assignment
+                        runtimeManager.FreeUpPlateSlot(occupiedPlateIndex);
                         runtimeManager.FailOrder(gameObject);
                     }
                     return true;
@@ -174,6 +184,20 @@ namespace Sushi.UI
             }
 
             return false;
+        }
+
+        public void ClickRejectOrderButton()
+        {
+            Debug.Log($"Order '{assignedRecipe.recipeName}' was rejected/cancelled by the player.");
+
+            if (runtimeManager != null)
+            {
+                if (IsAccepted)
+                    runtimeManager.CancelActiveOrder(gameObject);
+
+                runtimeManager.FreeUpPlateSlot(occupiedPlateIndex);
+                runtimeManager.DismissTicket(gameObject);
+            }
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
@@ -193,25 +217,5 @@ namespace Sushi.UI
                 if (interactPromptVisual != null) interactPromptVisual.SetActive(false);
             }
         }
-                     public void ClickRejectOrderButton()
-        {
-            Debug.Log($"Order '{assignedRecipe.recipeName}' was rejected/cancelled by the player.");
-
-            if (runtimeManager != null)
-            {
-                // 1. If this specific ticket was already accepted/cooking, notify the manager to cancel its active state
-                if (IsAccepted)
-                {
-                    runtimeManager.CancelActiveOrder(gameObject);
-                }
-
-                // 2. Free up the 0-4 plate slot tracking array matrix
-                runtimeManager.FreeUpPlateSlot(occupiedPlateIndex);
-
-                // 3. Dismiss the ticket visual object completely from the running board slots
-                runtimeManager.DismissTicket(gameObject);
-            }
-        }
-
     }
 }
