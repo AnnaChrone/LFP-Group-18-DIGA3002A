@@ -86,9 +86,17 @@ public class FishingManager : MonoBehaviour
     [Header("Instruction UI")]
     public TextMeshProUGUI PressE;
     public TextMeshProUGUI PressSpace;
+    public GameObject CaughtFishUI;
+    public Image FishImage;
+
+    [Tooltip("Optional. If the CaughtFishUI has a CanvasGroup, this lets us fade it smoothly.")]
+    public CanvasGroup caughtFishCanvasGroup;
 
     [Header("Message Timing")]
     public float resultMessageDuration = 3f;
+
+    [Tooltip("How long the caught fish icon stays fully visible before fading.")]
+    public float caughtFishHoldTime = 0.5f;
 
     [Header("Tension Visuals")]
     [Range(0f, 1f)] public float yellowTensionThreshold = 0.60f;
@@ -128,6 +136,14 @@ public class FishingManager : MonoBehaviour
             if (activeRodRenderer == null)
                 activeRodRenderer = ActiveFishingRod.GetComponentInChildren<SpriteRenderer>();
         }
+
+        // Auto-find the canvas group on the CaughtFishUI if one exists
+        if (CaughtFishUI != null && caughtFishCanvasGroup == null)
+            caughtFishCanvasGroup = CaughtFishUI.GetComponent<CanvasGroup>();
+
+        // Hide the popup on startup
+        if (CaughtFishUI != null)
+            CaughtFishUI.SetActive(false);
     }
 
     private void Update()
@@ -404,27 +420,18 @@ public class FishingManager : MonoBehaviour
         if (t <= yellowTensionThreshold)
             return normal;
 
-        // Blend yellow -> red between thresholds
+        // Blend normal -> yellow between yellow and red thresholds
         if (t <= redTensionThreshold)
         {
             float range = redTensionThreshold - yellowTensionThreshold;
             float a = range > 0f ? (t - yellowTensionThreshold) / range : 1f;
-
-            // Optional: instead of jumping straight to yellow, blend
-            // normal -> yellow in the first half of this segment, then
-            // yellow -> red in the second half. Cleaner transition.
             return Color.Lerp(normal, yellow, a);
         }
 
-        // Past red threshold, blend yellow -> red so it's not a hard pop
+        // Blend yellow -> red between red threshold and 1.0
         float redRange = 1f - redTensionThreshold;
-        if (redRange <= 0f) return red;
-
-        float aRed = (t - redTensionThreshold) / redRange;
-
-        // But wait — we haven't actually lerped to yellow yet.
-        // Let's use the *yellow* segment end as the reference instead:
-        return Color.Lerp(yellow, red, Mathf.Clamp01(aRed * 2f));
+        float aRed = redRange > 0f ? (t - redTensionThreshold) / redRange : 1f;
+        return Color.Lerp(yellow, red, aRed);
     }
 
     private void ResetRodAndLineColor()
@@ -548,6 +555,8 @@ public class FishingManager : MonoBehaviour
             {
                 Debug.Log("Caught and stored: " + stored.Label);
                 PressSpace.text = "Fish caught!";
+
+                ShowCaughtFishUI(stored.data);
             }
         }
         else
@@ -560,6 +569,63 @@ public class FishingManager : MonoBehaviour
 
         FinishWithdrawing();
         StartCoroutine(RestorePromptAfterDelay(resultMessageDuration));
+    }
+
+    private void ShowCaughtFishUI(ItemData caught)
+    {
+        if (CaughtFishUI == null) return;
+
+        // Set the icon
+        if (FishImage != null && caught != null && caught.icon != null)
+        {
+            FishImage.sprite = caught.icon;
+            FishImage.color = caught.tint;
+            FishImage.enabled = true;
+        }
+
+        // Reset alpha and enable
+        if (caughtFishCanvasGroup != null)
+        {
+            caughtFishCanvasGroup.alpha = 1f;
+            caughtFishCanvasGroup.interactable = false;
+            caughtFishCanvasGroup.blocksRaycasts = false;
+        }
+
+        CaughtFishUI.SetActive(true);
+
+        // Fade out alongside the text
+        StartCoroutine(FadeCaughtFishUI(resultMessageDuration));
+    }
+
+    private IEnumerator FadeCaughtFishUI(float duration)
+    {
+        if (CaughtFishUI == null) yield break;
+
+        // If there's no canvas group, just wait then hide
+        if (caughtFishCanvasGroup == null)
+        {
+            yield return new WaitForSeconds(duration);
+            CaughtFishUI.SetActive(false);
+            yield break;
+        }
+
+        // Hold at full opacity briefly, then fade
+        float holdTime = Mathf.Clamp(caughtFishHoldTime, 0f, duration);
+        if (holdTime > 0f)
+            yield return new WaitForSeconds(holdTime);
+
+        float fadeTime = Mathf.Max(0.01f, duration - holdTime);
+        float t = 0f;
+
+        while (t < fadeTime)
+        {
+            t += Time.deltaTime;
+            caughtFishCanvasGroup.alpha = Mathf.Lerp(1f, 0f, t / fadeTime);
+            yield return null;
+        }
+
+        caughtFishCanvasGroup.alpha = 0f;
+        CaughtFishUI.SetActive(false);
     }
 
     private IEnumerator RestorePromptAfterDelay(float seconds)
@@ -610,6 +676,10 @@ public class FishingManager : MonoBehaviour
         if (Bobber != null) Bobber.SetActive(false);
 
         if (baitHook != null) baitHook.ClearHook();
+
+        // Also hide the caught-fish popup if it's showing
+        if (CaughtFishUI != null)
+            CaughtFishUI.SetActive(false);
 
         ResetRodAndLineColor();
 
