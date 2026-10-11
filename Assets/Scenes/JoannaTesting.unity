@@ -11067,7 +11067,13 @@ MonoBehaviour:
   statusText: {fileID: 0}
   slipBackground: {fileID: 0}
   acceptedTint: {r: 0.7, g: 1, b: 0.7, a: 1}
+  servedTint: {r: 0.4, g: 1, b: 0.4, a: 1}
+  plateDisplay: {fileID: 0}
+  coinSprite: {fileID: 0}
+  holdAfterServeDuration: 1.5
+  fadeOutDuration: 2
   interactPromptVisual: {fileID: 0}
+  interactPromptText: {fileID: 0}
 --- !u!1001 &686141217
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24420,6 +24426,7 @@ MonoBehaviour:
   walkSound: {fileID: 8300000, guid: a66bd4f6e4334b14785708cc1c9b1925, type: 3}
   clickSound: {fileID: 8300000, guid: 829ab1f7e9110364381a83c6298db5b4, type: 3}
   coinSound: {fileID: 8300000, guid: 1086b5651231b7a4687e64f2ebb86b68, type: 3}
+  cookSound: {fileID: 8300000, guid: 969c4037c0883a443843e68d1728f490, type: 3}
 --- !u!4 &1493175014
 Transform:
   m_ObjectHideFlags: 0
