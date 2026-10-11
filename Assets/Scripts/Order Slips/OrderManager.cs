@@ -196,6 +196,7 @@ public class OrderManager : MonoBehaviour
         acceptedSlips.Add(slipObj);
         ActiveRecipe = recipe;
         Debug.Log($"Order accepted: {recipe.recipeName}");
+        //here alter popup text of that one
         OnActiveOrderChanged?.Invoke();
         return true;
     }

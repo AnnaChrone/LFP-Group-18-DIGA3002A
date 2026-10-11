@@ -7712,7 +7712,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &462469856
 Transform:
   m_ObjectHideFlags: 0
@@ -11065,7 +11065,8 @@ MonoBehaviour:
   goldPayoutText: {fileID: 0}
   ingredientsListText: {fileID: 0}
   statusText: {fileID: 0}
-  acceptButton: {fileID: 0}
+  slipBackground: {fileID: 0}
+  acceptedTint: {r: 0.7, g: 1, b: 0.7, a: 1}
   interactPromptVisual: {fileID: 0}
 --- !u!1001 &686141217
 PrefabInstance:

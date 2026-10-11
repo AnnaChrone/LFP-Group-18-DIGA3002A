@@ -34,6 +34,7 @@ public class SoundManager : MonoBehaviour
     public AudioClip walkSound;     // loops while the player is moving
     public AudioClip clickSound;    // UI click / open / close
     public AudioClip coinSound;     // coin earned in the restaurant
+    public AudioClip cookSound;
 
     // --------------------------------------------------------------- Internals
     AudioSource musicSource;
@@ -112,6 +113,8 @@ public class SoundManager : MonoBehaviour
     // ---------------------------------------------------------------- UI & coin
     public void PlayClick() => PlayOneShot(clickSound);
     public void PlayUIClick() => PlayClick();   // kept for older calls
+
+    public void PlayCook() => PlayOneShot(cookSound);
 
     public void PlayCoin() => PlayOneShot(coinSound);
 

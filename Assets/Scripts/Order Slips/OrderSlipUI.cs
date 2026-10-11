@@ -19,19 +19,32 @@ namespace Sushi.UI
         public TMP_Text ingredientsListText;
 
         [Header("Status")]
-        [Tooltip("Optional: label to flip to 'Cooking...' / 'Ready to Serve' once accepted.")]
         public TMP_Text statusText;
 
         [Header("Acceptance Visual")]
-        [Tooltip("The main background Image of the slip. Tinted green when accepted.")]
         public Image slipBackground;
 
-        [Tooltip("Tint applied when the order is accepted.")]
-        public Color acceptedTint = new Color(0.7f, 1f, 0.7f, 1f);
+        [Header("Acceptance Colors")]
+        public Color acceptedTint = new Color(1f, 0.9f, 0.4f, 1f);   // yellow
+        public Color servedTint = new Color(0.4f, 1f, 0.4f, 1f);     // green
+
+        [Header("Plate Display")]
+        [Tooltip("The Image on the physical plate that shows the sushi when ready, then the coin when served.")]
+        public Image plateDisplay;
+
+        [Tooltip("Sprite shown when the order is successfully served.")]
+        public Sprite coinSprite;
+
+        [Header("Served Animation")]
+        [Tooltip("Seconds the green slip + coin stay fully visible before fading.")]
+        public float holdAfterServeDuration = 1.5f;
+
+        [Tooltip("Seconds the slip + coin take to fade out after the hold.")]
+        public float fadeOutDuration = 0.3f;
 
         [Header("Counter Interactivity Overlay")]
-        [Tooltip("A floating game object like 'Press E to Interact' shown when standing near the plate.")]
         [SerializeField] private GameObject interactPromptVisual;
+        [SerializeField] private TMP_Text interactPromptText;
 
         private RecipeData assignedRecipe;
         private Inventory.Inventory liveInventoryReference;
@@ -39,6 +52,7 @@ namespace Sushi.UI
 
         private int occupiedPlateIndex = -1;
         private bool playerInRange = false;
+        private bool isServing = false;
 
         private Color originalSlipColor = Color.white;
 
@@ -60,8 +74,8 @@ namespace Sushi.UI
             runtimeManager = manager;
             occupiedPlateIndex = plateIndex;
             IsAccepted = false;
+            isServing = false;
 
-            // Reset tint in case the prefab was tinted in the Inspector
             if (slipBackground != null)
                 slipBackground.color = originalSlipColor;
 
@@ -80,10 +94,25 @@ namespace Sushi.UI
                 ingredientsListText.text = "";
 
             if (statusText != null) statusText.text = "Press E to Accept";
+
+            if (plateDisplay != null)
+            {
+                plateDisplay.sprite = null;
+                plateDisplay.enabled = false;
+            }
+
+            RefreshInteractPrompt();
         }
 
         private void Update()
         {
+            // Only show the plate icon while the player is standing at the plate
+            if (IsAccepted && !isServing)
+            {
+                RefreshPlateDisplay();
+                if (playerInRange) RefreshInteractPrompt();
+            }
+
             if (!playerInRange) return;
             if (Keyboard.current == null) return;
             if (!Keyboard.current.eKey.wasPressedThisFrame) return;
@@ -92,20 +121,59 @@ namespace Sushi.UI
             {
                 ClickAcceptOrderButton();
             }
-            else
+            else if (HasDishReady())
             {
-                bool served = TryServeOrder();
-                if (!served && runtimeManager != null)
-                {
-                    TryFailServeWithWrongDish(runtimeManager.globalRecipeBook);
-                }
+                ServeOrder();
             }
         }
 
-        private void OnDestroy()
+        // --- Prompt / plate ---
+
+        private void RefreshInteractPrompt()
         {
-            // no event subscription anymore
+            if (interactPromptText == null) return;
+
+            if (!IsAccepted)
+            {
+                interactPromptText.text = "[E] to accept order";
+                return;
+            }
+
+            interactPromptText.text = HasDishReady() ? "[E] to serve" : "";
         }
+
+        private bool HasDishReady()
+        {
+            if (assignedRecipe == null || assignedRecipe.resultItem == null) return false;
+            if (liveInventoryReference == null) return false;
+            return liveInventoryReference.CountOf(assignedRecipe.resultItem) > 0;
+        }
+
+        /// <summary>
+        /// Shows the sushi icon on the plate ONLY when the player is in range
+        /// and the dish is ready in inventory. Hides otherwise.
+        /// </summary>
+        private void RefreshPlateDisplay()
+        {
+            if (plateDisplay == null) return;
+
+            if (assignedRecipe == null || assignedRecipe.resultItem == null)
+            {
+                plateDisplay.enabled = false;
+                return;
+            }
+
+            bool ready = IsAccepted && HasDishReady() && playerInRange;
+            plateDisplay.enabled = ready;
+
+            if (ready)
+            {
+                plateDisplay.sprite = assignedRecipe.resultItem.icon;
+                plateDisplay.color = assignedRecipe.resultItem.tint;
+            }
+        }
+
+        // --- Accept ---
 
         public void ClickAcceptOrderButton()
         {
@@ -119,24 +187,26 @@ namespace Sushi.UI
 
             IsAccepted = true;
 
-            if (statusText != null) statusText.text = "Cooking...";
+            if (statusText != null) statusText.text = "Order Accepted";
 
-            // Green tint on acceptance
             if (slipBackground != null)
                 slipBackground.color = acceptedTint;
+
+            RefreshInteractPrompt();
+            RefreshPlateDisplay();
         }
 
-        public bool TryServeOrder()
+        // --- Serve ---
+
+        private void ServeOrder()
         {
-            if (!IsAccepted || liveInventoryReference == null || assignedRecipe == null) return false;
+            if (!IsAccepted || liveInventoryReference == null || assignedRecipe == null) return;
+            if (isServing) return;
 
             ItemData platedSushi = assignedRecipe.resultItem;
+            if (platedSushi == null || liveInventoryReference.CountOf(platedSushi) <= 0) return;
 
-            if (platedSushi == null || liveInventoryReference.CountOf(platedSushi) <= 0)
-            {
-                Debug.LogWarning($"No plated {assignedRecipe.recipeName} in inventory yet - cook it first!");
-                return false;
-            }
+            isServing = true;
 
             liveInventoryReference.RemoveFirst(platedSushi);
 
@@ -146,13 +216,63 @@ namespace Sushi.UI
             if (runtimeManager != null)
             {
                 runtimeManager.FreeUpPlateSlot(occupiedPlateIndex);
-                runtimeManager.CompleteOrder(gameObject);
-                runtimeManager.counter = runtimeManager.counter + assignedRecipe.recipeValue;
+                runtimeManager.counter += assignedRecipe.recipeValue;
                 runtimeManager.coinCounter.text = runtimeManager.counter.ToString();
             }
 
-            return true;
+            StartCoroutine(ServeAnimationRoutine());
         }
+
+        private System.Collections.IEnumerator ServeAnimationRoutine()
+        {
+            // 1. Slip turns green
+            if (slipBackground != null)
+                slipBackground.color = servedTint;
+
+            // 2. Plate shows the coin at full opacity
+            if (plateDisplay != null && coinSprite != null)
+            {
+                plateDisplay.enabled = true;
+                plateDisplay.sprite = coinSprite;
+                plateDisplay.color = Color.white;
+            }
+
+            // 3. Hide prompt and mark status
+            if (interactPromptVisual != null)
+                interactPromptVisual.SetActive(false);
+            if (statusText != null)
+                statusText.text = "Served!";
+
+            SoundManager.Instance.PlayCoin();
+
+            // 4. Hold at full opacity so the player sees the completed state
+            yield return new WaitForSeconds(holdAfterServeDuration);
+
+            // 5. Fast fade out
+            float t = 0f;
+            Color slipStart = slipBackground != null ? slipBackground.color : Color.white;
+            Color plateStart = plateDisplay != null ? plateDisplay.color : Color.white;
+
+            while (t < fadeOutDuration)
+            {
+                t += Time.deltaTime;
+                float a = Mathf.Lerp(1f, 0f, t / fadeOutDuration);
+
+                if (slipBackground != null)
+                    slipBackground.color = new Color(slipStart.r, slipStart.g, slipStart.b, a);
+
+                if (plateDisplay != null)
+                    plateDisplay.color = new Color(plateStart.r, plateStart.g, plateStart.b, a);
+
+                yield return null;
+            }
+
+            // 6. Dismiss the ticket
+            if (runtimeManager != null)
+                runtimeManager.CompleteOrder(gameObject);
+        }
+
+        // --- Failure / reject ---
 
         public bool TryFailServeWithWrongDish(System.Collections.Generic.List<RecipeData> allRecipes)
         {
@@ -170,7 +290,6 @@ namespace Sushi.UI
                     UiPrompter.Instance.IncorrectOrder();
                     if (statusText != null) statusText.text = "Failed!";
 
-                    // Reset tint before dismissal (optional)
                     if (slipBackground != null)
                         slipBackground.color = originalSlipColor;
 
@@ -200,11 +319,15 @@ namespace Sushi.UI
             }
         }
 
+        // --- Trigger handling ---
+
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if (collision.CompareTag("Player"))
             {
                 playerInRange = true;
+                RefreshInteractPrompt();
+                RefreshPlateDisplay(); // show sushi if it's ready
                 if (interactPromptVisual != null) interactPromptVisual.SetActive(true);
             }
         }
@@ -215,7 +338,24 @@ namespace Sushi.UI
             {
                 playerInRange = false;
                 if (interactPromptVisual != null) interactPromptVisual.SetActive(false);
+
+                // Hide plate sushi when the player walks away
+                if (plateDisplay != null && !isServing)
+                    plateDisplay.enabled = false;
             }
+        }
+
+        /// <summary>
+        /// Public wrapper so external callers can still trigger a serve.
+        /// Returns true if the dish was served.
+        /// </summary>
+        public bool TryServeOrder()
+        {
+            if (!IsAccepted || isServing) return false;
+            if (!HasDishReady()) return false;
+
+            ServeOrder();
+            return true;
         }
     }
 }

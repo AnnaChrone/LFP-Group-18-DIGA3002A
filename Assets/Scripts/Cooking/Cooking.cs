@@ -350,7 +350,7 @@ public class Cooking : MonoBehaviour
             Debug.LogError($"Could not place cooked {recipe.resultItem.name} — ingredients lost.");
             return;
         }
-
+        SoundManager.Instance.PlayCook();
         Debug.Log($"Cooked: {recipe.recipeName} -> {recipe.resultItem.name} added to inventory.");
     }
 
