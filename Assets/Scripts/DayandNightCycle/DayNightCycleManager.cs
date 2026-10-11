@@ -13,9 +13,12 @@ public class DayNightCycleManager : MonoBehaviour
     public GameState currentState = GameState.Daytime;
     public float serviceDuration = 60f; 
 
-    // --- NEW: DAY SHIFT LOCKOUT FLAG ---
     [HideInInspector] 
     public bool hasServedToday = false; 
+
+    [Header("Day Counter")]
+    public TMP_Text dayText;
+    public int dayCount = 0;
 
     [Header("Teleport Locations")]
     public Transform dockSpawnPoint;
@@ -29,6 +32,7 @@ public class DayNightCycleManager : MonoBehaviour
     [Header("Visual Transition Settings")]
     public CanvasGroup screenFaderCanvasGroup;
     public float fadeSpeed = 2f;
+    public TMP_Text SequenceText;
 
     [Header("Visual Countdown Settings")]
     public TMP_Text countdownText; 
@@ -74,6 +78,19 @@ public class DayNightCycleManager : MonoBehaviour
         }
     }
 
+    // --- DAY COUNTER LOGIC ENGINE ---
+    private void StartNewDay()
+    {
+        dayCount++;
+        UpdateDayUI();
+    }
+
+    private void UpdateDayUI()
+    {
+        if (dayText != null) dayText.text = "Day " + dayCount;
+    }
+
+    // --- DOOR TO RESTAURANT PROMPTS ---
     public void PromptGoToRestaurant()
     {
         SetPlayerControls(false); 
@@ -93,9 +110,9 @@ public class DayNightCycleManager : MonoBehaviour
         }
     }
 
+    // --- MENU INTERACTION SHIFT PROMPTS ---
     public void PromptStartService()
     {
-        // Safety guard: Reject immediately if player has already served dinner tonight
         if (hasServedToday)
         {
             Debug.Log("You have already run restaurant service for tonight!");
@@ -119,6 +136,7 @@ public class DayNightCycleManager : MonoBehaviour
         }
     }
 
+    // --- END DAY RESTAURANT DOOR PROMPTS ---
     public void PromptEndDay()
     {
         SetPlayerControls(false);
@@ -137,9 +155,9 @@ public class DayNightCycleManager : MonoBehaviour
             
             if (countdownDisplayObject != null) countdownDisplayObject.SetActive(false);
 
-            // --- RESET FLAG: Player goes back to the dock, meaning a new day resets the lockout ---
             hasServedToday = false; 
 
+            // Returns to the dock, triggering a new day count addition sequence
             StartCoroutine(TeleportSequence(dockSpawnPoint.position, GameState.Daytime));
         }
         else
@@ -148,9 +166,16 @@ public class DayNightCycleManager : MonoBehaviour
         }
     }
 
+    // --- TIMED TRANSITIONS SEQUENCES ---
     private IEnumerator TeleportSequence(Vector3 targetPosition, GameState nextState)
     {
         SetPlayerControls(false); 
+
+        if (SequenceText != null)
+        {
+            if (nextState == GameState.Nighttime) SequenceText.text = "Loading Sushi...";
+            else SequenceText.text = "Loading Dock...";
+        }
 
         while (screenFaderCanvasGroup.alpha < 1f)
         {
@@ -161,6 +186,8 @@ public class DayNightCycleManager : MonoBehaviour
 
         player.transform.position = targetPosition;
         currentState = nextState;
+
+        if (nextState == GameState.Daytime) StartNewDay(); 
 
         yield return new WaitForSeconds(0.4f); 
 
@@ -177,10 +204,7 @@ public class DayNightCycleManager : MonoBehaviour
     private IEnumerator RunRestaurantServiceSequence()
     {
         currentState = GameState.RestaurantService;
-        
-        // --- LOCKOUT TRIGGERS: Service is locked in for the rest of this night sequence ---
         hasServedToday = true; 
-        
         SetPlayerControls(true); 
         
         if (countdownDisplayObject != null) countdownDisplayObject.SetActive(true);
@@ -207,7 +231,7 @@ public class DayNightCycleManager : MonoBehaviour
         if (OrderManager.Instance != null) OrderManager.Instance.StopServiceOrders();
 
         currentState = GameState.Nighttime;
-        Debug.Log("Restaurant shift complete! Walking around freely active. Menu interactions disabled.");
+        Debug.Log("Restaurant shift complete!");
     }
 
     private void TransitionToDaytimeDirect()
@@ -215,6 +239,11 @@ public class DayNightCycleManager : MonoBehaviour
         currentState = GameState.Daytime;
         hasServedToday = false; 
         player.transform.position = dockSpawnPoint.position;
+        
+        // INITIALIZER: Initializes session values safely back to Day 1 on fresh startups
+        dayCount = 1; 
+        UpdateDayUI();
+        
         SetPlayerControls(true);
     }
 }

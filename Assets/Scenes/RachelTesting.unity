@@ -4056,6 +4056,8 @@ MonoBehaviour:
   currentState: 0
   serviceDuration: 60
   hasServedToday: 0
+  dayText: {fileID: 1198273095}
+  dayCount: 0
   dockSpawnPoint: {fileID: 954513403}
   restaurantSpawnPoint: {fileID: 1731195337}
   restaurantTransitionPanel: {fileID: 1490023422}
@@ -4063,6 +4065,7 @@ MonoBehaviour:
   endDayPromptPanel: {fileID: 1235892947}
   screenFaderCanvasGroup: {fileID: 1570540633}
   fadeSpeed: 20
+  SequenceText: {fileID: 2141455900}
   countdownText: {fileID: 486967656}
   countdownDisplayObject: {fileID: 1661077130}
   player: {fileID: 1926963146}
