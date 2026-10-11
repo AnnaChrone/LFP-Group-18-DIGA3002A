@@ -401,6 +401,7 @@ MonoBehaviour:
   cooking: {fileID: 1013820988}
   serveStation: {fileID: 462469857}
   pauseFunctions: {fileID: 734544872}
+  BaitShopPanel: {fileID: 248099847}
 --- !u!50 &9449390
 Rigidbody2D:
   serializedVersion: 5

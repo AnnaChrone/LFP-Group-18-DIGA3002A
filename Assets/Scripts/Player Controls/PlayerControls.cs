@@ -16,6 +16,7 @@ public class PlayerControls : MonoBehaviour
 
     [Header("Pause UI")]
     public PauseMenu pauseFunctions;
+    public GameObject BaitShopPanel;
 
 
     private void Awake()
@@ -25,10 +26,10 @@ public class PlayerControls : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (GamePaused) return;
-        if (fishingManager.busyFishing)
+        if (GamePaused || fishingManager.busyFishing || BaitShopPanel.activeInHierarchy)
         {
             rb.linearVelocity = Vector2.zero;
+            SoundManager.Instance.SetWalking(false);
             return;
         }
 
@@ -36,7 +37,6 @@ public class PlayerControls : MonoBehaviour
         rb.linearVelocity = moveInput * moveSpeed;
 
         SoundManager.Instance.SetWalking(moveInput != Vector2.zero);
-
     }
 
     /*void Flip() WHEN WE HAVE A SPRITE
@@ -49,19 +49,8 @@ public class PlayerControls : MonoBehaviour
 
     public void OnMovement(InputAction.CallbackContext context)
     {
-        if (GamePaused) return;
-
-        if (fishingManager.busyFishing == false)
-        {
-            moveInput = context.ReadValue<Vector2>();
-
-        } else
-        {
-            moveInput = new Vector2(0f, 0f);
-            moveSpeed = 0f;
-            rb.linearVelocity = Vector2.zero; 
-
-        }
+        // Always store the raw input. Gating happens in FixedUpdate.
+        moveInput = context.ReadValue<Vector2>();
     }
 
 
@@ -104,18 +93,13 @@ public class PlayerControls : MonoBehaviour
     {
         if (!context.performed) return;
         GamePaused = !GamePaused;
-        pauseFunctions.togglePauseMenu(GamePaused);
         if (GamePaused)
         {
-            Time.timeScale = 0f;
+            rb.linearVelocity = Vector2.zero;
+            SoundManager.Instance.SetWalking(false);
 
         }
-        else
-        {
-            Time.timeScale = 1f;
-
-        }
-
+            pauseFunctions.togglePauseMenu(GamePaused);
     }
 
 
@@ -125,7 +109,8 @@ public class PlayerControls : MonoBehaviour
         {
             cooking.OpenStoveUI();
             Debug.Log("Opening stove");
-        } else if (other.CompareTag("Serve"))
+        }
+        else if (other.CompareTag("Serve"))
         {
             serveStation.ServeButton();
             Debug.Log("Opening serve");
@@ -147,6 +132,4 @@ public class PlayerControls : MonoBehaviour
             Debug.Log("closing serve");
         }
     }
-
-    
 }
