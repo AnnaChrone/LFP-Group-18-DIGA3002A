@@ -1634,7 +1634,7 @@ GameObject:
   - component: {fileID: 58598946}
   - component: {fileID: 58598945}
   m_Layer: 5
-  m_Name: Inveontory
+  m_Name: Inventory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4996,7 +4996,7 @@ MonoBehaviour:
     onFinished:
       m_PersistentCalls:
         m_Calls: []
-  - name: ToResturant
+  - name: ToRestaurant
     playOnStart: 0
     playOnce: 1
     lines:
@@ -8995,6 +8995,7 @@ GameObject:
   m_Component:
   - component: {fileID: 662507086}
   - component: {fileID: 662507087}
+  - component: {fileID: 662507088}
   m_Layer: 5
   m_Name: BaitRow
   m_TagString: Untagged
@@ -9048,6 +9049,19 @@ MonoBehaviour:
   m_Spacing: {x: 40, y: 40}
   m_Constraint: 0
   m_ConstraintCount: 2
+--- !u!114 &662507088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 662507085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87d563ccfc84e344f8537e0ec61cb911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NarrateOnEnable
+  sequenceName: FirstBait
 --- !u!1 &663652012
 GameObject:
   m_ObjectHideFlags: 0
@@ -18961,6 +18975,7 @@ GameObject:
   - component: {fileID: 1175093160}
   - component: {fileID: 1175093159}
   - component: {fileID: 1175093158}
+  - component: {fileID: 1175093161}
   m_Layer: 0
   m_Name: StartServicePanel
   m_TagString: Untagged
@@ -19026,6 +19041,19 @@ RectTransform:
   m_AnchoredPosition: {x: -25, y: 0}
   m_SizeDelta: {x: -450, y: -200}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1175093161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1175093157}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87d563ccfc84e344f8537e0ec61cb911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NarrateOnEnable
+  sequenceName: FirstService
 --- !u!1 &1177460985
 GameObject:
   m_ObjectHideFlags: 0
@@ -22786,6 +22814,7 @@ GameObject:
   - component: {fileID: 1363035301}
   - component: {fileID: 1363035300}
   - component: {fileID: 1363035299}
+  - component: {fileID: 1363035302}
   m_Layer: 0
   m_Name: GoToRestaurantPanel
   m_TagString: Untagged
@@ -22853,6 +22882,19 @@ RectTransform:
   m_AnchoredPosition: {x: -25, y: 0}
   m_SizeDelta: {x: -450, y: -200}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1363035302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1363035298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87d563ccfc84e344f8537e0ec61cb911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NarrateOnEnable
+  sequenceName: ToRestaurant
 --- !u!1001 &1366315371
 PrefabInstance:
   m_ObjectHideFlags: 0
