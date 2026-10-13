@@ -10,7 +10,8 @@ public class NarrationManager : MonoBehaviour
     [SerializeField] private NarrationUI ui;
 
     [Header("Options")]
-    [SerializeField] private bool playOnStart = true;
+    [SerializeField] private bool playOnStart = false;   // leave off when using a NarrationTrigger
+    [SerializeField] private string playerName = "Player"; // fills {player_name} in your text
 
     // Hooks for the rest of your game (music, backgrounds, saving...)
     public event Action<NarrationPanel> OnPanelShown;
@@ -33,6 +34,7 @@ public class NarrationManager : MonoBehaviour
             lookup[p.id] = p;
 
         Validate();
+        variables["player_name"] = playerName;
 
         ui.OnContinue += Continue;
         ui.OnChoiceSelected += Choose;
