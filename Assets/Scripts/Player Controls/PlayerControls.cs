@@ -18,6 +18,9 @@ public class PlayerControls : MonoBehaviour
     public PauseMenu pauseFunctions;
     public GameObject BaitShopPanel;
 
+    [SerializeField] private SpriteRenderer playrSprite;
+
+
     private bool inStoveRange = false;
 
     private void Awake()
@@ -41,6 +44,9 @@ public class PlayerControls : MonoBehaviour
     public void OnMovement(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
+
+        if (moveInput.x != 0)
+            playrSprite.flipX = moveInput.x > 0;
     }
 
     public void OnInteract(InputAction.CallbackContext context)
