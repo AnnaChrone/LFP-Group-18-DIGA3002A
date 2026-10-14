@@ -846,7 +846,7 @@ MonoBehaviour:
   acceptedTint: {r: 0.9893155, g: 1, b: 0.5113207, a: 1}
   servedTint: {r: 0.4, g: 1, b: 0.4, a: 1}
   plateDisplay: {fileID: 5494444987620536738}
-  coinSprite: {fileID: 5473084084364488866, guid: 10f15902700238e4c8fe41fc14b390e7, type: 3}
+  coinSprite: {fileID: -93750458980389090, guid: 6239ffe51f02fb2448dc94094aba0f2f, type: 3}
   holdAfterServeDuration: 1
   fadeOutDuration: 1
   interactPromptVisual: {fileID: 1458409393184414720}

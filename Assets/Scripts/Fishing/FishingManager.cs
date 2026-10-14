@@ -321,7 +321,7 @@ public class FishingManager : MonoBehaviour
         currentState = FishingState.FishHooked;
 
         Debug.Log("FISH HOOKED!");
-        PressSpace.text = "Hold [SPACEBAR] to reel fish! Make sure rod tension doesnt get too high!";
+        PressSpace.text = "Hold [SPACEBAR] to reel fish!";
         Bobber.transform.Translate(0f, -bobberDipAmount, 0f, Space.World);
 
         fishDistance = maximumFishDistance;
