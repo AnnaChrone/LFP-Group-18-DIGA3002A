@@ -1879,7 +1879,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 0cd8a38925e372e49a81935c63933680, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -15873,6 +15873,7 @@ MonoBehaviour:
   serveStation: {fileID: 1545437821}
   pauseFunctions: {fileID: 1003862562}
   BaitShopPanel: {fileID: 1905900252}
+  playrSprite: {fileID: 71134507}
 --- !u!50 &1028127569
 Rigidbody2D:
   serializedVersion: 5
