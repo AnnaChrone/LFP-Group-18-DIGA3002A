@@ -7,7 +7,10 @@ namespace Sushi.Inventory
     /// Milestone 2. Cumulative weight cap, borrowed from "Dave the Diver".
     /// Already written so the swap is a drag-and-drop on the Inventory
     /// component rather than a refactor. The slot grid stays as the visual
-    /// container; it just stops being the limit.
+    /// container, and still acts as a hard limit alongside the weight cap.
+    ///
+    /// FillFraction and FillLabel report whichever limit (slots or weight) is
+    /// closest to being hit, so the fill bar always agrees with IsFull.
     /// </summary>
     [CreateAssetMenu(fileName = "Capacity_Weight", menuName = "Sushi/Capacity Rule/Weight Based")]
     public class WeightCapacityRule : CapacityRule
@@ -37,12 +40,29 @@ namespace Sushi.Inventory
 
         public override float FillFraction(Inventory inv)
         {
-            return maxWeight <= 0f ? 1f : Mathf.Clamp01(inv.TotalWeight / maxWeight);
+            // If the inventory is full for any reason, the bar must read 100%.
+            if (IsFull(inv)) return 1f;
+
+            return Mathf.Clamp01(Mathf.Max(WeightRatio(inv), SlotRatio(inv)));
         }
 
         public override string FillLabel(Inventory inv)
         {
+            // Show whichever limit is actually the binding one.
+            if (SlotRatio(inv) > WeightRatio(inv))
+                return $"{inv.Count} / {inv.SlotCount} slots";
+
             return $"{inv.TotalWeight:0.0} / {maxWeight:0.0} {unitSuffix}";
+        }
+
+        private float WeightRatio(Inventory inv)
+        {
+            return maxWeight <= 0f ? 1f : inv.TotalWeight / maxWeight;
+        }
+
+        private float SlotRatio(Inventory inv)
+        {
+            return inv.SlotCount <= 0 ? 1f : (float)inv.Count / inv.SlotCount;
         }
     }
 }

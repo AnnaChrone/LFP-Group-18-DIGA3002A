@@ -21008,8 +21008,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SoundManager
   masterVolume: 1
   musicVolume: 0.5
-  sfxVolume: 1
-  backgroundMusic: {fileID: 0}
+  sfxVolume: 0.364
+  backgroundMusic: {fileID: 8300000, guid: 41b6511842f13474bb363c6e2ab840b0, type: 3}
   playMusicOnStart: 1
   fadeTime: 1.5
   castSound: {fileID: 8300000, guid: fefd82d888a5239408c5702e89234393, type: 3}
@@ -29046,13 +29046,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1711316001}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 25.45063, y: 3.31652, z: 0}
-  m_LocalScale: {x: 16.31166, y: 13.098019, z: 1}
+  m_LocalScale: {x: 16.4, y: 13.098019, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 489289131}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!212 &1711316003
 SpriteRenderer:
   serializedVersion: 3
@@ -29103,7 +29103,7 @@ SpriteRenderer:
   m_SortingOrder: -5
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 0094c1ddec51f7a4db1d4a203ffdee0f, type: 3}
-  m_Color: {r: 0.98490566, g: 0.98490566, b: 0.98490566, a: 0.7372549}
+  m_Color: {r: 0.8037735, g: 0.78102523, b: 0.78102523, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -30089,7 +30089,7 @@ SpriteRenderer:
   m_SortingOrder: -5
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 0094c1ddec51f7a4db1d4a203ffdee0f, type: 3}
-  m_Color: {r: 0.98490566, g: 0.98490566, b: 0.98490566, a: 0.7372549}
+  m_Color: {r: 0.8039216, g: 0.78431374, b: 0.78431374, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
