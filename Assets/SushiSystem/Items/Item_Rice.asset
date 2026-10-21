@@ -16,7 +16,7 @@ MonoBehaviour:
   displayName: Rice
   category: 1
   isInfiniteStaple: 1
-  icon: {fileID: 504863131133869788, guid: e75a340ca55492b4d8eb70e0d48b8f1c, type: 3}
+  icon: {fileID: 21300000, guid: a3c51d3233a6942469883500ca5b1e16, type: 3}
   tint: {r: 1, g: 1, b: 1, a: 1}
   baseValue: 10
   weight: 0.2
