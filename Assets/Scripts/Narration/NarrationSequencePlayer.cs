@@ -37,11 +37,14 @@ public class NarrationSequencePlayer : MonoBehaviour
     [SerializeField] private string playerName = "Player";    // fills {player_name}
     [SerializeField] private float defaultHoldSeconds = 2.5f; // time on screen after typing finishes
     [SerializeField] private float gapBetweenLines = 0.3f;
+    [Tooltip("Minimum seconds between the end of one sequence and the start of the next.")]
+    [SerializeField] private float minSecondsBetweenSequences = 6f;
     [SerializeField] private List<NarrationSequence> sequences = new List<NarrationSequence>();
 
     private readonly HashSet<string> played = new HashSet<string>();
     private readonly Queue<NarrationSequence> queue = new Queue<NarrationSequence>();
     private bool running;
+    private float lastSequenceEndTime = -999f;
 
     private void Start()
     {
@@ -74,6 +77,10 @@ public class NarrationSequencePlayer : MonoBehaviour
         {
             var seq = queue.Dequeue();
 
+            // Wait until enough time has passed since the previous sequence ended.
+            float wait = lastSequenceEndTime + minSecondsBetweenSequences - Time.time;
+            if (wait > 0f) yield return new WaitForSeconds(wait);
+
             foreach (var line in seq.lines)
             {
                 float typeTime = ui.Show(line.speaker, (line.text ?? "").Replace("{player_name}", playerName));
@@ -84,6 +91,7 @@ public class NarrationSequencePlayer : MonoBehaviour
                 yield return new WaitForSeconds(gapBetweenLines);
             }
 
+            lastSequenceEndTime = Time.time;
             seq.onFinished?.Invoke();
         }
 

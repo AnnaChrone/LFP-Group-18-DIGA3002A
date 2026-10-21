@@ -625,7 +625,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4593431020644480233, guid: 1d3007ce69df1664ebce78e08f682d03, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 132458291}
   m_SourcePrefab: {fileID: 100100000, guid: 1d3007ce69df1664ebce78e08f682d03, type: 3}
 --- !u!224 &14486972 stripped
 RectTransform:
@@ -2329,6 +2332,7 @@ GameObject:
   m_Component:
   - component: {fileID: 93430489}
   - component: {fileID: 93430490}
+  - component: {fileID: 93430491}
   m_Layer: 0
   m_Name: BobberStart
   m_TagString: Untagged
@@ -2411,6 +2415,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!114 &93430491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 93430488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87d563ccfc84e344f8537e0ec61cb911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NarrateOnEnable
+  sequenceName: FirstCast
 --- !u!1 &107823315
 GameObject:
   m_ObjectHideFlags: 0
@@ -2705,6 +2722,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 758004132}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &132458289 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4593431020644480233, guid: 1d3007ce69df1664ebce78e08f682d03, type: 3}
+  m_PrefabInstance: {fileID: 14486971}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &132458291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 132458289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87d563ccfc84e344f8537e0ec61cb911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NarrateOnEnable
+  sequenceName: FirstOrder
 --- !u!1001 &137233133
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3412,7 +3447,7 @@ MonoBehaviour:
   m_text: Are you ready to start a new day?
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2ea529f5f4772bd4ca7edaae62c48578, type: 2}
-  m_sharedMaterial: {fileID: 4309174638318901998, guid: a8a9e092e08610d4a85589a2a377fc6d, type: 2}
+  m_sharedMaterial: {fileID: -8298231502251956221, guid: 2ea529f5f4772bd4ca7edaae62c48578, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -5245,6 +5280,7 @@ MonoBehaviour:
   playerName: Player
   defaultHoldSeconds: 2.5
   gapBetweenLines: 0.3
+  minSecondsBetweenSequences: 6
   sequences:
   - name: Intro
     playOnStart: 1
@@ -5252,8 +5288,57 @@ MonoBehaviour:
     lines:
     - type: 0
       speaker: 
-      text: Fish by the water, then bring your catch back to the restaurant to make
-        sushi.
+      text: "Kenji\u2019s grandfather founded this sushi shop by the sea, and tonight
+        it opens again."
+      holdSeconds: 0
+    onFinished:
+      m_PersistentCalls:
+        m_Calls: []
+  - name: Stakes
+    playOnStart: 1
+    playOnce: 1
+    lines:
+    - type: 1
+      speaker: 
+      text: 'The landdlord wants to reclaim it by month''s end.
+
+        One great
+        week of sushi could change that'
+      holdSeconds: 0
+    onFinished:
+      m_PersistentCalls:
+        m_Calls: []
+  - name: GrandfatherAdvice
+    playOnStart: 0
+    playOnce: 1
+    lines:
+    - type: 2
+      speaker: Grandfather
+      text: Fresh fish makes the sushi, Kenji, never the other way around.
+      holdSeconds: 0
+    onFinished:
+      m_PersistentCalls:
+        m_Calls: []
+  - name: DockArrive
+    playOnStart: 0
+    playOnce: 1
+    lines:
+    - type: 0
+      speaker: 
+      text: The sea is calm tonight, and the tide is on your side.
+      holdSeconds: 0
+    onFinished:
+      m_PersistentCalls:
+        m_Calls: []
+  - name: FirstSit
+    playOnStart: 0
+    playOnce: 1
+    lines:
+    - type: 1
+      speaker: 
+      text: 'Sit down, breathe and wait.
+
+        Patience is half of fishing'
       holdSeconds: 0
     onFinished:
       m_PersistentCalls:
@@ -5264,7 +5349,40 @@ MonoBehaviour:
     lines:
     - type: 1
       speaker: 
-      text: Pick your bait before you cast, because better bait brings better fish.
+      text: The right bait determines your catch, so pick carefully
+      holdSeconds: 0
+    onFinished:
+      m_PersistentCalls:
+        m_Calls: []
+  - name: FirstCast
+    playOnStart: 0
+    playOnce: 1
+    lines:
+    - type: 1
+      speaker: 
+      text: Cast gently, because fish can hear impatience
+      holdSeconds: 0
+    onFinished:
+      m_PersistentCalls:
+        m_Calls: []
+  - name: FirstBite
+    playOnStart: 0
+    playOnce: 1
+    lines:
+    - type: 1
+      speaker: 
+      text: Here comes the tug, get ready!
+      holdSeconds: 0
+    onFinished:
+      m_PersistentCalls:
+        m_Calls: []
+  - name: ReelTension
+    playOnStart: 0
+    playOnce: 1
+    lines:
+    - type: 2
+      speaker: 
+      text: Keep the line steady. Too tight and it snaps, too loose and it escapes
       holdSeconds: 0
     onFinished:
       m_PersistentCalls:
@@ -5275,7 +5393,47 @@ MonoBehaviour:
     lines:
     - type: 4
       speaker: 
-      text: Nice catch! Take it back to the restaurant to turn it into sushi.
+      text: 'Your first catch of the night!
+
+        Grandfather would be proud.'
+      holdSeconds: 0
+    onFinished:
+      m_PersistentCalls:
+        m_Calls: []
+  - name: LineSnap
+    playOnStart: 0
+    playOnce: 0
+    lines:
+    - type: 5
+      speaker: 
+      text: 'The line snapped.
+
+        Even masters lose fish, so try again'
+      holdSeconds: 0
+    onFinished:
+      m_PersistentCalls:
+        m_Calls: []
+  - name: OutOfBait
+    playOnStart: 0
+    playOnce: 0
+    lines:
+    - type: 5
+      speaker: 
+      text: The bait box is empty. Visit the bait shop before the tide turns.
+      holdSeconds: 0
+    onFinished:
+      m_PersistentCalls:
+        m_Calls: []
+  - name: BaitShopVisit
+    playOnStart: 0
+    playOnce: 1
+    lines:
+    - type: 2
+      speaker: 
+      text: 'Fresh bait for fresh food!
+
+        Your grandfather bought from here
+        too'
       holdSeconds: 0
     onFinished:
       m_PersistentCalls:
@@ -5286,7 +5444,18 @@ MonoBehaviour:
     lines:
     - type: 6
       speaker: 
-      text: Time to head back and see what the restaurant needs tonight.
+      text: Time to carry the day's catch back to the restaurant
+      holdSeconds: 0
+    onFinished:
+      m_PersistentCalls:
+        m_Calls: []
+  - name: RestaurantArrive
+    playOnStart: 0
+    playOnce: 1
+    lines:
+    - type: 0
+      speaker: 
+      text: The lanterns are lit and the counter is ready, make each night count!
       holdSeconds: 0
     onFinished:
       m_PersistentCalls:
@@ -5297,8 +5466,52 @@ MonoBehaviour:
     lines:
     - type: 0
       speaker: 
-      text: Service has begun. Check your order slips and make the sushi customers
-        ask for.
+      text: Service has begun. Check your order slips!
+      holdSeconds: 0
+    onFinished:
+      m_PersistentCalls:
+        m_Calls: []
+  - name: FirstOrder
+    playOnStart: 0
+    playOnce: 1
+    lines:
+    - type: 1
+      speaker: 
+      text: Your first customer! Match their order with the fish you caught earlier
+      holdSeconds: 0
+    onFinished:
+      m_PersistentCalls:
+        m_Calls: []
+  - name: NoIngredients
+    playOnStart: 0
+    playOnce: 0
+    lines:
+    - type: 5
+      speaker: 
+      text: Not enough fish for that order. Go back to the dock and cast again!
+      holdSeconds: 0
+    onFinished:
+      m_PersistentCalls:
+        m_Calls: []
+  - name: FirstSushiServed
+    playOnStart: 0
+    playOnce: 1
+    lines:
+    - type: 4
+      speaker: 
+      text: The first plate is served!
+      holdSeconds: 0
+    onFinished:
+      m_PersistentCalls:
+        m_Calls: []
+  - name: NightEnd
+    playOnStart: 0
+    playOnce: 1
+    lines:
+    - type: 0
+      speaker: 
+      text: Service has ended, head back to the dock when you're ready for a new
+        day!
       holdSeconds: 0
     onFinished:
       m_PersistentCalls:
@@ -6105,6 +6318,7 @@ GameObject:
   - component: {fileID: 420767078}
   - component: {fileID: 420767080}
   - component: {fileID: 420767079}
+  - component: {fileID: 420767081}
   m_Layer: 0
   m_Name: DockFloor
   m_TagString: Untagged
@@ -6233,6 +6447,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!114 &420767081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 420767077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87d563ccfc84e344f8537e0ec61cb911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NarrateOnEnable
+  sequenceName: DockArrive
 --- !u!1 &443992959
 GameObject:
   m_ObjectHideFlags: 0
@@ -8454,6 +8681,7 @@ GameObject:
   - component: {fileID: 592005875}
   - component: {fileID: 592005877}
   - component: {fileID: 592005876}
+  - component: {fileID: 592005878}
   m_Layer: 5
   m_Name: BaitingUI
   m_TagString: Untagged
@@ -8522,6 +8750,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 592005874}
   m_CullTransparentMesh: 1
+--- !u!114 &592005878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 592005874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87d563ccfc84e344f8537e0ec61cb911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NarrateOnEnable
+  sequenceName: FirstBait
 --- !u!1 &595220342
 GameObject:
   m_ObjectHideFlags: 0
@@ -13188,6 +13429,7 @@ GameObject:
   - component: {fileID: 858295131}
   - component: {fileID: 858295133}
   - component: {fileID: 858295132}
+  - component: {fileID: 858295134}
   m_Layer: 0
   m_Name: Chair
   m_TagString: Fishing
@@ -13308,6 +13550,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!114 &858295134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 858295130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87d563ccfc84e344f8537e0ec61cb911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NarrateOnEnable
+  sequenceName: FirstSit
 --- !u!1 &867242643
 GameObject:
   m_ObjectHideFlags: 0
@@ -30865,6 +31120,7 @@ GameObject:
   - component: {fileID: 1813997923}
   - component: {fileID: 1813997925}
   - component: {fileID: 1813997924}
+  - component: {fileID: 1813997926}
   m_Layer: 5
   m_Name: NoIngredients
   m_TagString: Untagged
@@ -30930,6 +31186,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1813997922}
   m_CullTransparentMesh: 1
+--- !u!114 &1813997926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1813997922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87d563ccfc84e344f8537e0ec61cb911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NarrateOnEnable
+  sequenceName: NoIngredients
 --- !u!1 &1818769506
 GameObject:
   m_ObjectHideFlags: 0
@@ -32840,6 +33109,7 @@ GameObject:
   - component: {fileID: 1905900256}
   - component: {fileID: 1905900255}
   - component: {fileID: 1905900254}
+  - component: {fileID: 1905900257}
   m_Layer: 0
   m_Name: BaitShopPanel
   m_TagString: Untagged
@@ -32927,6 +33197,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1905900252}
   m_CullTransparentMesh: 1
+--- !u!114 &1905900257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1905900252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87d563ccfc84e344f8537e0ec61cb911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NarrateOnEnable
+  sequenceName: BaitShopVisit
 --- !u!1 &1920237051
 GameObject:
   m_ObjectHideFlags: 0
