@@ -88,12 +88,20 @@ public class DayNightCycleManager : MonoBehaviour
         }
     }
 
-    // --- DAY COUNTER LOGIC ENGINE ---
+       // --- DAY COUNTER LOGIC ENGINE ---
     private void StartNewDay()
     {
         dayCount++;
         UpdateDayUI();
+
+        // HOOK: Update bait shop prices and dialogue for the new morning
+        BaitShopManager baitShop = FindAnyObjectByType<BaitShopManager>();
+        if (baitShop != null)
+        {
+            baitShop.OnNewDayStarted();
+        }
     }
+
 
     private void UpdateDayUI()
     {
@@ -258,7 +266,7 @@ public class DayNightCycleManager : MonoBehaviour
 
     }
 
-    private void TransitionToDaytimeDirect()
+       private void TransitionToDaytimeDirect()
     {
         currentState = GameState.Daytime;
         hasServedToday = false; 
@@ -267,7 +275,14 @@ public class DayNightCycleManager : MonoBehaviour
         // INITIALIZER: Initializes session values safely back to Day 1 on fresh startups
         dayCount = 1; 
         UpdateDayUI();
+
+        BaitShopManager baitShop = FindAnyObjectByType<BaitShopManager>();
+        if (baitShop != null)
+        {
+            baitShop.OnNewDayStarted();
+        }
         
         SetPlayerControls(true);
     }
+
 }

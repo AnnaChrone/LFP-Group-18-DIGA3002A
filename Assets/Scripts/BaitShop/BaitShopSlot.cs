@@ -15,7 +15,6 @@ public class BaitShopSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     private BaitData baitData;
     private BaitShopManager shopManager;
 
-    // Call this updated setup function to assign custom fluctuating prices
     public void SetupSlotWithCustomPrice(BaitData data, int customPrice, BaitShopManager manager)
     {
         baitData = data;
