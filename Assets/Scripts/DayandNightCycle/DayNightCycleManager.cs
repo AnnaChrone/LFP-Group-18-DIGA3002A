@@ -47,6 +47,7 @@ public class DayNightCycleManager : MonoBehaviour
     [Header("References")]
     public GameObject player;
     
+     public BaitShopManager baitShopManager;
     private MonoBehaviour playerMovementComponent; 
 
     private void Awake()
@@ -94,11 +95,13 @@ public class DayNightCycleManager : MonoBehaviour
         dayCount++;
         UpdateDayUI();
 
-        // HOOK: Update bait shop prices and dialogue for the new morning
-        BaitShopManager baitShop = FindAnyObjectByType<BaitShopManager>();
-        if (baitShop != null)
+        if (baitShopManager != null)
         {
-            baitShop.OnNewDayStarted();
+            baitShopManager.OnNewDayStarted();
+        }
+        else
+        {
+            Debug.LogWarning("DayNightCycleManager: BaitShopManager reference is missing in the Inspector!");
         }
     }
 
@@ -266,20 +269,18 @@ public class DayNightCycleManager : MonoBehaviour
 
     }
 
-       private void TransitionToDaytimeDirect()
+          private void TransitionToDaytimeDirect()
     {
         currentState = GameState.Daytime;
         hasServedToday = false; 
         player.transform.position = dockSpawnPoint.position;
         
-        // INITIALIZER: Initializes session values safely back to Day 1 on fresh startups
         dayCount = 1; 
         UpdateDayUI();
 
-        BaitShopManager baitShop = FindAnyObjectByType<BaitShopManager>();
-        if (baitShop != null)
+        if (baitShopManager != null)
         {
-            baitShop.OnNewDayStarted();
+            baitShopManager.OnNewDayStarted();
         }
         
         SetPlayerControls(true);

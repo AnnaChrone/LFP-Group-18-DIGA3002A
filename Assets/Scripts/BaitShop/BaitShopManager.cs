@@ -20,16 +20,21 @@ public class BaitShopManager : MonoBehaviour
     [SerializeField] private string ownerName = "Shop Owner Suki";
 
     private Dictionary<BaitData, int> currentDailyPrices = new Dictionary<BaitData, int>();
+    
+    private bool pricesInitialized = false;
 
     private void Start()
     {
-        // Safety fallback: if the game starts mid-day, initialize base prices
-        GenerateNewDailyPrices(); 
+        if (!pricesInitialized)
+        {
+            GenerateNewDailyPrices();
+        }
         tooltipPanel.SetActive(false);
     }
 
     private void OnEnable()
     {
+
         PopulateShop();
     }
 
@@ -47,12 +52,11 @@ public class BaitShopManager : MonoBehaviour
         {
             if (bait.ownedFromStart) continue;
 
-            // Calculate a price fluctuation
             float fluctuationPercent = Random.Range(-0.30f, 0.30f);
             overallMarketTrend += fluctuationPercent;
 
             int priceShift = Mathf.RoundToInt(bait.price * fluctuationPercent);
-            int finalPrice = Mathf.Max(1, bait.price + priceShift);
+            int finalPrice = Mathf.Max(10, bait.price + priceShift);
 
             currentDailyPrices[bait] = finalPrice;
         }
@@ -60,6 +64,8 @@ public class BaitShopManager : MonoBehaviour
         // Average out the fluctuations across the inventory to pick a contextual dialogue line
         float averageTrend = overallMarketTrend / (shopBaitAssets.Count > 0 ? shopBaitAssets.Count : 1);
         UpdateOwnerDialogue(averageTrend);
+
+        pricesInitialized = true;
     }
 
     private void UpdateOwnerDialogue(float marketTrend)
@@ -70,20 +76,20 @@ public class BaitShopManager : MonoBehaviour
 
         if (marketTrend > 0.10f) // Prices went up significantly
         {
-            dialogueOptions.Add($"\"Supply lines from the mainland are backed up today, fisher. Had to raise the cost of bait a bit.\"");
+            dialogueOptions.Add($"\"Supply lines from the mainland are backed up today, mate. Had to raise the cost of bait a bit.\"");
             dialogueOptions.Add($"\"Storm out at sea ruined my storage locker. Good bait is hard to come by this morning.\"");
-            dialogueOptions.Add($"\"High demand today! The fish are biting, and everyone wants a piece of the action.\"");
+            dialogueOptions.Add($"\"High demand this season! The fish are biting, and everyone wants a piece of the action.\"");
         }
         else if (marketTrend < -0.10f) // Prices went down significantly
         {
             dialogueOptions.Add($"\"Had a massive haul of worms and crawling critters yesterday. Passing the savings on to you!\"");
-            dialogueOptions.Add($"\"Bait's cheap today, fisher! Clear me out so I can restock the shelves tomorrow.\"");
+            dialogueOptions.Add($"\"Bait's cheap today, fisherman! Clear me out so I can restock the shelves tomorrow.\"");
             dialogueOptions.Add($"\"The wholesale supplier gave me a discount this morning. Enjoy the cheaper rates while they last.\"");
         }
         else // Prices stayed relatively stable
         {
             dialogueOptions.Add($"\"Morning! Got the usual assortment ready for you. Steady prices for steady fishers.\"");
-            dialogueOptions.Add($"\"Nothing out of the ordinary today. Grab your gear and catch those fish!\"");
+            dialogueOptions.Add($"\"Nothing out of the ordinary today. Grab your gear and get out on the water!\"");
         }
 
         // Pick a random line from the appropriate market category
@@ -95,11 +101,20 @@ public class BaitShopManager : MonoBehaviour
     {
         foreach (Transform child in slotContainer) Destroy(child.gameObject);
 
+        if (currentDailyPrices.Count == 0)
+        {
+            GenerateNewDailyPrices();
+        }
+
         foreach (BaitData bait in shopBaitAssets)
         {
             if (bait.ownedFromStart) continue; 
 
-            if (!currentDailyPrices.ContainsKey(bait)) currentDailyPrices[bait] = bait.price;
+            // If a new bait was added to the script lists mid-game, generate a safety fallback price
+            if (!currentDailyPrices.ContainsKey(bait)) 
+            {
+                currentDailyPrices[bait] = bait.price;
+            }
 
             GameObject newSlot = Instantiate(slotPrefab, slotContainer);
             BaitShopSlot slotScript = newSlot.GetComponent<BaitShopSlot>();
@@ -124,9 +139,9 @@ public class BaitShopManager : MonoBehaviour
                 OrderManager.Instance.coinCounter.text = OrderManager.Instance.counter.ToString();
             }
 
-            if (BaitInventory.Instance != null)
+            if (Sushi.Inventory.BaitInventory.Instance != null)
             {
-                BaitInventory.Instance.AddBait(bait, 1);
+                Sushi.Inventory.BaitInventory.Instance.AddBait(bait, 1);
             }
         }
         else
@@ -145,7 +160,7 @@ public class BaitShopManager : MonoBehaviour
         {
             if (entry != null && entry.item != null && entry.odds > 0)
             {
-              uniqueFishNames.Add($"- {entry.item.displayName}"); 
+                  uniqueFishNames.Add($"- {entry.item.displayName}"); 
             }
         }
 
