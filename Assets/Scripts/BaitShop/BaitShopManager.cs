@@ -43,30 +43,55 @@ public class BaitShopManager : MonoBehaviour
         GenerateNewDailyPrices();
     }
 
-    private void GenerateNewDailyPrices()
+        private void GenerateNewDailyPrices()
     {
         currentDailyPrices.Clear();
         float overallMarketTrend = 0f;
+
+        int currentDay = 1;
+        if (DayNightCycleManager.Instance != null)
+        {
+            currentDay = DayNightCycleManager.Instance.dayCount;
+        }
 
         foreach (BaitData bait in shopBaitAssets)
         {
             if (bait.ownedFromStart) continue;
 
-            float fluctuationPercent = Random.Range(-0.30f, 0.30f);
-            overallMarketTrend += fluctuationPercent;
+            // DAY 1 RULE: Force baseline prices
+            if (currentDay <= 1)
+            {
+                currentDailyPrices[bait] = bait.price;
+            }
+            else
+            {
+                // DAY 2+ RULE: Apply random price fluctuations
+                float fluctuationPercent = Random.Range(-0.30f, 0.30f);
+                overallMarketTrend += fluctuationPercent;
 
-            int priceShift = Mathf.RoundToInt(bait.price * fluctuationPercent);
-            int finalPrice = Mathf.Max(10, bait.price + priceShift);
+                int priceShift = Mathf.RoundToInt(bait.price * fluctuationPercent);
+                int finalPrice = Mathf.Max(10, bait.price + priceShift);
 
-            currentDailyPrices[bait] = finalPrice;
+                currentDailyPrices[bait] = finalPrice;
+            }
         }
 
-        // Average out the fluctuations across the inventory to pick a contextual dialogue line
-        float averageTrend = overallMarketTrend / (shopBaitAssets.Count > 0 ? shopBaitAssets.Count : 1);
-        UpdateOwnerDialogue(averageTrend);
+        if (currentDay <= 1)
+        {
+            if (ownerDialogueText != null)
+            {
+                ownerDialogueText.text = $"<b>{ownerName}:</b> \"Welcome to the bait shop! Come buy some bait when you are ready for a harder and more valuable catch.\"";
+            }
+        }
+        else
+        {
+            float averageTrend = overallMarketTrend / (shopBaitAssets.Count > 0 ? shopBaitAssets.Count : 1);
+            UpdateOwnerDialogue(averageTrend);
+        }
 
         pricesInitialized = true;
     }
+
 
     private void UpdateOwnerDialogue(float marketTrend)
     {
@@ -76,20 +101,20 @@ public class BaitShopManager : MonoBehaviour
 
         if (marketTrend > 0.10f) // Prices went up significantly
         {
-            dialogueOptions.Add($"\"Supply lines from the mainland are backed up today, mate. Had to raise the cost of bait a bit.\"");
+            dialogueOptions.Add($"\"Supply lines from the mainland are backed up today, fisher. Had to raise the cost of bait a bit.\"");
             dialogueOptions.Add($"\"Storm out at sea ruined my storage locker. Good bait is hard to come by this morning.\"");
-            dialogueOptions.Add($"\"High demand this season! The fish are biting, and everyone wants a piece of the action.\"");
+            dialogueOptions.Add($"\"High demand today! The fish are biting, and everyone wants a piece of the action.\"");
         }
         else if (marketTrend < -0.10f) // Prices went down significantly
         {
             dialogueOptions.Add($"\"Had a massive haul of worms and crawling critters yesterday. Passing the savings on to you!\"");
-            dialogueOptions.Add($"\"Bait's cheap today, fisherman! Clear me out so I can restock the shelves tomorrow.\"");
+            dialogueOptions.Add($"\"Bait's cheap today, fisher! Clear me out so I can restock the shelves tomorrow.\"");
             dialogueOptions.Add($"\"The wholesale supplier gave me a discount this morning. Enjoy the cheaper rates while they last.\"");
         }
         else // Prices stayed relatively stable
         {
             dialogueOptions.Add($"\"Morning! Got the usual assortment ready for you. Steady prices for steady fishers.\"");
-            dialogueOptions.Add($"\"Nothing out of the ordinary today. Grab your gear and get out on the water!\"");
+            dialogueOptions.Add($"\"Nothing out of the ordinary today. Grab your gear and catch some fish!\"");
         }
 
         // Pick a random line from the appropriate market category
@@ -110,7 +135,6 @@ public class BaitShopManager : MonoBehaviour
         {
             if (bait.ownedFromStart) continue; 
 
-            // If a new bait was added to the script lists mid-game, generate a safety fallback price
             if (!currentDailyPrices.ContainsKey(bait)) 
             {
                 currentDailyPrices[bait] = bait.price;
