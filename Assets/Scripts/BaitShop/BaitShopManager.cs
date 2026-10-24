@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 using Sushi.Data;
 using Sushi.Inventory;
 
@@ -12,12 +13,87 @@ public class BaitShopManager : MonoBehaviour
 
     [Header("Tooltip UI")]
     [SerializeField] private GameObject tooltipPanel;
-    [SerializeField] private TMPro.TextMeshProUGUI tooltipText;
+    [SerializeField] private TextMeshProUGUI tooltipText;
+
+    [Header("Shop Owner Dialogue UI")]
+    [SerializeField] private TextMeshProUGUI ownerDialogueText;
+    [SerializeField] private string ownerName = "Willy";
+
+    // Tracks the modified price for each bait asset for the current day
+    private Dictionary<BaitData, int> currentDailyPrices = new Dictionary<BaitData, int>();
 
     private void Start()
     {
-        PopulateShop();
+        // Safety fallback: if the game starts mid-day, initialize base prices
+        GenerateNewDailyPrices(); 
         tooltipPanel.SetActive(false);
+    }
+
+    private void OnEnable()
+    {
+        // We populate the shop visually every time the player opens the window frame
+        PopulateShop();
+    }
+
+    /// <summary>
+    /// Call this method from your Day/Night Cycle script whenever a new morning starts!
+    /// </summary>
+    public void OnNewDayStarted()
+    {
+        GenerateNewDailyPrices();
+    }
+
+    private void GenerateNewDailyPrices()
+    {
+        currentDailyPrices.Clear();
+        float overallMarketTrend = 0f;
+
+        foreach (BaitData bait in shopBaitAssets)
+        {
+            if (bait.ownedFromStart) continue;
+
+            // Calculate a price fluctuation (e.g., between -30% and +30% of base price)
+            float fluctuationPercent = Random.Range(-0.30f, 0.30f);
+            overallMarketTrend += fluctuationPercent;
+
+            int priceShift = Mathf.RoundToInt(bait.price * fluctuationPercent);
+            int finalPrice = Mathf.Max(1, bait.price + priceShift); // Ensure it costs at least 1 Gold
+
+            currentDailyPrices[bait] = finalPrice;
+        }
+
+        // Average out the fluctuations across the inventory to pick a contextual dialogue line
+        float averageTrend = overallMarketTrend / (shopBaitAssets.Count > 0 ? shopBaitAssets.Count : 1);
+        UpdateOwnerDialogue(averageTrend);
+    }
+
+    private void UpdateOwnerDialogue(float marketTrend)
+    {
+        if (ownerDialogueText == null) return;
+
+        List<string> dialogueOptions = new List<string>();
+
+        if (marketTrend > 0.10f) // Prices went up significantly
+        {
+            dialogueOptions.Add($"\"Supply lines from the mainland are backed up today, mate. Had to raise the cost of bait a bit.\"");
+            dialogueOptions.Add($"\"Storm out at sea ruined my storage locker. Good bait is hard to come by this morning.\"");
+            dialogueOptions.Add($"\"High demand this season! The fish are biting, and everyone wants a piece of the action.\"");
+        }
+        else if (marketTrend < -0.10f) // Prices went down significantly
+        {
+            dialogueOptions.Add($"\"Had a massive haul of worms and crawling critters yesterday. Passing the savings on to you!\"");
+            dialogueOptions.Add($"\"Bait's cheap today, fisherman! Clear me out so I can restock the shelves tomorrow.\"");
+            dialogueOptions.Add($"\"The wholesale supplier gave me a discount this morning. Enjoy the cheaper rates while they last.\"");
+        }
+        else // Prices stayed relatively stable
+        {
+            dialogueOptions.Add($"\"Morning! Got the usual assortment ready for you. Steady prices for steady fishers.\"");
+            dialogueOptions.Add($"\"Nothing out of the ordinary today. Grab your gear and get out on the water!\"");
+        }
+
+        // Pick a random line from the appropriate market category
+        string chosenLine = dialogueOptions[Random.Range(0, dialogueOptions.Count)];
+        ownerDialogueText.text = $"<b>{ownerName}:</b> {chosenLine}";
     }
 
     private void PopulateShop()
@@ -28,38 +104,42 @@ public class BaitShopManager : MonoBehaviour
         {
             if (bait.ownedFromStart) continue; 
 
+            // Double check that we have a price generated for this asset slot
+            if (!currentDailyPrices.ContainsKey(bait)) currentDailyPrices[bait] = bait.price;
+
             GameObject newSlot = Instantiate(slotPrefab, slotContainer);
             BaitShopSlot slotScript = newSlot.GetComponent<BaitShopSlot>();
-            slotScript.SetupSlot(bait, this);
+            
+            // Pass the custom daily price instead of the asset's default price
+            int priceForToday = currentDailyPrices[bait];
+            slotScript.SetupSlotWithCustomPrice(bait, priceForToday, this);
         }
     }
 
     public void TryPurchaseBait(BaitData bait)
     {
-        if (OrderManager.Instance == null)
-        {
-            Debug.LogError("BaitShopManager: Cannot find active OrderManager in the scene layout!");
-            return;
-        }
+        if (OrderManager.Instance == null) return;
 
-        if (OrderManager.Instance.counter >= bait.price)
+        // Fetch today's current tracking price from our runtime dictionary container
+        int activePrice = currentDailyPrices.ContainsKey(bait) ? currentDailyPrices[bait] : bait.price;
+
+        if (OrderManager.Instance.counter >= activePrice)
         {
-            OrderManager.Instance.counter -= bait.price;
+            OrderManager.Instance.counter -= activePrice;
 
             if (OrderManager.Instance.coinCounter != null)
             {
                 OrderManager.Instance.coinCounter.text = OrderManager.Instance.counter.ToString();
             }
 
-            if (Sushi.Inventory.BaitInventory.Instance != null)
+            if (BaitInventory.Instance != null)
             {
-                Sushi.Inventory.BaitInventory.Instance.AddBait(bait, 1);
-                Debug.Log($"Successfully spent {bait.price} Gold. Added 1x {bait.displayName}!");
+                BaitInventory.Instance.AddBait(bait, 1);
             }
         }
         else
         {
-            Debug.LogWarning($"Not enough gold! You have {OrderManager.Instance.counter}G, but this costs {bait.price}G.");
+            Debug.LogWarning("Not enough gold for today's price rates!");
         }
     }
 
@@ -73,7 +153,7 @@ public class BaitShopManager : MonoBehaviour
         {
             if (entry != null && entry.item != null && entry.odds > 0)
             {
-                uniqueFishNames.Add($"- {entry.item.displayName}"); 
+                uniqueFishNames.Add($"- {entry.item.name}"); 
             }
         }
 

@@ -15,14 +15,17 @@ public class BaitShopSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     private BaitData baitData;
     private BaitShopManager shopManager;
 
-    public void SetupSlot(BaitData data, BaitShopManager manager)
+    // Call this updated setup function to assign custom fluctuating prices
+    public void SetupSlotWithCustomPrice(BaitData data, int customPrice, BaitShopManager manager)
     {
         baitData = data;
         shopManager = manager;
 
         iconImage.sprite = data.icon;
         nameText.text = data.displayName;
-        priceText.text = data.price + "G";
+        
+        // Display the calculated daily price instead of the static file default
+        priceText.text = customPrice + "G";
 
         buyButton.onClick.RemoveAllListeners();
         buyButton.onClick.AddListener(BuyBait);
