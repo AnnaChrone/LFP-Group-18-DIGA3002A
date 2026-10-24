@@ -174,9 +174,28 @@ public class BaitShopManager : MonoBehaviour
         }
     }
 
+    private bool isTooltipActive = false;
+    [Header("Tooltip Offset Settings")]
+    [Tooltip("Offsets the tooltip from the mouse cursor. X pushes it right, Y pushes it down.")]
+    [SerializeField] private Vector2 tooltipMouseOffset = new Vector2(25f, -15f);
+
+    private void Update()
+    {
+        if (isTooltipActive && tooltipPanel != null && UnityEngine.InputSystem.Mouse.current != null)
+        {
+            Vector2 mousePosition = UnityEngine.InputSystem.Mouse.current.position.ReadValue();
+            
+            tooltipPanel.transform.position = mousePosition + tooltipMouseOffset;
+        }
+    }
+
     public void ShowTooltip(BaitData bait, Vector3 slotPosition)
     {
+        if (tooltipPanel == null || tooltipText == null) return;
+
         tooltipPanel.SetActive(true);
+        isTooltipActive = true;
+
         string description = $"<b>{bait.displayName}</b>\nCatches:\n";
         
         HashSet<string> uniqueFishNames = new HashSet<string>();
@@ -184,14 +203,20 @@ public class BaitShopManager : MonoBehaviour
         {
             if (entry != null && entry.item != null && entry.odds > 0)
             {
-                  uniqueFishNames.Add($"- {entry.item.displayName}"); 
+                   uniqueFishNames.Add($"- {entry.item.displayName}"); 
             }
         }
 
         description += uniqueFishNames.Count > 0 ? string.Join("\n", uniqueFishNames) : "- Junk / Nothing";
         tooltipText.text = description;
-        tooltipPanel.transform.position = slotPosition + new Vector3(160f, 40f, 0f);
     }
 
-    public void HideTooltip() => tooltipPanel.SetActive(false);
+    public void HideTooltip()
+    {
+        if (tooltipPanel == null) return;
+
+        tooltipPanel.SetActive(false);
+        isTooltipActive = false;
+    }
+
 }
