@@ -56,6 +56,9 @@ namespace Sushi.UI
 
         private Color originalSlipColor = Color.white;
 
+        private BudgetTier customerType;
+        private int dynamicGoldPayout;
+
         public bool IsAccepted { get; private set; }
         public RecipeData AssignedRecipe => assignedRecipe;
 
@@ -67,19 +70,41 @@ namespace Sushi.UI
                 originalSlipColor = slipBackground.color;
         }
 
-        public void InitializeRecipeTicket(RecipeData recipe, Inventory.Inventory inventory, OrderManager manager, int plateIndex)
+        public void InitializeRecipeTicket(RecipeData recipe, Inventory.Inventory inventory, OrderManager manager, int plateIndex, BudgetTier customerTier)
         {
             assignedRecipe = recipe;
             liveInventoryReference = inventory;
             runtimeManager = manager;
             occupiedPlateIndex = plateIndex;
+            customerType = customerTier;
             IsAccepted = false;
             isServing = false;
 
             if (slipBackground != null)
                 slipBackground.color = originalSlipColor;
 
-            if (menuTitleText != null) menuTitleText.text = recipe.recipeName;
+            float multiplier = 1.0f;
+            string tierPrefix = "";
+
+            switch (customerType)
+            {
+                case BudgetTier.Budget:
+                    multiplier = 0.75f;
+                    tierPrefix = " [Budget]";
+                    break;
+                case BudgetTier.Standard:
+                    multiplier = 1.0f;
+                    break;
+                case BudgetTier.VIP:
+                    multiplier = 1.5f; 
+                    tierPrefix = " ⭐ VIP ⭐";
+                    break;
+            }
+
+            dynamicGoldPayout = Mathf.RoundToInt(recipe.recipeValue * multiplier);
+
+            if (menuTitleText != null) 
+                menuTitleText.text = recipe.recipeName + tierPrefix;
 
             if (menuIconDisplay != null && recipe.resultItem != null)
             {
@@ -88,7 +113,7 @@ namespace Sushi.UI
             }
 
             if (goldPayoutText != null)
-                goldPayoutText.text = $"+{recipe.recipeValue} Gold";
+                goldPayoutText.text = $"+{dynamicGoldPayout} Gold";
 
             if (ingredientsListText != null)
                 ingredientsListText.text = "";
@@ -106,7 +131,6 @@ namespace Sushi.UI
 
         private void Update()
         {
-            // Only show the plate icon while the player is standing at the plate
             if (IsAccepted && !isServing)
             {
                 RefreshPlateDisplay();
@@ -126,8 +150,6 @@ namespace Sushi.UI
                 ServeOrder();
             }
         }
-
-        // --- Prompt / plate ---
 
         private void RefreshInteractPrompt()
         {
@@ -149,10 +171,6 @@ namespace Sushi.UI
             return liveInventoryReference.CountOf(assignedRecipe.resultItem) > 0;
         }
 
-        /// <summary>
-        /// Shows the sushi icon on the plate ONLY when the player is in range
-        /// and the dish is ready in inventory. Hides otherwise.
-        /// </summary>
         private void RefreshPlateDisplay()
         {
             if (plateDisplay == null) return;
@@ -172,8 +190,6 @@ namespace Sushi.UI
                 plateDisplay.color = assignedRecipe.resultItem.tint;
             }
         }
-
-        // --- Accept ---
 
         public void ClickAcceptOrderButton()
         {
@@ -196,8 +212,6 @@ namespace Sushi.UI
             RefreshPlateDisplay();
         }
 
-        // --- Serve ---
-
         private void ServeOrder()
         {
             if (!IsAccepted || liveInventoryReference == null || assignedRecipe == null) return;
@@ -216,14 +230,14 @@ namespace Sushi.UI
             if (runtimeManager != null)
             {
                 runtimeManager.FreeUpPlateSlot(occupiedPlateIndex);
-                runtimeManager.counter += assignedRecipe.recipeValue;
+                
+                runtimeManager.counter += dynamicGoldPayout;
                 runtimeManager.coinCounter.text = runtimeManager.counter.ToString();
             }
 
             StartCoroutine(ServeAnimationRoutine());
         }
-
-        private System.Collections.IEnumerator ServeAnimationRoutine()
+ private System.Collections.IEnumerator ServeAnimationRoutine()
         {
             // 1. Slip turns green
             if (slipBackground != null)
@@ -243,9 +257,10 @@ namespace Sushi.UI
             if (statusText != null)
                 statusText.text = "Served!";
 
-            SoundManager.Instance.PlayCoin();
+            if (SoundManager.Instance != null) 
+                SoundManager.Instance.PlayCoin();
 
-            // 4. Hold at full opacity so the player sees the completed state
+               // 4. Hold at full opacity so the player sees the completed state
             yield return new WaitForSeconds(holdAfterServeDuration);
 
             // 5. Fast fade out
@@ -267,7 +282,7 @@ namespace Sushi.UI
                 yield return null;
             }
 
-            // 6. Dismiss the ticket
+            // 6. Dismiss the ticket visual element cleanly from execution arrays
             if (runtimeManager != null)
                 runtimeManager.CompleteOrder(gameObject);
         }
@@ -318,8 +333,6 @@ namespace Sushi.UI
                 runtimeManager.DismissTicket(gameObject);
             }
         }
-
-        // --- Trigger handling ---
 
         private void OnTriggerEnter2D(Collider2D collision)
         {

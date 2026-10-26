@@ -7,6 +7,8 @@ using Sushi.Inventory;
 using Sushi.UI;
 using TMPro;
 
+public enum BudgetTier { Budget, Standard, VIP }
+
 public class OrderManager : MonoBehaviour
 {
     public static OrderManager Instance;
@@ -32,7 +34,12 @@ public class OrderManager : MonoBehaviour
     public float minTimeBetweenOrders = 4f;
     public float maxTimeBetweenOrders = 10f;
 
-    // Fixed array tracking active tickets placed on 5 physical plates
+    [Header("Customer Balancing")]
+    [Tooltip("Percentage chance (0-100) that a customer is a cheap Budget tier.")]
+    [Range(0f, 100f)] public float budgetChance = 25f;
+    [Tooltip("Percentage chance (0-100) that a customer is a high-paying VIP tier.")]
+    [Range(0f, 100f)] public float vipChance = 15f;
+
     private GameObject[] activePlateSlots = new GameObject[5];
     private List<GameObject> spawnedSlips = new List<GameObject>();
     private List<GameObject> acceptedSlips = new List<GameObject>();
@@ -83,7 +90,7 @@ public class OrderManager : MonoBehaviour
 
     private IEnumerator GenerationLoop()
     {
-        // --- INSTANT SWAP CAPTURE: Instantly spawn the first ticket immediately upon startup ---
+
         TryCreateTicket();
 
         while (DayNightCycleManager.Instance.currentState == GameState.RestaurantService)
@@ -91,7 +98,6 @@ public class OrderManager : MonoBehaviour
             float delay = UnityEngine.Random.Range(minTimeBetweenOrders, maxTimeBetweenOrders);
             yield return new WaitForSeconds(delay);
 
-            // Let orders keep accumulating up to 5 on the counter plates
             if (spawnedSlips.Count < 5)
             {
                 TryCreateTicket();
@@ -119,7 +125,6 @@ public class OrderManager : MonoBehaviour
             return;
         }
 
-        // 1. Locate which of the 5 plates are empty
         List<int> freePlateIndices = new List<int>();
         for (int i = 0; i < activePlateSlots.Length; i++)
         {
@@ -167,10 +172,21 @@ public class OrderManager : MonoBehaviour
             return;
         }
 
-        // 3. Selection & World Space instantiation onto the chosen target plate
         int chosenPlateIndex = freePlateIndices[UnityEngine.Random.Range(0, freePlateIndices.Count)];
         RecipeData selectedRecipe = viableRecipes[UnityEngine.Random.Range(0, viableRecipes.Count)];
         Transform spawnTarget = plateSpawnPoints[chosenPlateIndex];
+
+        BudgetTier chosenCustomerTier = BudgetTier.Standard;
+        float roll = UnityEngine.Random.Range(0f, 100f);
+
+        if (roll < budgetChance)
+        {
+            chosenCustomerTier = BudgetTier.Budget;
+        }
+        else if (roll >= (100f - vipChance))
+        {
+            chosenCustomerTier = BudgetTier.VIP;
+        }
 
         GameObject newSlip = Instantiate(orderSlipPrefab, spawnTarget.position, Quaternion.identity, spawnTarget);
         spawnedSlips.Add(newSlip);
@@ -179,7 +195,7 @@ public class OrderManager : MonoBehaviour
         OrderSlipUI slipUI = newSlip.GetComponent<OrderSlipUI>();
         if (slipUI != null)
         {
-            slipUI.InitializeRecipeTicket(selectedRecipe, playerInventory, this, chosenPlateIndex);
+            slipUI.InitializeRecipeTicket(selectedRecipe, playerInventory, this, chosenPlateIndex, chosenCustomerTier);
         }
     }
 
@@ -196,7 +212,6 @@ public class OrderManager : MonoBehaviour
         acceptedSlips.Add(slipObj);
         ActiveRecipe = recipe;
         Debug.Log($"Order accepted: {recipe.recipeName}");
-        //here alter popup text of that one
         OnActiveOrderChanged?.Invoke();
         return true;
     }
@@ -228,7 +243,6 @@ public class OrderManager : MonoBehaviour
         Debug.Log("Active order was cancelled. Kitchen is now free to accept a new order.");
         OnActiveOrderChanged?.Invoke();
     }
-
 
     public void FreeUpPlateSlot(int slotIndex)
     {
