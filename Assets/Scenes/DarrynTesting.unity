@@ -14978,7 +14978,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 192, y: -165}
+  m_AnchoredPosition: {x: 192, y: -180}
   m_SizeDelta: {x: 300, y: 22.5}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1028544933
@@ -18815,9 +18815,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Sushi.UI.InventoryUI
   inventory: {fileID: 0}
-  rowPrefab: {fileID: 7967685530648456911, guid: 1c1e73b8befd5b74394dc86e23e5ebcc, type: 3}
-  rowParent: {fileID: 356031975}
+  slotPrefab: {fileID: 7967685530648456911, guid: 1c1e73b8befd5b74394dc86e23e5ebcc, type: 3}
+  slotParent: {fileID: 356031975}
   filter: 1
+  sushiMinSlots: 12
   showWeight: 0
   weightFormat: 0.0
   weightUnit: kg
@@ -35674,9 +35675,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2079191340}
   - component: {fileID: 2079191344}
-  - component: {fileID: 2079191343}
   - component: {fileID: 2079191342}
   - component: {fileID: 2079191341}
+  - component: {fileID: 2079191345}
   m_Layer: 5
   m_Name: Panel_Inventory
   m_TagString: Untagged
@@ -35701,7 +35702,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 1.657196, y: 0.5523987}
+  m_AnchoredPosition: {x: 1.657196, y: 16}
   m_SizeDelta: {x: -25.4093, y: -14.3618}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2079191341
@@ -35717,10 +35718,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Sushi.UI.InventoryUI
   inventory: {fileID: 0}
-  rowPrefab: {fileID: 7967685530648456911, guid: 1c1e73b8befd5b74394dc86e23e5ebcc, type: 3}
-  rowParent: {fileID: 0}
+  slotPrefab: {fileID: 7967685530648456911, guid: 1c1e73b8befd5b74394dc86e23e5ebcc, type: 3}
+  slotParent: {fileID: 0}
   filter: 0
-  showWeight: 1
+  sushiMinSlots: 12
+  showWeight: 0
   weightFormat: 0.0
   weightUnit: kg
 --- !u!114 &2079191342
@@ -35737,32 +35739,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.RectMask2D
   m_Padding: {x: 0, y: 0, z: 0, w: 0}
   m_Softness: {x: 0, y: 0}
---- !u!114 &2079191343
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2079191339}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.VerticalLayoutGroup
-  m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
-  m_ChildAlignment: 0
-  m_Spacing: 4
-  m_ChildForceExpandWidth: 0
-  m_ChildForceExpandHeight: 0
-  m_ChildControlWidth: 0
-  m_ChildControlHeight: 0
-  m_ChildScaleWidth: 1
-  m_ChildScaleHeight: 1
-  m_ReverseArrangement: 0
 --- !u!114 &2079191344
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35776,12 +35752,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Sushi.UI.InventoryUI
   inventory: {fileID: 336660329}
-  rowPrefab: {fileID: 7967685530648456911, guid: 1c1e73b8befd5b74394dc86e23e5ebcc, type: 3}
-  rowParent: {fileID: 2079191340}
+  slotPrefab: {fileID: 7967685530648456911, guid: 1c1e73b8befd5b74394dc86e23e5ebcc, type: 3}
+  slotParent: {fileID: 2079191340}
   filter: 0
+  sushiMinSlots: 12
   showWeight: 1
   weightFormat: 0.0
   weightUnit: kg
+--- !u!114 &2079191345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2079191339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GridLayoutGroup
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 4
+  m_StartCorner: 0
+  m_StartAxis: 0
+  m_CellSize: {x: 100, y: 100}
+  m_Spacing: {x: -38, y: -55}
+  m_Constraint: 2
+  m_ConstraintCount: 2
 --- !u!1001 &2086955409
 PrefabInstance:
   m_ObjectHideFlags: 0

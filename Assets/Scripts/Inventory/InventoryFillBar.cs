@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Sushi.Data;
 
 namespace Sushi.UI
 {
@@ -11,6 +12,9 @@ namespace Sushi.UI
     ///
     /// It reads FillFraction and FillLabel off the inventory's capacity rule,
     /// so it keeps working unchanged when the slot cap becomes a weight cap.
+    ///
+    /// The optional Weight Label counts the carried weight up (or down) in step
+    /// with the bar, e.g. "6.4 / 10.0 kg".
     /// </summary>
     public class InventoryFillBar : MonoBehaviour
     {
@@ -22,6 +26,20 @@ namespace Sushi.UI
 
         [SerializeField] private TMP_Text label;
 
+        [Header("Weight Readout")]
+        [Tooltip("Live carried weight. Counts smoothly as the bar fills.")]
+        [SerializeField] private TMP_Text weightLabel;
+
+        [Tooltip("The weight rule asset (Capacity_Weight). Supplies the max weight and unit. " +
+                 "Leave empty to show only the current weight.")]
+        [SerializeField] private Sushi.Inventory.WeightCapacityRule weightRule;
+
+        [SerializeField] private string weightFormat = "0.0";
+        [SerializeField] private string fallbackUnit = "kg";
+
+        [Tooltip("Tint the weight text with the bar colour.")]
+        [SerializeField] private bool tintWeightLabel = true;
+
         [Header("Colour Ramp")]
         [SerializeField] private Color lowColor = new Color(0.35f, 0.72f, 0.85f);
         [SerializeField] private Color highColor = new Color(0.95f, 0.72f, 0.28f);
@@ -31,7 +49,7 @@ namespace Sushi.UI
         [SerializeField, Range(0f, 1f)] private float warnAt = 0.6f;
 
         [Header("Motion")]
-        [Tooltip("Seconds for the bar to catch up. Keep it short so the catch still feels instant.")]
+        [Tooltip("Seconds for the bar and weight number to catch up. Keep it short so the catch still feels instant.")]
         [SerializeField, Min(0f)] private float smoothTime = 0.12f;
 
         [Tooltip("Gentle pulse once the bag is full, to sell the pacing beat.")]
@@ -39,6 +57,11 @@ namespace Sushi.UI
 
         private float displayed;
         private float velocity;
+
+        private float targetWeight;
+        private float weightShown;
+        private float weightVelocity;
+        private float lastWrittenWeight = float.NaN;
 
         private void Awake()
         {
@@ -48,7 +71,13 @@ namespace Sushi.UI
         private void OnEnable()
         {
             if (inventory != null) inventory.OnChanged += Refresh;
-            if (inventory != null) displayed = inventory.FillFraction;
+            if (inventory != null)
+            {
+                displayed = inventory.FillFraction;
+                targetWeight = CalculateFishWeight();
+                weightShown = targetWeight;
+            }
+            lastWrittenWeight = float.NaN;
             Refresh();
         }
 
@@ -59,39 +88,86 @@ namespace Sushi.UI
 
         public void Refresh()
         {
-            if (inventory == null || label == null) return;
-            label.text = inventory.FillLabel;
+            if (inventory == null) return;
+
+            targetWeight = CalculateFishWeight();
+
+            if (label != null) label.text = inventory.FillLabel;
         }
 
         private void Update()
         {
-            if (inventory == null || fillImage == null) return;
+            if (inventory == null) return;
 
             float target = inventory.FillFraction;
             displayed = smoothTime <= 0f
                 ? target
                 : Mathf.SmoothDamp(displayed, target, ref velocity, smoothTime);
 
-            fillImage.fillAmount = displayed;
+            weightShown = smoothTime <= 0f
+                ? targetWeight
+                : Mathf.SmoothDamp(weightShown, targetWeight, ref weightVelocity, smoothTime);
 
-            Color color;
+            Color color = CurrentColor();
+
+            if (fillImage != null)
+            {
+                fillImage.fillAmount = displayed;
+                fillImage.color = color;
+            }
+
+            if (weightLabel != null)
+            {
+                UpdateWeightText();
+                if (tintWeightLabel) weightLabel.color = color;
+            }
+        }
+
+        private Color CurrentColor()
+        {
             if (inventory.IsFull)
             {
-                color = fullColor;
+                Color c = fullColor;
                 if (pulseWhenFull)
                 {
                     float pulse = 0.85f + 0.15f * Mathf.Sin(Time.unscaledTime * 6f);
-                    color *= pulse;
-                    color.a = 1f;
+                    c *= pulse;
+                    c.a = 1f;
                 }
-            }
-            else
-            {
-                float t = warnAt >= 1f ? 0f : Mathf.InverseLerp(warnAt, 1f, displayed);
-                color = Color.Lerp(lowColor, highColor, t);
+                return c;
             }
 
-            fillImage.color = color;
+            float t = warnAt >= 1f ? 0f : Mathf.InverseLerp(warnAt, 1f, displayed);
+            return Color.Lerp(lowColor, highColor, t);
+        }
+
+        private void UpdateWeightText()
+        {
+            // Only rebuild the string when the number visibly changes.
+            if (!float.IsNaN(lastWrittenWeight) && Mathf.Abs(weightShown - lastWrittenWeight) < 0.005f)
+                return;
+
+            lastWrittenWeight = weightShown;
+
+            string current = weightShown.ToString(weightFormat);
+            weightLabel.text = weightRule != null
+                ? $"{current} / {weightRule.maxWeight.ToString(weightFormat)} {weightRule.unitSuffix}"
+                : $"{current} {fallbackUnit}";
+        }
+
+        // Fishing bag only: cooked sushi never counts toward the weight cap.
+        private float CalculateFishWeight()
+        {
+            float w = 0f;
+            var items = inventory.Items;
+            for (int i = 0; i < items.Count; i++)
+            {
+                var item = items[i];
+                if (!item.IsValid) continue;
+                if (item.data != null && item.data.category == ItemCategory.Sushi) continue;
+                w += item.weight;
+            }
+            return w;
         }
     }
 }

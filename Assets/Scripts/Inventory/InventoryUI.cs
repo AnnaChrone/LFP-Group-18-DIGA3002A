@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using TMPro;
 using Sushi.Data;
@@ -7,10 +8,15 @@ using Sushi.Data;
 namespace Sushi.UI
 {
     /// <summary>
-    /// One row per distinct item held: icon, count, optional total weight.
+    /// Grid of slots. One cell per item held, so it reads as slot-based even
+    /// though the real limit is weight (see WeightCapacityRule).
     /// Use one instance per tab and set the Filter on each.
-    /// Row prefab needs direct children named exactly "Icon" (Image),
-    /// "CountLabel" (TMP_Text) and "WeightLabel" (TMP_Text, optional).
+    ///
+    /// Slot prefab: a root Image (the cell background) with these direct children:
+    ///   "Icon"        (Image, required)
+    ///   "WeightLabel" (TMP_Text, optional: that item's weight)
+    ///   "Locked"      (GameObject, optional: overlay shown on empty cells once the bag is full)
+    /// The slot parent needs a Grid Layout Group.
     /// </summary>
     public class InventoryUI : MonoBehaviour
     {
@@ -21,35 +27,40 @@ namespace Sushi.UI
         }
 
         private const string IconChildName = "Icon";
-        private const string CountLabelChildName = "CountLabel";
         private const string WeightLabelChildName = "WeightLabel";
+        private const string LockedChildName = "Locked";
 
         [Header("Wiring")]
         [SerializeField] private Sushi.Inventory.Inventory inventory;
-        [SerializeField] private GameObject rowPrefab;
-        [Tooltip("The Content object with a Vertical Layout Group on it.")]
-        [SerializeField] private RectTransform rowParent;
+        [FormerlySerializedAs("rowPrefab")]
+        [SerializeField] private GameObject slotPrefab;
+        [FormerlySerializedAs("rowParent")]
+        [Tooltip("The Content object with a Grid Layout Group on it.")]
+        [SerializeField] private RectTransform slotParent;
 
         [Header("Filter")]
         [SerializeField] private CategoryFilter filter = CategoryFilter.ExcludeSushi;
 
+        [Header("Slots")]
+        [Tooltip("Sushi tab only: minimum number of cells to show. Grows if more sushi is held. " +
+                 "The fish tab always shows the inventory's full slot count.")]
+        [SerializeField, Min(1)] private int sushiMinSlots = 12;
+
         [Header("Display")]
         [SerializeField] private bool showWeight = true;
         [SerializeField] private string weightFormat = "0.0";
-        [SerializeField] private string weightUnit = "lb";
+        [SerializeField] private string weightUnit = "kg";
 
-        private struct Row
+        private struct Slot
         {
             public GameObject root;
             public Image icon;
-            public TMP_Text countLabel;
             public TMP_Text weightLabel;
+            public GameObject locked;
         }
 
-        private readonly List<Row> pooledRows = new List<Row>();
-        private readonly List<ItemData> speciesOrder = new List<ItemData>();
-        private readonly Dictionary<ItemData, int> counts = new Dictionary<ItemData, int>();
-        private readonly Dictionary<ItemData, float> weights = new Dictionary<ItemData, float>();
+        private readonly List<Slot> pooledSlots = new List<Slot>();
+        private readonly List<Sushi.Inventory.CaughtItem> shown = new List<Sushi.Inventory.CaughtItem>();
 
         private void Awake()
         {
@@ -69,71 +80,87 @@ namespace Sushi.UI
 
         public void Refresh()
         {
-            if (inventory == null || rowPrefab == null || rowParent == null) return;
+            if (inventory == null || slotPrefab == null || slotParent == null) return;
 
-            BuildCounts();
+            BuildShownList();
 
-            while (pooledRows.Count < speciesOrder.Count)
-                pooledRows.Add(SpawnRow());
+            bool fishTab = filter == CategoryFilter.ExcludeSushi;
+            int cellCount = fishTab ? inventory.SlotCount : Mathf.Max(sushiMinSlots, shown.Count);
+            cellCount = Mathf.Max(cellCount, shown.Count); // never hide a held item
 
-            for (int i = 0; i < pooledRows.Count; i++)
+            while (pooledSlots.Count < cellCount)
+                pooledSlots.Add(SpawnSlot());
+
+            // Once the fishing bag is full (weight or slots), empty cells get a
+            // locked look so unused cells don't suggest there is still room.
+            bool lockEmpty = fishTab && inventory.IsFull;
+
+            for (int i = 0; i < pooledSlots.Count; i++)
             {
-                bool used = i < speciesOrder.Count;
-                if (used)
-                {
-                    ItemData species = speciesOrder[i];
-                    ApplyToRow(pooledRows[i], species, counts[species], weights[species]);
-                }
-                pooledRows[i].root.SetActive(used);
+                bool active = i < cellCount;
+                pooledSlots[i].root.SetActive(active);
+                if (!active) continue;
+
+                if (i < shown.Count) ApplyFilled(pooledSlots[i], shown[i]);
+                else ApplyEmpty(pooledSlots[i], lockEmpty);
             }
 
-            LayoutRebuilder.ForceRebuildLayoutImmediate(rowParent);
+            LayoutRebuilder.ForceRebuildLayoutImmediate(slotParent);
         }
 
-        private Row SpawnRow()
+        private Slot SpawnSlot()
         {
-            GameObject instance = Instantiate(rowPrefab, rowParent);
+            GameObject instance = Instantiate(slotPrefab, slotParent);
 
             Transform iconT = instance.transform.Find(IconChildName);
-            Transform countT = instance.transform.Find(CountLabelChildName);
             Transform weightT = instance.transform.Find(WeightLabelChildName);
+            Transform lockedT = instance.transform.Find(LockedChildName);
 
-            if (iconT == null || countT == null)
+            if (iconT == null)
             {
-                Debug.LogError($"[InventoryUI] Row prefab '{rowPrefab.name}' needs children named " +
-                               $"'{IconChildName}' and '{CountLabelChildName}'.", rowPrefab);
+                Debug.LogError($"[InventoryUI] Slot prefab '{slotPrefab.name}' needs a child named " +
+                               $"'{IconChildName}'.", slotPrefab);
             }
 
-            return new Row
+            return new Slot
             {
                 root = instance,
                 icon = iconT != null ? iconT.GetComponent<Image>() : null,
-                countLabel = countT != null ? countT.GetComponent<TMP_Text>() : null,
-                weightLabel = weightT != null ? weightT.GetComponent<TMP_Text>() : null
+                weightLabel = weightT != null ? weightT.GetComponent<TMP_Text>() : null,
+                locked = lockedT != null ? lockedT.gameObject : null
             };
         }
 
-        private void ApplyToRow(Row row, ItemData item, int count, float totalWeight)
+        private void ApplyFilled(Slot slot, Sushi.Inventory.CaughtItem item)
         {
-            if (row.icon != null)
+            ItemData data = item.data;
+
+            if (slot.icon != null)
             {
-                bool hasIcon = item != null && item.icon != null;
-                row.icon.enabled = hasIcon;
+                bool hasIcon = data != null && data.icon != null;
+                slot.icon.enabled = hasIcon;
                 if (hasIcon)
                 {
-                    row.icon.sprite = item.icon;
-                    row.icon.color = item.tint;
+                    slot.icon.sprite = data.icon;
+                    slot.icon.color = data.tint;
                 }
             }
 
-            if (row.countLabel != null) row.countLabel.text = count.ToString();
-
-            if (row.weightLabel != null)
+            if (slot.weightLabel != null)
             {
-                row.weightLabel.gameObject.SetActive(showWeight);
+                slot.weightLabel.gameObject.SetActive(showWeight);
                 if (showWeight)
-                    row.weightLabel.text = $"{totalWeight.ToString(weightFormat)} {weightUnit}";
+                    slot.weightLabel.text = $"{item.weight.ToString(weightFormat)} {weightUnit}";
             }
+
+            if (slot.locked != null) slot.locked.SetActive(false);
+        }
+
+        private void ApplyEmpty(Slot slot, bool locked)
+        {
+            if (slot.icon != null) slot.icon.enabled = false;
+            if (slot.weightLabel != null) slot.weightLabel.gameObject.SetActive(false);
+            if (slot.locked != null) slot.locked.SetActive(locked);
         }
 
         private bool PassesFilter(ItemData data)
@@ -142,26 +169,16 @@ namespace Sushi.UI
             return filter == CategoryFilter.OnlySushi ? isSushi : !isSushi;
         }
 
-        private void BuildCounts()
+        private void BuildShownList()
         {
-            speciesOrder.Clear();
-            counts.Clear();
-            weights.Clear();
+            shown.Clear();
 
             IReadOnlyList<Sushi.Inventory.CaughtItem> items = inventory.Items;
             for (int i = 0; i < items.Count; i++)
             {
-                ItemData species = items[i].data;
-                if (species == null || !PassesFilter(species)) continue;
-
-                if (!counts.ContainsKey(species))
-                {
-                    counts[species] = 0;
-                    weights[species] = 0f;
-                    speciesOrder.Add(species);
-                }
-                counts[species]++;
-                weights[species] += items[i].weight;
+                ItemData data = items[i].data;
+                if (data == null || !PassesFilter(data)) continue;
+                shown.Add(items[i]);
             }
         }
     }
