@@ -30,9 +30,10 @@ namespace Sushi.Inventory
         public string unitSuffix = "kg";
 
         [Header("Cooked Sushi")]
-        [Tooltip("Max cooked sushi the player can hold. 0 = unlimited. " +
+        [Tooltip("Sushi plates: slot-based cap, one cooked sushi per plate. Match this to the number " +
+                 "of plates in the Sushi Plate Table. 0 = unlimited. " +
                  "Sushi never counts toward the fishing weight limit above.")]
-        [Min(0)] public int maxSushi = 0;
+        [Min(0)] public int maxSushi = 4;
 
         // ---------- Capacity API ----------
 
