@@ -6,14 +6,14 @@ namespace Sushi.Inventory
     /// <summary>
     /// Milestone 2. Cumulative weight cap, borrowed from "Dave the Diver".
     ///
-    /// The cap applies to FISH AND INGREDIENTS ONLY (the fishing bag).
-    /// Cooked sushi is exempt: it never counts toward the fishing slot or
-    /// weight limits, and a full fishing bag never blocks cooking. Sushi has
-    /// its own optional cap (maxSushi, 0 = unlimited).
+    /// The cap applies to FISH AND INGREDIENTS ONLY (the fishing bag), and it
+    /// is WEIGHT ONLY: the number of items is unlimited, so the player can keep
+    /// catching seaweed as long as the total stays under maxWeight. The slot
+    /// count is no longer a limit. The UI grid just shows placeholder cells.
     ///
-    /// FillFraction and FillLabel report whichever fishing limit (slots or
-    /// weight) is closest to being hit, so the fill bar always agrees with
-    /// IsFull.
+    /// Cooked sushi is exempt: it never counts toward the weight limit, and a
+    /// full fishing bag never blocks cooking. Sushi has its own optional cap
+    /// (maxSushi, 0 = unlimited).
     /// </summary>
     [CreateAssetMenu(fileName = "Capacity_Weight", menuName = "Sushi/Capacity Rule/Weight Based")]
     public class WeightCapacityRule : CapacityRule
@@ -31,7 +31,7 @@ namespace Sushi.Inventory
 
         [Header("Cooked Sushi")]
         [Tooltip("Max cooked sushi the player can hold. 0 = unlimited. " +
-                 "Sushi never counts toward the fishing limits above.")]
+                 "Sushi never counts toward the fishing weight limit above.")]
         [Min(0)] public int maxSushi = 0;
 
         // ---------- Capacity API ----------
@@ -44,8 +44,7 @@ namespace Sushi.Inventory
             if (IsSushi(item))
                 return maxSushi <= 0 || SushiCount(inv) < maxSushi;
 
-            // Fish / ingredients: bounded by the grid and the weight cap.
-            if (FishCount(inv) >= inv.SlotCount) return false;
+            // Fish / ingredients: weight is the only limit.
             return FishWeight(inv) + item.weight <= maxWeight;
         }
 
@@ -53,24 +52,17 @@ namespace Sushi.Inventory
         {
             // "Full" is about the fishing bag only, so cooked sushi can never
             // push the player into the night phase.
-            if (FishCount(inv) >= inv.SlotCount) return true;
             return (maxWeight - FishWeight(inv)) < lightestItemWeight;
         }
 
         public override float FillFraction(Inventory inv)
         {
-            // If the fishing bag is full for any reason, the bar must read 100%.
             if (IsFull(inv)) return 1f;
-
-            return Mathf.Clamp01(Mathf.Max(WeightRatio(inv), SlotRatio(inv)));
+            return Mathf.Clamp01(WeightRatio(inv));
         }
 
         public override string FillLabel(Inventory inv)
         {
-            // Show whichever limit is actually the binding one.
-            if (SlotRatio(inv) > WeightRatio(inv))
-                return $"{FishCount(inv)} / {inv.SlotCount} slots";
-
             return $"{FishWeight(inv):0.0} / {maxWeight:0.0} {unitSuffix}";
         }
 
@@ -79,15 +71,6 @@ namespace Sushi.Inventory
         private static bool IsSushi(CaughtItem item)
         {
             return item.data != null && item.data.category == ItemCategory.Sushi;
-        }
-
-        private static int FishCount(Inventory inv)
-        {
-            int n = 0;
-            var items = inv.Items;
-            for (int i = 0; i < items.Count; i++)
-                if (items[i].IsValid && !IsSushi(items[i])) n++;
-            return n;
         }
 
         private static int SushiCount(Inventory inv)
@@ -111,11 +94,6 @@ namespace Sushi.Inventory
         private float WeightRatio(Inventory inv)
         {
             return maxWeight <= 0f ? 1f : FishWeight(inv) / maxWeight;
-        }
-
-        private float SlotRatio(Inventory inv)
-        {
-            return inv.SlotCount <= 0 ? 1f : (float)FishCount(inv) / inv.SlotCount;
         }
     }
 }

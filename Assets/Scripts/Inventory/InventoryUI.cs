@@ -41,9 +41,12 @@ namespace Sushi.UI
         [Header("Filter")]
         [SerializeField] private CategoryFilter filter = CategoryFilter.ExcludeSushi;
 
-        [Header("Slots")]
-        [Tooltip("Sushi tab only: minimum number of cells to show. Grows if more sushi is held. " +
-                 "The fish tab always shows the inventory's full slot count.")]
+        [Header("Placeholder Slots")]
+        [Tooltip("Fish tab: how many empty cells to show. These are just placeholders, not a limit. " +
+                 "The grid grows past this as more items are caught.")]
+        [SerializeField, Min(1)] private int fishPlaceholderSlots = 8;
+
+        [Tooltip("Sushi tab: minimum number of cells to show. Grows if more sushi is held.")]
         [SerializeField, Min(1)] private int sushiMinSlots = 12;
 
         [Header("Display")]
@@ -85,8 +88,8 @@ namespace Sushi.UI
             BuildShownList();
 
             bool fishTab = filter == CategoryFilter.ExcludeSushi;
-            int cellCount = fishTab ? inventory.SlotCount : Mathf.Max(sushiMinSlots, shown.Count);
-            cellCount = Mathf.Max(cellCount, shown.Count); // never hide a held item
+            int placeholders = fishTab ? fishPlaceholderSlots : sushiMinSlots;
+            int cellCount = Mathf.Max(placeholders, shown.Count); // never hide a held item
 
             while (pooledSlots.Count < cellCount)
                 pooledSlots.Add(SpawnSlot());
