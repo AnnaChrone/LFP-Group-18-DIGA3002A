@@ -21,6 +21,7 @@ public class NarrationUI : MonoBehaviour
 
     private Coroutine typing;
     private bool continuePressed;
+    private bool waitingForContinue;
 
     private void Awake()
     {
@@ -40,6 +41,7 @@ public class NarrationUI : MonoBehaviour
     {
         root.SetActive(true);
         continuePressed = false;
+        waitingForContinue = true;
         continueButton.gameObject.SetActive(false);
 
         bool hasSpeaker = !string.IsNullOrEmpty(speaker) && speaker.ToLower() != "narrator";
@@ -86,13 +88,24 @@ public class NarrationUI : MonoBehaviour
         }
 
         continuePressed = true;
+        waitingForContinue = false;
         Continued?.Invoke();
     }
 
-    public void Hide()
+    // Ignored while a line is waiting for Continue, so nothing else can close
+    // the panel early. Pass true to force it closed (e.g. skipping a cutscene).
+    // The warning in the Console shows which script made the call.
+    public void Hide(bool force = false)
     {
+        if (!force && waitingForContinue && root.activeSelf)
+        {
+            Debug.LogWarning("[NarrationUI] Hide() ignored: still waiting for Continue.", this);
+            return;
+        }
+
         if (typing != null) StopCoroutine(typing);
         typing = null;
+        waitingForContinue = false;
         continueButton.gameObject.SetActive(false);
         root.SetActive(false);
     }
