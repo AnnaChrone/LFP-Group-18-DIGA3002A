@@ -25,8 +25,8 @@ namespace Sushi.UI
         public Image slipBackground;
 
         [Header("Acceptance Colors")]
-        public Color acceptedTint = new Color(1f, 0.9f, 0.4f, 1f);   // yellow
-        public Color servedTint = new Color(0.4f, 1f, 0.4f, 1f);     // green
+        public Color acceptedTint = new Color(1f, 0.9f, 0.4f, 1f); 
+        public Color servedTint = new Color(0.4f, 1f, 0.4f, 1f);    
 
         [Header("Plate Display")]
         [Tooltip("The Image on the physical plate that shows the sushi when ready, then the coin when served.")]
@@ -97,7 +97,7 @@ namespace Sushi.UI
                     break;
                 case BudgetTier.VIP:
                     multiplier = 1.5f; 
-                    tierPrefix = " ⭐ VIP ⭐";
+                    tierPrefix = " [VIP]";
                     break;
             }
 
