@@ -16,7 +16,7 @@ public class OrderManager : MonoBehaviour
     [Header("Inventory Hook")]
     public Inventory playerInventory;
     public TextMeshProUGUI coinCounter;
-    public int counter;
+    public int counter; //Coins
 
     [Header("Counter Plate Spawn Points")]
     [Tooltip("Assign your 5 plate transforms from your scene layout here.")]

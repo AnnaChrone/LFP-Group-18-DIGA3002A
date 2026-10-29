@@ -7,6 +7,7 @@ TagManager:
   - Fishing
   - Stove
   - Serve
+  - QoLStation
   layers:
   - Default
   - TransparentFX

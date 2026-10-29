@@ -16,6 +16,7 @@ public class UiPrompter : MonoBehaviour
     public TextMeshProUGUI OrdercompleteText;
 
     public TextMeshProUGUI PressEStoveText;
+    public TextMeshProUGUI PressEQoLText;
 
     private Coroutine orderMessageCoroutine;
     private Coroutine ingredientMessageCoroutine;
@@ -81,7 +82,22 @@ public class UiPrompter : MonoBehaviour
 
         }
     }
- 
+
+    public void QoLText(bool inRange)
+    {
+        if (inRange)
+        {
+            PressEQoLText.text = "Press [E] to view upgrades";
+
+        }
+        else
+        {
+
+            PressEQoLText.text = "";
+
+        }
+    }
+
 
     private IEnumerator FadeMessage(CanvasGroup canvasGroup)
     {

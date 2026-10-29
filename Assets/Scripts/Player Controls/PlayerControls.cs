@@ -12,16 +12,18 @@ public class PlayerControls : MonoBehaviour
     [Header("Fishing Variables")]
     public FishingManager fishingManager;
     public Cooking cooking;
-    public ServeStation serveStation;
+   
 
     [Header("Pause UI")]
     public PauseMenu pauseFunctions;
     public GameObject BaitShopPanel;
+    public GameObject QoLShopPanel;
 
     [SerializeField] private SpriteRenderer playrSprite;
 
 
     private bool inStoveRange = false;
+    private bool inQoLRange = false;
 
     private void Awake()
     {
@@ -73,6 +75,18 @@ public class PlayerControls : MonoBehaviour
             {
                 cooking.OpenStoveUI();
             }
+        } else
+        if (inQoLRange)
+        {
+            // If the QoL UI is open, close it; otherwise open it.
+            if (QoLShopPanel.activeInHierarchy)
+            {
+                QoLShopPanel.SetActive(false);
+            }
+            else
+            {
+                QoLShopPanel.SetActive(true);
+            }
         }
     }
 
@@ -112,10 +126,11 @@ public class PlayerControls : MonoBehaviour
             Debug.Log("In stove range — press E to open");
             UiPrompter.Instance.StoveText(inStoveRange);
         }
-        else if (other.CompareTag("Serve"))
+        else if (other.CompareTag("QoLStation"))
         {
-            serveStation.ServeButton();
-            Debug.Log("Opening serve");
+            inQoLRange = true;
+            Debug.Log("In QoL range — press E to open");
+            UiPrompter.Instance.QoLText(inQoLRange);
         }
     }
 
@@ -128,10 +143,11 @@ public class PlayerControls : MonoBehaviour
             Debug.Log("Left stove range — closing UI");
             UiPrompter.Instance.StoveText(inStoveRange);
         }
-        else if (other.CompareTag("Serve"))
+        else if (other.CompareTag("QoLStation"))
         {
-            serveStation.CloseServeButton();
-            Debug.Log("closing serve");
+            inQoLRange = false;
+            Debug.Log("Left QoL range — closing UI");
+            UiPrompter.Instance.QoLText(inQoLRange);
         }
     }
 }
