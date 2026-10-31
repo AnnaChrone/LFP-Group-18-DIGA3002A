@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a2efcab80ffb854dbf87b23d2c872e3, type: 3}
+  m_Name: HandrollSalmon
+  m_EditorClassIdentifier: Assembly-CSharp::Sushi.Data.RecipeData
+  recipeName: Salmon Handroll
+  upgradeRecipe: 1
+  slot1TOP: {fileID: 11400000, guid: 8f36faa83af6e4749a9de766e847b473, type: 2}
+  slot1Weight: 0.5
+  slot2MIDDLE: {fileID: 11400000, guid: e5b3e4f34792135449dd4cbe2769b234, type: 2}
+  slot2Weight: 0.5
+  slot3BOTTOM: {fileID: 11400000, guid: 0e7f019abecba294fadd3d379f725530, type: 2}
+  slot3Weight: 0.5
+  resultItem: {fileID: 11400000, guid: 7a09de1067f729747966731862e05664, type: 2}
+  recipeValue: 30

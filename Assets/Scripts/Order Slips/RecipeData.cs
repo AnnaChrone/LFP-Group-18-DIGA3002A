@@ -9,6 +9,7 @@ namespace Sushi.Data
     {
         [Header("Recipe Settings")]
         public string recipeName = "Tuna Roll";
+        public bool upgradeRecipe = false;
 
         [Header("3-Slot Ingredients")]
         [Tooltip("TOP SLOT: Leave empty if the recipe only uses 2 ingredients.")]
