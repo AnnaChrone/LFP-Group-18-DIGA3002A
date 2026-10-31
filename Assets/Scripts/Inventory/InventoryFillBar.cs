@@ -151,18 +151,17 @@ namespace Sushi.UI
 
         private void UpdateWeightText()
         {
-            // Only rebuild the string when the number visibly changes.
-            if (!float.IsNaN(lastWrittenWeight) && Mathf.Abs(weightShown - lastWrittenWeight) < 0.005f)
+            // Only rebuild when the exact weight changes
+            if (!float.IsNaN(lastWrittenWeight) && Mathf.Approximately(targetWeight, lastWrittenWeight))
                 return;
 
-            lastWrittenWeight = weightShown;
+            lastWrittenWeight = targetWeight;
 
-            string current = weightShown.ToString(weightFormat);
+            string current = targetWeight.ToString(weightFormat);
             weightLabel.text = weightRule != null
-                ? $"{current} / {weightRule.maxWeight.ToString(weightFormat)} {weightRule.unitSuffix}"
-                : $"{current} {fallbackUnit}";
+                ? $"{current} / {weightRule.maxWeight.ToString("0.#")} {weightRule.unitSuffix}"
+                : $"{current}{fallbackUnit}";
         }
-
         // Fishing bag only: cooked sushi never counts toward the weight cap.
         private float CalculateFishWeight()
         {
