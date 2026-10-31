@@ -1,5 +1,6 @@
 using UnityEngine;
 using Sushi.Data;
+using UnityEngine.Serialization;
 
 namespace Sushi.Inventory
 {
@@ -20,7 +21,26 @@ namespace Sushi.Inventory
     {
         [Header("Fishing Bag (fish + ingredients)")]
         [Tooltip("Total carry weight before the day phase ends.")]
-        [Min(0.1f)] public float maxWeight = 10f;
+        [FormerlySerializedAs("maxWeight")]
+        [Min(0.1f)][SerializeField] private float baseMaxWeight = 10f;
+
+        [System.NonSerialized] private float bonusWeight;
+
+        public float maxWeight => baseMaxWeight + bonusWeight;
+
+        public event System.Action OnCapacityChanged;
+
+        public void AddBonus(float kg)
+        {
+            bonusWeight += kg;
+            OnCapacityChanged?.Invoke();
+        }
+
+        public void ResetBonus()
+        {
+            bonusWeight = 0f;
+            OnCapacityChanged?.Invoke();
+        }
 
         [Tooltip("Weight of the lightest catchable item. Once less than this remains, " +
                  "the fishing bag counts as full because nothing else can fit.")]

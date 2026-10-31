@@ -1,3 +1,4 @@
+using Sushi.Inventory;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -31,41 +32,44 @@ public class QoLUpgrade
     [NonSerialized] public int level; // how many times bought
 
     public bool IsMaxed => level >= (repeatable ? maxLevel : 1);
+    public int CurrentPrice => price + level * priceIncrease;
 }
 
 // Holds the master list of upgrades and handles buying them.
 public class QoLManager : MonoBehaviour
 {
+    
     public static QoLManager Instance { get; private set; }
 
     public List<QoLUpgrade> upgrades = new List<QoLUpgrade>();
 
     public event Action<QoLUpgrade> OnUpgradePurchased;
 
+    public WeightCapacityRule WeightStorage;
+
+
     void Awake()
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
+        if (WeightStorage != null) WeightStorage.ResetBonus();
+
     }
 
-    public bool CanAfford(QoLUpgrade u) => GetPlayerCoins() >= u.price;
+    public bool CanAfford(QoLUpgrade u) => GetPlayerCoins() >= u.CurrentPrice;
 
     /// <summary>Tries to buy. Returns true if it went through.</summary>
     public bool TryPurchase(QoLUpgrade u)
     {
         if (u.IsMaxed || !CanAfford(u)) return false;
 
-        SpendPlayerCoins(u.price);
+        SpendPlayerCoins(u.CurrentPrice);
         u.level++;
         u.onPurchased?.Invoke(u.value);   // <-- runs the upgrade's function
         OnUpgradePurchased?.Invoke(u);
         return true;
     }
 
-    // ------------------------------------------------------------------
-    // HOOK THESE UP TO YOUR EXISTING COIN SYSTEM
-    // Replace the bodies with however your game stores/spends coins.
-    // ------------------------------------------------------------------
     int GetPlayerCoins()
     {
         return OrderManager.Instance.counter;
@@ -79,25 +83,25 @@ public class QoLManager : MonoBehaviour
     //Upgrade functions
     public void AcceptMultipleOrders(float amount)
     {
-        // e.g. Inventory.Instance.maxSlots += (int)amount;
-        Debug.Log($"Bag slots +{amount}");
+        // activate multiple acceptance of orders
     }
 
-    public void IncreaseInventory(float percent)
+    public void IncreaseInventory(float amount)
     {
-        // e.g. FishingSystem.Instance.resistanceMultiplier *= 1f - percent / 100f;
-        Debug.Log($"Reel resistance -{percent}%");
+        //increase inv by 5kg each time
+        WeightStorage.AddBonus(amount);
     }
 
     public void AddServer(float amount)
     {
-        // e.g. Inventory.Instance.maxSlots += (int)amount;
+        DayNightCycleManager.Instance.serviceDuration += amount;
         Debug.Log($"Added new server +{amount}");
     }
 
     public void UnlockRecipes()
     {
         //Unlock sushi recipes here
+        //maybe make it so it checks which recipes are marked as locked and then puts them into rotation
        
     }
 }

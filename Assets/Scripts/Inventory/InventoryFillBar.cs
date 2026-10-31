@@ -71,6 +71,7 @@ namespace Sushi.UI
         private void OnEnable()
         {
             if (inventory != null) inventory.OnChanged += Refresh;
+            if (weightRule != null) weightRule.OnCapacityChanged += HandleCapacityChanged;   
             if (inventory != null)
             {
                 displayed = inventory.FillFraction;
@@ -84,6 +85,13 @@ namespace Sushi.UI
         private void OnDisable()
         {
             if (inventory != null) inventory.OnChanged -= Refresh;
+            if (weightRule != null) weightRule.OnCapacityChanged -= HandleCapacityChanged;   
+
+        }
+        private void HandleCapacityChanged()
+        {
+            lastWrittenWeight = float.NaN;   // forces the weight text to rebuild with new max
+            Refresh();
         }
 
         public void Refresh()

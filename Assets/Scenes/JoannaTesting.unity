@@ -7652,7 +7652,7 @@ MonoBehaviour:
     description: Buy up to three additional servers (+30sec restaurant time)
     price: 100
     icon: {fileID: -1307928076344213211, guid: a0998a2c89d2aa049a059aab6f91464c, type: 3}
-    value: 1
+    value: 30
     onPurchased:
       m_PersistentCalls:
         m_Calls:
@@ -7674,7 +7674,7 @@ MonoBehaviour:
   - id: IncreaseInventory
     displayName: Upgrade Inventory
     description: 'Increase catch inventory '
-    price: 100
+    price: 0
     icon: {fileID: -1307928076344213211, guid: a0998a2c89d2aa049a059aab6f91464c, type: 3}
     value: 5
     onPurchased:
@@ -7743,6 +7743,7 @@ MonoBehaviour:
     repeatable: 0
     maxLevel: 1
     priceIncrease: 1
+  WeightStorage: {fileID: 11400000, guid: 96c1552cc5cbd8349990791cbcfae45c, type: 2}
 --- !u!1 &437869999
 GameObject:
   m_ObjectHideFlags: 0
@@ -9638,6 +9639,81 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &528193167
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 528193168}
+  - component: {fileID: 528193170}
+  - component: {fileID: 528193169}
+  m_Layer: 5
+  m_Name: SlotContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &528193168
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 528193167}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2021947983}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 1.6250916, y: 8.524994}
+  m_SizeDelta: {x: 387.04, y: 134.09}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &528193169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 528193167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GridLayoutGroup
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 1
+  m_StartCorner: 0
+  m_StartAxis: 1
+  m_CellSize: {x: 100, y: 30}
+  m_Spacing: {x: 30, y: 20}
+  m_Constraint: 1
+  m_ConstraintCount: 3
+--- !u!114 &528193170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 528193167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3312d7739989d2b4e91e6319e9a96d76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.RectMask2D
+  m_Padding: {x: 0, y: 0, z: 0, w: 0}
+  m_Softness: {x: 0, y: 0}
 --- !u!1 &530411235
 GameObject:
   m_ObjectHideFlags: 0
@@ -10303,9 +10379,9 @@ RectTransform:
   - {fileID: 607245957}
   m_Father: {fileID: 1663071927}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 204.6, y: -91.16195}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &571643425
@@ -10701,9 +10777,9 @@ RectTransform:
   - {fileID: 986166527}
   m_Father: {fileID: 1663071927}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 341.00003, y: -91.16195}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &597466757
@@ -16831,7 +16907,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1014046517
 RectTransform:
   m_ObjectHideFlags: 0
@@ -24355,7 +24431,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1411016195
 RectTransform:
   m_ObjectHideFlags: 0
@@ -33917,9 +33993,9 @@ RectTransform:
   - {fileID: 1698528345}
   m_Father: {fileID: 1663071927}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 68.200005, y: -91.16195}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1836124414
@@ -36885,8 +36961,6 @@ GameObject:
   - component: {fileID: 2021947983}
   - component: {fileID: 2021947987}
   - component: {fileID: 2021947986}
-  - component: {fileID: 2021947985}
-  - component: {fileID: 2021947984}
   m_Layer: 5
   m_Name: Panel_Inventory
   m_TagString: Untagged
@@ -36906,59 +36980,15 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 528193168}
   - {fileID: 1287144531}
   m_Father: {fileID: 1191801576}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 1.657196, y: 2}
-  m_SizeDelta: {x: -25.4093, y: -14.3618}
+  m_AnchoredPosition: {x: -0.000030517578, y: 2}
+  m_SizeDelta: {x: 0.00024414, y: -14.3618}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2021947984
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2021947982}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GridLayoutGroup
-  m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
-  m_ChildAlignment: 4
-  m_StartCorner: 0
-  m_StartAxis: 0
-  m_CellSize: {x: 100, y: 100}
-  m_Spacing: {x: -38, y: -55}
-  m_Constraint: 2
-  m_ConstraintCount: 2
---- !u!114 &2021947985
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2021947982}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c89f8500b9053c4caedd7eebfb943e4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Sushi.UI.InventoryUI
-  inventory: {fileID: 0}
-  slotPrefab: {fileID: 7967685530648456911, guid: 1c1e73b8befd5b74394dc86e23e5ebcc, type: 3}
-  slotParent: {fileID: 0}
-  filter: 0
-  fishPlaceholderSlots: 8
-  sushiMinSlots: 12
-  showWeight: 0
-  weightFormat: 0.0
-  weightUnit: kg
 --- !u!114 &2021947986
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36987,11 +37017,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Sushi.UI.InventoryUI
   inventory: {fileID: 436529612}
   slotPrefab: {fileID: 7967685530648456911, guid: 1c1e73b8befd5b74394dc86e23e5ebcc, type: 3}
-  slotParent: {fileID: 2021947983}
+  slotParent: {fileID: 528193168}
   filter: 0
-  fishPlaceholderSlots: 8
+  fishPlaceholderSlots: 6
   sushiMinSlots: 12
-  showWeight: 0
+  showWeight: 1
   weightFormat: 0.0
   weightUnit: kg
 --- !u!1 &2024889406

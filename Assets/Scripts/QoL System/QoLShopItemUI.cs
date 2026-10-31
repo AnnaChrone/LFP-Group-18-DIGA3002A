@@ -41,7 +41,7 @@ public class QoLShopItemUI : MonoBehaviour
         }
         else
         {
-            priceText.text = upgrade.price + " coins";
+            priceText.text = upgrade.CurrentPrice + " coins";
             buyButton.interactable = db.CanAfford(upgrade);
         }
     }

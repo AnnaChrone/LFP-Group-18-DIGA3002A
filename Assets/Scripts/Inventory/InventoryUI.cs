@@ -63,7 +63,14 @@ namespace Sushi.UI
         }
 
         private readonly List<Slot> pooledSlots = new List<Slot>();
-        private readonly List<Sushi.Inventory.CaughtItem> shown = new List<Sushi.Inventory.CaughtItem>();
+        private struct Stack
+        {
+            public ItemData data;
+            public int count;
+            public float weight;   // total weight of the stack
+        }
+
+        private readonly List<Stack> shown = new List<Stack>();
 
         private void Awake()
         {
@@ -134,9 +141,9 @@ namespace Sushi.UI
             };
         }
 
-        private void ApplyFilled(Slot slot, Sushi.Inventory.CaughtItem item)
+        private void ApplyFilled(Slot slot, Stack stack)
         {
-            ItemData data = item.data;
+            ItemData data = stack.data;
 
             if (slot.icon != null)
             {
@@ -151,9 +158,13 @@ namespace Sushi.UI
 
             if (slot.weightLabel != null)
             {
-                slot.weightLabel.gameObject.SetActive(showWeight);
-                if (showWeight)
-                    slot.weightLabel.text = $"{item.weight.ToString(weightFormat)} {weightUnit}";
+                bool show = showWeight || stack.count > 1;
+                slot.weightLabel.gameObject.SetActive(show);
+                if (show)
+                {
+                    string w = $"{stack.weight.ToString(weightFormat)} {weightUnit}";
+                    slot.weightLabel.text = w;
+                }
             }
 
             if (slot.locked != null) slot.locked.SetActive(false);
@@ -181,7 +192,22 @@ namespace Sushi.UI
             {
                 ItemData data = items[i].data;
                 if (data == null || !PassesFilter(data)) continue;
-                shown.Add(items[i]);
+
+                int found = -1;
+                for (int s = 0; s < shown.Count; s++)
+                    if (shown[s].data == data) { found = s; break; }
+
+                if (found < 0)
+                {
+                    shown.Add(new Stack { data = data, count = 1, weight = items[i].weight });
+                }
+                else
+                {
+                    Stack st = shown[found];
+                    st.count++;
+                    st.weight += items[i].weight;
+                    shown[found] = st;
+                }
             }
         }
     }
