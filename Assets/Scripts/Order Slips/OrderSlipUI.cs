@@ -7,6 +7,16 @@ using Sushi.Inventory;
 
 namespace Sushi.UI
 {
+    [System.Serializable]
+    public class PayoutPenalty
+    {
+        [Tooltip("Seconds after accepting when this band is reached.")]
+        public float atSeconds = 10f;
+
+        [Tooltip("Extra percent of the ORIGINAL payout removed when this band is reached. Adds to the bands before it.")]
+        [Min(0f)] public float percentOff = 3f;
+    }
+
     [DisallowMultipleComponent]
     public class OrderSlipUI : MonoBehaviour
     {
@@ -25,8 +35,8 @@ namespace Sushi.UI
         public Image slipBackground;
 
         [Header("Acceptance Colors")]
-        public Color acceptedTint = new Color(1f, 0.9f, 0.4f, 1f); 
-        public Color servedTint = new Color(0.4f, 1f, 0.4f, 1f);    
+        public Color acceptedTint = new Color(1f, 0.9f, 0.4f, 1f);
+        public Color servedTint = new Color(0.4f, 1f, 0.4f, 1f);
 
         [Header("Plate Display")]
         [Tooltip("The Image on the physical plate that shows the sushi when ready, then the coin when served.")]
@@ -41,6 +51,22 @@ namespace Sushi.UI
 
         [Tooltip("Seconds the slip + coin take to fade out after the hold.")]
         public float fadeOutDuration = 0.1f;
+
+        [Header("Order Timer (counts up after accept)")]
+        [Tooltip("Optional. Shows elapsed time on the slip, e.g. 0:42")]
+        public TMP_Text timerText;
+
+        [Tooltip("The most that can ever be taken off, as a percent of the original payout, however many bands are reached.")]
+        [Range(0f, 100f)] public float maxPercentOff = 50f;
+
+        [Tooltip("Each band removes an extra bit once its time is reached. They add up (up to the max above).")]
+        public System.Collections.Generic.List<PayoutPenalty> penalties =
+            new System.Collections.Generic.List<PayoutPenalty>
+            {
+                new PayoutPenalty { atSeconds = 10f, percentOff = 3f },
+                new PayoutPenalty { atSeconds = 20f, percentOff = 5f },
+                new PayoutPenalty { atSeconds = 30f, percentOff = 10f }
+            };
 
         [Header("Counter Interactivity Overlay")]
         [SerializeField] private GameObject interactPromptVisual;
@@ -57,7 +83,11 @@ namespace Sushi.UI
         private Color originalSlipColor = Color.white;
 
         private BudgetTier customerType;
-        private int dynamicGoldPayout;
+        private int dynamicGoldPayout;      // original payout for this order
+        private int currentGoldPayout;      // payout after time penalties
+
+        private Coroutine orderTimerRoutine;
+        private float elapsed;
 
         public bool IsAccepted { get; private set; }
         public RecipeData AssignedRecipe => assignedRecipe;
@@ -96,7 +126,7 @@ namespace Sushi.UI
                     multiplier = 1.0f;
                     break;
                 case BudgetTier.VIP:
-                    multiplier = 1.5f; 
+                    multiplier = 1.5f;
                     tierPrefix = " [VIP]";
                     break;
             }
@@ -112,8 +142,10 @@ namespace Sushi.UI
                 menuIconDisplay.color = recipe.resultItem.tint;
             }
 
-            if (goldPayoutText != null)
-                goldPayoutText.text = $"+{dynamicGoldPayout} Gold";
+            StopOrderTimer();
+            currentGoldPayout = dynamicGoldPayout;
+            RefreshPayoutText();
+            if (timerText != null) timerText.text = "";
 
             if (ingredientsListText != null)
                 ingredientsListText.text = "";
@@ -149,6 +181,60 @@ namespace Sushi.UI
             {
                 ServeOrder();
             }
+        }
+
+        // --- Order timer (counts up, payout drops as bands are reached) ---
+
+        private System.Collections.IEnumerator OrderTimerRoutine()
+        {
+            elapsed = 0f;
+            int lastSecond = -1;
+
+            while (true)
+            {
+                elapsed += Time.deltaTime;   // scaled time, so your pause button stops it
+
+                int sec = (int)elapsed;
+                if (sec != lastSecond && timerText != null)
+                {
+                    lastSecond = sec;
+                    timerText.text = $"{sec / 60}:{sec % 60:00}";
+                }
+
+                float off = 0f;
+                for (int i = 0; i < penalties.Count; i++)
+                    if (elapsed >= penalties[i].atSeconds)
+                        off += penalties[i].percentOff;
+                off = Mathf.Min(off, maxPercentOff);
+
+                int deduction = Mathf.CeilToInt(dynamicGoldPayout * off / 100f - 0.0001f);
+                int newPayout = Mathf.Max(0, dynamicGoldPayout - deduction);
+                if (newPayout != currentGoldPayout)
+                {
+                    currentGoldPayout = newPayout;
+                    RefreshPayoutText();
+                }
+
+                yield return null;
+            }
+        }
+
+        private void StopOrderTimer()
+        {
+            if (orderTimerRoutine != null)
+            {
+                StopCoroutine(orderTimerRoutine);
+                orderTimerRoutine = null;
+            }
+        }
+
+        private void RefreshPayoutText()
+        {
+            if (goldPayoutText == null) return;
+
+            goldPayoutText.text = currentGoldPayout == dynamicGoldPayout
+                ? $"{dynamicGoldPayout} Gold"
+                : $"<s>{dynamicGoldPayout}</s> {currentGoldPayout} Gold";
         }
 
         private void RefreshInteractPrompt()
@@ -208,6 +294,9 @@ namespace Sushi.UI
             if (slipBackground != null)
                 slipBackground.color = acceptedTint;
 
+            StopOrderTimer();
+            orderTimerRoutine = StartCoroutine(OrderTimerRoutine());
+
             RefreshInteractPrompt();
             RefreshPlateDisplay();
         }
@@ -221,6 +310,7 @@ namespace Sushi.UI
             if (platedSushi == null || liveInventoryReference.CountOf(platedSushi) <= 0) return;
 
             isServing = true;
+            StopOrderTimer();
 
             liveInventoryReference.RemoveFirst(platedSushi);
 
@@ -230,14 +320,15 @@ namespace Sushi.UI
             if (runtimeManager != null)
             {
                 runtimeManager.FreeUpPlateSlot(occupiedPlateIndex);
-                
-                runtimeManager.counter += dynamicGoldPayout;
+
+                runtimeManager.counter += currentGoldPayout;
                 runtimeManager.coinCounter.text = runtimeManager.counter.ToString();
             }
 
             StartCoroutine(ServeAnimationRoutine());
         }
- private System.Collections.IEnumerator ServeAnimationRoutine()
+
+        private System.Collections.IEnumerator ServeAnimationRoutine()
         {
             // 1. Slip turns green
             if (slipBackground != null)
@@ -257,10 +348,10 @@ namespace Sushi.UI
             if (statusText != null)
                 statusText.text = "Served!";
 
-            if (SoundManager.Instance != null) 
+            if (SoundManager.Instance != null)
                 SoundManager.Instance.PlayCoin();
 
-               // 4. Hold at full opacity so the player sees the completed state
+            // 4. Hold at full opacity so the player sees the completed state
             yield return new WaitForSeconds(holdAfterServeDuration);
 
             // 5. Fast fade out
@@ -299,6 +390,7 @@ namespace Sushi.UI
 
                 if (liveInventoryReference.CountOf(otherRecipe.resultItem) > 0)
                 {
+                    StopOrderTimer();
                     liveInventoryReference.RemoveFirst(otherRecipe.resultItem);
 
                     Debug.Log($"Served the wrong dish ({otherRecipe.recipeName}) for order '{assignedRecipe.recipeName}' - order failed.");
@@ -322,6 +414,7 @@ namespace Sushi.UI
 
         public void ClickRejectOrderButton()
         {
+            StopOrderTimer();
             Debug.Log($"Order '{assignedRecipe.recipeName}' was rejected/cancelled by the player.");
 
             if (runtimeManager != null)
