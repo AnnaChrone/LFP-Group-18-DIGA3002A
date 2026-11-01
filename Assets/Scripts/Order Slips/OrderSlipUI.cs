@@ -37,10 +37,10 @@ namespace Sushi.UI
 
         [Header("Served Animation")]
         [Tooltip("Seconds the green slip + coin stay fully visible before fading.")]
-        public float holdAfterServeDuration = 1.5f;
+        public float holdAfterServeDuration = 0.5f;
 
         [Tooltip("Seconds the slip + coin take to fade out after the hold.")]
-        public float fadeOutDuration = 0.3f;
+        public float fadeOutDuration = 0.1f;
 
         [Header("Counter Interactivity Overlay")]
         [SerializeField] private GameObject interactPromptVisual;
@@ -103,8 +103,8 @@ namespace Sushi.UI
 
             dynamicGoldPayout = Mathf.RoundToInt(recipe.recipeValue * multiplier);
 
-            if (menuTitleText != null) 
-                menuTitleText.text = recipe.recipeName + tierPrefix;
+            if (menuTitleText != null)
+                menuTitleText.text = $"{recipe.recipeName}\n{tierPrefix}";
 
             if (menuIconDisplay != null && recipe.resultItem != null)
             {
