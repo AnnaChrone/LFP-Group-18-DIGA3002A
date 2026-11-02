@@ -12,8 +12,8 @@ public class NightSummaryManager : MonoBehaviour
     public int NoOfCompleted = 0;
     public string MostPopular = "None";
     public float orderProfits = 0f;
-    public float cancellationDeductions = 0f;
-    public float nightlyTax = 10f;
+    public int cancellationDeductions = 0;
+    public int nightlyTax = 10;
     public float OverallEarnings = 0f;
 
     private readonly System.Collections.Generic.Dictionary<string, int> dishCounts =
@@ -44,7 +44,7 @@ public class NightSummaryManager : MonoBehaviour
         NoOfCompleted = 0;
         MostPopular = "None";
         orderProfits = 0f;
-        cancellationDeductions = 0f;
+        cancellationDeductions = 0;
         OverallEarnings = 0;
         dishCounts.Clear();
         topCount = 0;
@@ -73,7 +73,7 @@ public class NightSummaryManager : MonoBehaviour
         orderProfits += amount;
     }
 
-    public void IncreaseCancellationDeductions(float amount)
+    public void IncreaseCancellationDeductions(int amount)
     {
         cancellationDeductions += amount;
     }
@@ -87,6 +87,8 @@ public class NightSummaryManager : MonoBehaviour
     public void DisplaySummary()
     {
         OverallEarningsCalc();
+        OrderManager.Instance.counter -= (nightlyTax + cancellationDeductions);
+
 
         TotalOrder.text = "Total Orders Completed: " + NoOfCompleted;
         PopularDish.text = "Most Popular Dish: " + MostPopular;
