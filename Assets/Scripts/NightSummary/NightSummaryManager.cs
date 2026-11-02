@@ -97,4 +97,9 @@ public class NightSummaryManager : MonoBehaviour
 
         SummaryPanel.SetActive(true);
     }
+
+    public void CloseSummary()
+    {
+        SummaryPanel.SetActive(false);
+    }
 }
