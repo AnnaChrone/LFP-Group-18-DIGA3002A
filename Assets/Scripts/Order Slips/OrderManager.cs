@@ -240,6 +240,9 @@ public class OrderManager : MonoBehaviour
         }
         
         ActiveRecipe = null;
+        OrderSlipUI slip = slipObj.GetComponent<OrderSlipUI>();
+        if (slip != null)
+            NightSummaryManager.Instance.IncreaseCancellationDeductions(slip.currentGoldPayout);
         Debug.Log("Active order was cancelled. Kitchen is now free to accept a new order.");
         OnActiveOrderChanged?.Invoke();
     }

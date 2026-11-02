@@ -226,6 +226,7 @@ public class DayNightCycleManager : MonoBehaviour
     private IEnumerator RunRestaurantServiceSequence()
     {
         currentState = GameState.RestaurantService;
+        NightSummaryManager.Instance.ResetNightSummary();
         hasServedToday = true; 
         SetPlayerControls(true); 
         
@@ -264,6 +265,7 @@ public class DayNightCycleManager : MonoBehaviour
         if (OrderManager.Instance != null) OrderManager.Instance.StopServiceOrders();
 
         currentState = GameState.Nighttime;
+        NightSummaryManager.Instance.DisplaySummary();
         Debug.Log("Restaurant shift complete!");
         raycastBlocker.SetActive(true);
 

@@ -84,7 +84,7 @@ namespace Sushi.UI
 
         private BudgetTier customerType;
         private int dynamicGoldPayout;      // original payout for this order
-        private int currentGoldPayout;      // payout after time penalties
+        public int currentGoldPayout;      // payout after time penalties
 
         private Coroutine orderTimerRoutine;
         private float elapsed;
@@ -325,6 +325,9 @@ namespace Sushi.UI
                 runtimeManager.coinCounter.text = runtimeManager.counter.ToString();
             }
 
+            NightSummaryManager.Instance.IncreaseOrderProfits(currentGoldPayout);
+            NightSummaryManager.Instance.IncreaseOrderCount();
+            NightSummaryManager.Instance.RecordDishServed(assignedRecipe.recipeName);
             StartCoroutine(ServeAnimationRoutine());
         }
 
