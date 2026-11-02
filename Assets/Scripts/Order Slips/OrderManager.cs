@@ -46,7 +46,13 @@ public class OrderManager : MonoBehaviour
 
     public IReadOnlyList<GameObject> AcceptedTickets => acceptedSlips;
     public bool HasActiveOrder => acceptedSlips.Count > 0;
-    public RecipeData ActiveRecipe { get; private set; }
+    [Header("Order Limits")]
+    [Tooltip("How many orders can be accepted at once. The QoL upgrade raises this.")]
+    [Min(1)] public int maxActiveOrders = 1;
+
+    private readonly List<RecipeData> activeRecipes = new List<RecipeData>();
+    public IReadOnlyList<RecipeData> ActiveRecipes => activeRecipes;
+    public RecipeData ActiveRecipe => activeRecipes.Count > 0 ? activeRecipes[0] : null;
 
     public event Action OnActiveOrderChanged;
 
@@ -84,10 +90,21 @@ public class OrderManager : MonoBehaviour
         {
             activePlateSlots[i] = null;
         }
-        
-        ActiveRecipe = null;
+
+        activeRecipes.Clear();
+        OnActiveOrderChanged?.Invoke();
     }
 
+    private void RebuildActiveRecipes()
+    {
+        activeRecipes.Clear();
+        foreach (GameObject slip in acceptedSlips)
+        {
+            if (slip == null) continue;
+            OrderSlipUI ui = slip.GetComponent<OrderSlipUI>();
+            if (ui != null && ui.AssignedRecipe != null) activeRecipes.Add(ui.AssignedRecipe);
+        }
+    }
     private IEnumerator GenerationLoop()
     {
 
@@ -201,16 +218,16 @@ public class OrderManager : MonoBehaviour
 
     public bool AcceptOrder(RecipeData recipe, GameObject slipObj)
     {
-        if (slipObj == null) return false;
+        if (slipObj == null || acceptedSlips.Contains(slipObj)) return false;
 
-        if (HasActiveOrder)
+        if (acceptedSlips.Count >= maxActiveOrders)
         {
-            Debug.LogWarning($"OrderManager: Can't accept '{recipe.recipeName}' - an order is already in progress.");
+            Debug.LogWarning($"OrderManager: Can't accept '{recipe.recipeName}' - already at {maxActiveOrders} active order(s).");
             return false;
         }
 
         acceptedSlips.Add(slipObj);
-        ActiveRecipe = recipe;
+        RebuildActiveRecipes();
         Debug.Log($"Order accepted: {recipe.recipeName}");
         OnActiveOrderChanged?.Invoke();
         return true;
@@ -219,31 +236,31 @@ public class OrderManager : MonoBehaviour
     public void CompleteOrder(GameObject slipObj)
     {
         acceptedSlips.Remove(slipObj);
-        ActiveRecipe = null;
         DismissTicket(slipObj);
+        RebuildActiveRecipes();
         OnActiveOrderChanged?.Invoke();
     }
 
     public void FailOrder(GameObject slipObj)
     {
         acceptedSlips.Remove(slipObj);
-        ActiveRecipe = null;
         DismissTicket(slipObj);
+        RebuildActiveRecipes();
         OnActiveOrderChanged?.Invoke();
     }
 
+
+
     public void CancelActiveOrder(GameObject slipObj)
     {
-        if (acceptedSlips.Contains(slipObj))
-        {
-            acceptedSlips.Remove(slipObj);
-        }
-        
-        ActiveRecipe = null;
+        acceptedSlips.Remove(slipObj);
+
         OrderSlipUI slip = slipObj.GetComponent<OrderSlipUI>();
         if (slip != null)
             NightSummaryManager.Instance.IncreaseCancellationDeductions(slip.currentGoldPayout);
-        Debug.Log("Active order was cancelled. Kitchen is now free to accept a new order.");
+
+        RebuildActiveRecipes();
+        Debug.Log("Active order was cancelled.");
         OnActiveOrderChanged?.Invoke();
     }
 

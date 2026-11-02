@@ -69,10 +69,20 @@ public class Cooking : MonoBehaviour
     // Cached recipe currently matching the slot arrangement
     private RecipeData currentMatchedRecipe;
 
+    [Header("Order Cycling (when several orders are accepted)")]
+    public Button previousOrderButton;
+    public Button nextOrderButton;
+    [Tooltip("Optional. Shows e.g. 2/3.")]
+    public TMP_Text orderCounterText;
+
+    private int viewIndex = 0;
+
     private void Start()
     {
         if (stoveUIPanel != null) stoveUIPanel.SetActive(false);
         RefreshIngredientSourceStates();
+        if (previousOrderButton != null) previousOrderButton.onClick.AddListener(ShowPreviousOrder);
+        if (nextOrderButton != null) nextOrderButton.onClick.AddListener(ShowNextOrder);
         RefreshActiveOrderDisplay();
         RefreshMatchedRecipe(); // Ensure button starts in a clean state
 
@@ -158,6 +168,26 @@ public class Cooking : MonoBehaviour
             if (requirementText != null)
                 requirementText.text = "";
         }
+    }
+
+    public void ShowNextOrder() => CycleOrder(1);
+    public void ShowPreviousOrder() => CycleOrder(-1);
+
+    private void CycleOrder(int direction)
+    {
+        int count = (orderManager != null && orderManager.ActiveRecipes != null)
+            ? orderManager.ActiveRecipes.Count : 0;
+        if (count <= 1) return;
+
+        viewIndex = (viewIndex + direction + count) % count;
+        RefreshActiveOrderDisplay();
+    }
+
+    private void SetIcon(Image img, ItemData item)
+    {
+        if (img == null) return;
+        img.enabled = item != null;
+        if (item != null) img.sprite = item.icon;
     }
 
     /// <summary>
@@ -249,10 +279,26 @@ public class Cooking : MonoBehaviour
     }
     private void RefreshActiveOrderDisplay()
     {
-        RecipeData active = orderManager != null ? orderManager.ActiveRecipe : null;
+        var orders = orderManager != null ? orderManager.ActiveRecipes : null;
+        int count = orders != null ? orders.Count : 0;
 
-        if (activeOrderPanel != null) activeOrderPanel.SetActive(active != null);
-        if (active == null) return;
+        if (activeOrderPanel != null) activeOrderPanel.SetActive(count > 0);
+
+        bool multiple = count > 1;
+        if (previousOrderButton != null) previousOrderButton.gameObject.SetActive(multiple);
+        if (nextOrderButton != null) nextOrderButton.gameObject.SetActive(multiple);
+
+        if (count == 0) { viewIndex = 0; return; }
+
+        viewIndex = Mathf.Clamp(viewIndex, 0, count - 1);
+
+        if (orderCounterText != null)
+        {
+            orderCounterText.gameObject.SetActive(multiple);
+            if (multiple) orderCounterText.text = $"{viewIndex + 1}/{count}";
+        }
+
+        RecipeData active = orders[viewIndex];
 
         if (activeOrderNameText != null) activeOrderNameText.text = active.recipeName;
 
@@ -262,6 +308,9 @@ public class Cooking : MonoBehaviour
             activeOrderIcon.color = active.resultItem.tint;
         }
 
+        SetIcon(disptop, active.slot1TOP);
+        SetIcon(dispmiddle, active.slot2MIDDLE);
+        SetIcon(dispbottom, active.slot3BOTTOM);
 
         if (activeOrderIngredientsText != null)
         {
@@ -269,11 +318,6 @@ public class Cooking : MonoBehaviour
             if (active.slot3BOTTOM != null) list += active.slot3BOTTOM.Label;
             if (active.slot2MIDDLE != null) { if (list.Length > 0) list += ", "; list += active.slot2MIDDLE.Label; }
             if (active.slot1TOP != null) { if (list.Length > 0) list += ", "; list += active.slot1TOP.Label; }
-
-           // disptop.sprite = active.slot1TOP.icon;
-            dispmiddle.sprite = active.slot2MIDDLE.icon;
-            dispbottom.sprite = active.slot3BOTTOM.icon;
-
             activeOrderIngredientsText.text = list;
         }
     }

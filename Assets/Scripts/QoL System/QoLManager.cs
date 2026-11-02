@@ -83,7 +83,7 @@ public class QoLManager : MonoBehaviour
     //Upgrade functions
     public void AcceptMultipleOrders(float amount)
     {
-        // activate multiple acceptance of orders
+        OrderManager.Instance.maxActiveOrders = Mathf.Max(OrderManager.Instance.maxActiveOrders, (int)amount);
     }
 
     public void IncreaseInventory(float amount)
