@@ -98,11 +98,9 @@ public class QoLManager : MonoBehaviour
         Debug.Log($"Added new server +{amount}");
     }
 
-    public void UnlockRecipes()
+    public void UnlockRecipes(float amount)
     {
-        //Unlock sushi recipes here
-        //maybe make it so it checks which recipes are marked as locked and then puts them into rotation
-       
+        OrderManager.Instance.UnlockUpgradeRecipes();
     }
 }
 

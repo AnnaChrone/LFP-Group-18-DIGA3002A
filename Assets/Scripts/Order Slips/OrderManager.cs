@@ -58,11 +58,27 @@ public class OrderManager : MonoBehaviour
 
     private Coroutine orderRoutine;
 
+    [Header("Recipe Unlocks")]
+    public bool upgradeRecipesUnlocked = false;
+
+    public bool IsRecipeAvailable(RecipeData recipe)
+    {
+        if (recipe == null) return false;
+        return !recipe.upgradeRecipe || upgradeRecipesUnlocked;
+    }
+
+    public void UnlockUpgradeRecipes()
+    {
+        upgradeRecipesUnlocked = true;
+        Debug.Log("Upgrade recipes unlocked!");
+    }
+
     private void Awake()
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
         counter = 0;
+        upgradeRecipesUnlocked = false;
     }
 
     public void StartServiceOrders()
@@ -157,7 +173,7 @@ public class OrderManager : MonoBehaviour
 
         foreach (RecipeData recipe in globalRecipeBook)
         {
-            if (recipe == null) continue;
+            if (!IsRecipeAvailable(recipe)) continue;   // replaces the null check
 
             bool isViable = false;
 

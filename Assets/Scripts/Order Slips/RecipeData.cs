@@ -38,9 +38,9 @@ namespace Sushi.Data
 
         public bool MatchesSlots(ItemData provided1, ItemData provided2, ItemData provided3)
         {
-            if (slot1TOP != null && slot1TOP != provided1) return false;
-            if (slot2MIDDLE != null && slot2MIDDLE != provided2) return false;
-            if (slot3BOTTOM != null && slot3BOTTOM != provided3) return false;
+            if (slot1TOP != provided1) return false;
+            if (slot2MIDDLE != provided2) return false;
+            if (slot3BOTTOM != provided3) return false;
             return true;
         }
     }

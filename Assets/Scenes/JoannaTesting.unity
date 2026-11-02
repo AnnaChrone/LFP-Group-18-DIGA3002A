@@ -7763,11 +7763,15 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 46eb0441af3e27745b4e48b3a084fb9d, type: 2}
   - {fileID: 11400000, guid: 380bdca80e1528249ac5355d8cd61322, type: 2}
   - {fileID: 11400000, guid: eab4aeb215244904d9b9a4930efdc67d, type: 2}
+  - {fileID: 11400000, guid: 80e0bf32dc2ff0e49bc305d837ce6a47, type: 2}
+  - {fileID: 11400000, guid: 73b8d6b3991af7f40848bbdddb2cdd52, type: 2}
+  - {fileID: 11400000, guid: ef9629fcc5de1f84393bda0a99f2ed0e, type: 2}
   minTimeBetweenOrders: 4
   maxTimeBetweenOrders: 6
   budgetChance: 25
   vipChance: 15
   maxActiveOrders: 1
+  upgradeRecipesUnlocked: 0
 --- !u!114 &436529612
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7828,6 +7832,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: eab4aeb215244904d9b9a4930efdc67d, type: 2}
   - {fileID: 11400000, guid: 155cd0805f0e2c14eab9d07466302440, type: 2}
   - {fileID: 11400000, guid: 79d4c416995a1f347ab0c671ca5c4fa3, type: 2}
+  - {fileID: 11400000, guid: 80e0bf32dc2ff0e49bc305d837ce6a47, type: 2}
+  - {fileID: 11400000, guid: 73b8d6b3991af7f40848bbdddb2cdd52, type: 2}
+  - {fileID: 11400000, guid: ef9629fcc5de1f84393bda0a99f2ed0e, type: 2}
   makeSushiButton: {fileID: 690451667}
   makeSushiButtonIcon: {fileID: 690451668}
   requirementText: {fileID: 554697666}
@@ -8004,7 +8011,7 @@ MonoBehaviour:
   - id: UpgradeSushi
     displayName: Unlock new sushi recipes
     description: Unlock new complex sushi recipes
-    price: 200
+    price: 0
     icon: {fileID: -3276687688264177478, guid: 6239ffe51f02fb2448dc94094aba0f2f, type: 3}
     value: 1
     onPurchased:
@@ -8013,7 +8020,7 @@ MonoBehaviour:
         - m_Target: {fileID: 436529619}
           m_TargetAssemblyTypeName: QoLManager, Assembly-CSharp
           m_MethodName: UnlockRecipes
-          m_Mode: 1
+          m_Mode: 0
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -32883,6 +32890,8 @@ MonoBehaviour:
   maximumFishDistance: 20
   fishDistance: 20
   fishPullSpeed: 5
+  maxSlackTime: 1
+  slackGracePeriod: 3
   baitHook: {fileID: 1239987971}
   baitingPanel: {fileID: 2129100247}
   baitedRod: {fileID: 961370254}

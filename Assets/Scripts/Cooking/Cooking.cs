@@ -116,6 +116,7 @@ public class Cooking : MonoBehaviour
             foreach (RecipeData recipe in allRecipes)
             {
                 if (recipe == null) continue;
+                if (orderManager != null && !orderManager.IsRecipeAvailable(recipe)) continue;
 
                 if (recipe.MatchesSlots(providedTop, providedMid, providedBot))
                 {
@@ -464,6 +465,9 @@ public class Cooking : MonoBehaviour
 
         foreach (RecipeData recipe in allRecipes)
         {
+            if (recipe == null) continue;
+            if (orderManager != null && !orderManager.IsRecipeAvailable(recipe)) continue;
+
             if (recipe.MatchesSlots(providedTop, providedMid, providedBot))
             {
                 Debug.Log($"Match Found: {recipe.recipeName}!");
