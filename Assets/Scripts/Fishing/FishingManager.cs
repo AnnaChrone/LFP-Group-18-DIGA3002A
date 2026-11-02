@@ -27,6 +27,15 @@ public class FishingManager : MonoBehaviour
     public float fishDistance = 80f;
     public float fishPullSpeed = 3f;
 
+    [Header("Slack Line")]
+    [Tooltip("Seconds the bobber can sit at the start before the line snaps.")]
+    public float maxSlackTime = 1f;
+    [Tooltip("Seconds after hooking a fish where the slack timer is paused.")]
+    public float slackGracePeriod = 3f;
+
+    private float slackTimer;
+    private float graceTimer;
+
     [Header("Rod")]
     [Tooltip("The single hook slot where bait is attached before casting.")]
     public BaitHook baitHook;
@@ -331,6 +340,8 @@ public class FishingManager : MonoBehaviour
         fightDuration = 0f;
         timeAtHighTension = 0f;
         resistanceTimeSum = 0f;
+        slackTimer = 0f;
+        graceTimer = slackGracePeriod;
 
         ResetRodAndLineColor();
 
@@ -345,6 +356,34 @@ public class FishingManager : MonoBehaviour
         currentResistance = Random.Range(activeMinResistance, activeMaxResistance);
         SetNewResistanceTarget();
         Debug.Log("Fish resistance: " + currentResistance);
+    }
+
+    private void CheckSlackLine()
+    {
+        // Grace period at the start of the fight
+        if (graceTimer > 0f)
+        {
+            graceTimer -= Time.deltaTime;
+            slackTimer = 0f;
+            return;
+        }
+
+        // Bobber is at the start position (fish fully let out)
+        bool atStart = fishDistance >= maximumFishDistance - 0.01f;
+
+        if (atStart)
+        {
+            slackTimer += Time.deltaTime;
+
+            if (slackTimer > maxSlackTime)
+            {
+                BreakLine("Fishing line snapped! You let the fish run too far");
+            }
+        }
+        else
+        {
+            slackTimer = 0f;
+        }
     }
 
     private void StartReeling()
@@ -383,6 +422,9 @@ public class FishingManager : MonoBehaviour
         }
 
         CheckRodTension();
+        CheckRodTension();
+        CheckSlackLine();
+        if (currentState != FishingState.FishHooked) return;
         CheckFishDistance();
         UpdateBobberPosition();
         UpdateRodTensionColor();
@@ -505,12 +547,12 @@ public class FishingManager : MonoBehaviour
         }
     }
 
-    private void BreakLine()
+    private void BreakLine(string message = "Fishing line broke! Tension reached maximum")
     {
         Debug.Log("Line broke :(");
 
-        SoundManager.Instance.PlayBreak();
-        PressSpace.text = "Fishing line broke! Tension reached maximum";
+        SoundManager.Instance?.PlayBreak();
+        PressSpace.text = message;
 
         isReeling = false;
         SoundManager.Instance?.StopReel();
