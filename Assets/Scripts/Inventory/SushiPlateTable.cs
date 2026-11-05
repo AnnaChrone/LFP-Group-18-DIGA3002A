@@ -37,6 +37,15 @@ namespace Sushi.UI
         [Tooltip("Optional. Only used to warn you if its Max Sushi doesn't match the plate count.")]
         [SerializeField] private Sushi.Inventory.WeightCapacityRule capacityRule;
 
+        [Header("Service Visibility")]
+        [Tooltip("The object shown only during restaurant service (usually HotPlateSushiPanel). " +
+                 "Put THIS script on a different, always-active object (the HUD canvas or a manager), " +
+                 "because an inactive object can't run code.")]
+        [SerializeField] private GameObject visualRoot;
+
+        [Tooltip("Hide the Visual Root when the game starts.")]
+        [SerializeField] private bool startHidden = true;
+
         [Header("Plate Look")]
         [Tooltip("How faded an empty plate looks (1 = fully visible).")]
         [SerializeField, Range(0f, 1f)] private float emptyPlateAlpha = 0.55f;
@@ -70,6 +79,12 @@ namespace Sushi.UI
         private void Awake()
         {
             if (inventory == null) inventory = FindObjectOfType<Sushi.Inventory.Inventory>();
+
+            if (visualRoot == gameObject)
+                Debug.LogWarning("[SushiPlateTable] Visual Root is the same object as this script. " +
+                                 "Move the script to an always-active object, or it can never be shown again.", this);
+
+            if (visualRoot != null && startHidden) visualRoot.SetActive(false);
 
             // Whatever you authored in the scene is the collapsed state.
             if (panel != null) collapsedPanelSize = panel.sizeDelta;
@@ -129,6 +144,19 @@ namespace Sushi.UI
         private bool IsCooking()
         {
             return followPanel != null && followPanel.activeInHierarchy;
+        }
+
+        // Call when restaurant service begins.
+        public void BeginService()
+        {
+            if (visualRoot != null) visualRoot.SetActive(true);
+            Refresh();
+        }
+
+        // Call when restaurant service ends.
+        public void EndService()
+        {
+            if (visualRoot != null) visualRoot.SetActive(false);
         }
 
         public void Refresh()

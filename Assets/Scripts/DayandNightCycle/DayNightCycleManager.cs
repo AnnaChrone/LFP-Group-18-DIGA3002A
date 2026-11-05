@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-using UnityEngine.UI; 
+using UnityEngine.UI;
 using TMPro;
 
 public enum GameState { Daytime, Nighttime, RestaurantService }
@@ -11,10 +11,10 @@ public class DayNightCycleManager : MonoBehaviour
 
     [Header("State Settings")]
     public GameState currentState = GameState.Daytime;
-    public float serviceDuration = 60f; 
+    public float serviceDuration = 60f;
 
-    [HideInInspector] 
-    public bool hasServedToday = false; 
+    [HideInInspector]
+    public bool hasServedToday = false;
 
     [Header("Day Counter")]
     public TMP_Text dayText;
@@ -36,7 +36,7 @@ public class DayNightCycleManager : MonoBehaviour
     public TMP_Text SequenceText;
 
     [Header("Visual Countdown Settings")]
-    public TMP_Text countdownText; 
+    public TMP_Text countdownText;
     public GameObject countdownDisplayObject;
 
     [Tooltip("Color used for the countdown text under 30 seconds.")]
@@ -46,9 +46,13 @@ public class DayNightCycleManager : MonoBehaviour
 
     [Header("References")]
     public GameObject player;
-    
-     public BaitShopManager baitShopManager;
-    private MonoBehaviour playerMovementComponent; 
+
+    public BaitShopManager baitShopManager;
+
+    [Tooltip("The hot plate table. Shown only while restaurant service is running.")]
+    public Sushi.UI.SushiPlateTable sushiPlateTable;
+
+    private MonoBehaviour playerMovementComponent;
 
     private void Awake()
     {
@@ -89,7 +93,7 @@ public class DayNightCycleManager : MonoBehaviour
         }
     }
 
-       // --- DAY COUNTER LOGIC ENGINE ---
+    // --- DAY COUNTER LOGIC ENGINE ---
     private void StartNewDay()
     {
         dayCount++;
@@ -114,7 +118,7 @@ public class DayNightCycleManager : MonoBehaviour
     // --- DOOR TO RESTAURANT PROMPTS ---
     public void PromptGoToRestaurant()
     {
-        SetPlayerControls(false); 
+        SetPlayerControls(false);
         restaurantTransitionPanel.SetActive(true);
     }
 
@@ -127,7 +131,7 @@ public class DayNightCycleManager : MonoBehaviour
         }
         else
         {
-            SetPlayerControls(true); 
+            SetPlayerControls(true);
         }
     }
 
@@ -140,7 +144,7 @@ public class DayNightCycleManager : MonoBehaviour
             return;
         }
 
-        SetPlayerControls(false); 
+        SetPlayerControls(false);
         startServicePanel.SetActive(true);
     }
 
@@ -154,7 +158,7 @@ public class DayNightCycleManager : MonoBehaviour
         }
         else
         {
-            SetPlayerControls(true); 
+            SetPlayerControls(true);
         }
     }
 
@@ -174,10 +178,13 @@ public class DayNightCycleManager : MonoBehaviour
             {
                 OrderManager.Instance.StopServiceOrders();
             }
-            
+
             if (countdownDisplayObject != null) countdownDisplayObject.SetActive(false);
 
-            hasServedToday = false; 
+            // Hot plates are only shown during service
+            if (sushiPlateTable != null) sushiPlateTable.EndService();
+
+            hasServedToday = false;
 
             // Returns to the dock, triggering a new day count addition sequence
             StartCoroutine(TeleportSequence(dockSpawnPoint.position, GameState.Daytime));
@@ -191,7 +198,7 @@ public class DayNightCycleManager : MonoBehaviour
     // --- TIMED TRANSITIONS SEQUENCES ---
     private IEnumerator TeleportSequence(Vector3 targetPosition, GameState nextState)
     {
-        SetPlayerControls(false); 
+        SetPlayerControls(false);
 
         if (SequenceText != null)
         {
@@ -209,9 +216,9 @@ public class DayNightCycleManager : MonoBehaviour
         player.transform.position = targetPosition;
         currentState = nextState;
 
-        if (nextState == GameState.Daytime) StartNewDay(); 
+        if (nextState == GameState.Daytime) StartNewDay();
 
-        yield return new WaitForSeconds(0.4f); 
+        yield return new WaitForSeconds(0.4f);
 
         while (screenFaderCanvasGroup.alpha > 0f)
         {
@@ -220,16 +227,19 @@ public class DayNightCycleManager : MonoBehaviour
         }
         screenFaderCanvasGroup.alpha = 0f;
 
-        SetPlayerControls(true); 
+        SetPlayerControls(true);
     }
 
     private IEnumerator RunRestaurantServiceSequence()
     {
         currentState = GameState.RestaurantService;
         NightSummaryManager.Instance.ResetNightSummary();
-        hasServedToday = true; 
-        SetPlayerControls(true); 
-        
+        hasServedToday = true;
+        SetPlayerControls(true);
+
+        // Show the hot plates now that service has begun
+        if (sushiPlateTable != null) sushiPlateTable.BeginService();
+
         if (countdownDisplayObject != null) countdownDisplayObject.SetActive(true);
         if (OrderManager.Instance != null) OrderManager.Instance.StartServiceOrders();
 
@@ -264,27 +274,29 @@ public class DayNightCycleManager : MonoBehaviour
         if (countdownDisplayObject != null) countdownDisplayObject.SetActive(false);
         if (OrderManager.Instance != null) OrderManager.Instance.StopServiceOrders();
 
+        // Service is over, hide the hot plates
+        if (sushiPlateTable != null) sushiPlateTable.EndService();
+
         currentState = GameState.Nighttime;
         NightSummaryManager.Instance.DisplaySummary();
         Debug.Log("Restaurant shift complete!");
         raycastBlocker.SetActive(true);
-
     }
 
-          private void TransitionToDaytimeDirect()
+    private void TransitionToDaytimeDirect()
     {
         currentState = GameState.Daytime;
-        hasServedToday = false; 
+        hasServedToday = false;
         player.transform.position = dockSpawnPoint.position;
-        
-        dayCount = 1; 
+
+        dayCount = 1;
         UpdateDayUI();
 
         if (baitShopManager != null)
         {
             baitShopManager.OnNewDayStarted();
         }
-        
+
         SetPlayerControls(true);
     }
 
