@@ -1,0 +1,141 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63b635c00fb4d2e42aa157e05c52cb9b, type: 3}
+  m_Name: Panel01_Intro
+  m_EditorClassIdentifier: Assembly-CSharp::CutsceneData
+  backgroundSprite: {fileID: 21300000, guid: c8e9e4a1bf880f34794e7da00fd6897c, type: 3}
+  steps:
+  - type: 0
+    text: Ah, there you are, Kenji! Welcome to the harbour town of [Town Name].
+    textFadeTime: 0
+    audioToPlay: {fileID: 0}
+    graphicToShow: {fileID: 0}
+    graphicFadeTime: 0
+    clearTextBeforeGraphic: 0
+    delayTime: 0
+    teleportPosition: {x: 0, y: 0}
+    teleportSceneName: 
+    onStepTrigger:
+      m_PersistentCalls:
+        m_Calls: []
+  - type: 0
+    text: The sea here is generous, the sunsets are golden, and the fish... well,
+      they can be a little shy.
+    textFadeTime: 0
+    audioToPlay: {fileID: 0}
+    graphicToShow: {fileID: 0}
+    graphicFadeTime: 0
+    clearTextBeforeGraphic: 0
+    delayTime: 0
+    teleportPosition: {x: 0, y: 0}
+    teleportSceneName: 
+    onStepTrigger:
+      m_PersistentCalls:
+        m_Calls: []
+  - type: 0
+    text: Our family has run a sushi restaurant on this shore for three generations.
+    textFadeTime: 0
+    audioToPlay: {fileID: 0}
+    graphicToShow: {fileID: 0}
+    graphicFadeTime: 0
+    clearTextBeforeGraphic: 0
+    delayTime: 0
+    teleportPosition: {x: 0, y: 0}
+    teleportSceneName: 
+    onStepTrigger:
+      m_PersistentCalls:
+        m_Calls: []
+  - type: 1
+    text: 
+    textFadeTime: 0
+    audioToPlay: {fileID: 0}
+    graphicToShow: {fileID: 0}
+    graphicFadeTime: 0
+    clearTextBeforeGraphic: 0
+    delayTime: 0
+    teleportPosition: {x: 0, y: 0}
+    teleportSceneName: 
+    onStepTrigger:
+      m_PersistentCalls:
+        m_Calls: []
+  - type: 0
+    text: But times are tough, and the doors may close for good unless we turn things
+      around.
+    textFadeTime: 0
+    audioToPlay: {fileID: 0}
+    graphicToShow: {fileID: 0}
+    graphicFadeTime: 0
+    clearTextBeforeGraphic: 0
+    delayTime: 0
+    teleportPosition: {x: 0, y: 0}
+    teleportSceneName: 
+    onStepTrigger:
+      m_PersistentCalls:
+        m_Calls: []
+  - type: 0
+    text: "By day, you\u2019ll go fishing. Grab some bait from the shop, cast your
+      line, and see what bites."
+    textFadeTime: 0
+    audioToPlay: {fileID: 0}
+    graphicToShow: {fileID: 0}
+    graphicFadeTime: 0
+    clearTextBeforeGraphic: 0
+    delayTime: 0
+    teleportPosition: {x: 0, y: 0}
+    teleportSceneName: 
+    onStepTrigger:
+      m_PersistentCalls:
+        m_Calls: []
+  - type: 1
+    text: 
+    textFadeTime: 0
+    audioToPlay: {fileID: 0}
+    graphicToShow: {fileID: 0}
+    graphicFadeTime: 0
+    clearTextBeforeGraphic: 0
+    delayTime: 0
+    teleportPosition: {x: 0, y: 0}
+    teleportSceneName: 
+    onStepTrigger:
+      m_PersistentCalls:
+        m_Calls: []
+  - type: 0
+    text: "By night, you\u2019ll bring your catch to the restaurant and turn it into
+      sushi."
+    textFadeTime: 0
+    audioToPlay: {fileID: 0}
+    graphicToShow: {fileID: 0}
+    graphicFadeTime: 0
+    clearTextBeforeGraphic: 0
+    delayTime: 0
+    teleportPosition: {x: 0, y: 0}
+    teleportSceneName: 
+    onStepTrigger:
+      m_PersistentCalls:
+        m_Calls: []
+  - type: 0
+    text: "Fish by day, serve by night. Do it well, and Kenji\u2019s Sushi will live
+      on!"
+    textFadeTime: 0
+    audioToPlay: {fileID: 0}
+    graphicToShow: {fileID: 0}
+    graphicFadeTime: 0
+    clearTextBeforeGraphic: 0
+    delayTime: 0
+    teleportPosition: {x: 0, y: 0}
+    teleportSceneName: 
+    onStepTrigger:
+      m_PersistentCalls:
+        m_Calls: []
+  onCutsceneEnd:
+    m_PersistentCalls:
+      m_Calls: []

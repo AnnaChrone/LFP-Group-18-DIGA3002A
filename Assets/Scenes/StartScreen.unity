@@ -416,6 +416,7 @@ GameObject:
   - component: {fileID: 850282849}
   - component: {fileID: 850282848}
   - component: {fileID: 850282847}
+  - component: {fileID: 850282850}
   m_Layer: 5
   m_Name: StartButton
   m_TagString: Untagged
@@ -525,6 +526,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 850282845}
   m_CullTransparentMesh: 1
+--- !u!114 &850282850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 850282845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6972bb7debce01445bf777e09cd1d2ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CutsceneButtonTrigger
+  cutscene: {fileID: 11400000, guid: 71bdbf02e9d10e249948ad336802ea61, type: 2}
+  delay: 0
+  playOnce: 1
 --- !u!1 &978821274
 GameObject:
   m_ObjectHideFlags: 0
@@ -1376,7 +1392,7 @@ VideoPlayer:
   m_AspectRatio: 2
   m_DataSource: 0
   m_TimeUpdateMode: 2
-  m_PlaybackSpeed: 1
+  m_PlaybackSpeed: 1.69
   m_AudioOutputMode: 2
   m_TargetAudioSources: []
   m_DirectAudioVolumes: []

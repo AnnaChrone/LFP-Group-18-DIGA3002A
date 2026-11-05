@@ -1,0 +1,129 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63b635c00fb4d2e42aa157e05c52cb9b, type: 3}
+  m_Name: Panel02_Restaurant
+  m_EditorClassIdentifier: Assembly-CSharp::CutsceneData
+  backgroundSprite: {fileID: 21300000, guid: 9a87ba8e59219e14eb372af8df4a589d, type: 3}
+  steps:
+  - type: 0
+    text: "That\u2019s enough fishing for today. The sun has set, and night has fallen
+      over the harbour."
+    textFadeTime: 0
+    audioToPlay: {fileID: 0}
+    graphicToShow: {fileID: 0}
+    graphicFadeTime: 0
+    clearTextBeforeGraphic: 0
+    delayTime: 0
+    teleportPosition: {x: 0, y: 0}
+    teleportSceneName: 
+    onStepTrigger:
+      m_PersistentCalls:
+        m_Calls: []
+  - type: 0
+    text: Welcome to the restaurant, Kenji! This is where your catch becomes something
+      special.
+    textFadeTime: 0
+    audioToPlay: {fileID: 0}
+    graphicToShow: {fileID: 0}
+    graphicFadeTime: 0
+    clearTextBeforeGraphic: 0
+    delayTime: 0
+    teleportPosition: {x: 0, y: 0}
+    teleportSceneName: 
+    onStepTrigger:
+      m_PersistentCalls:
+        m_Calls: []
+  - type: 1
+    text: 
+    textFadeTime: 0
+    audioToPlay: {fileID: 0}
+    graphicToShow: {fileID: 0}
+    graphicFadeTime: 0
+    clearTextBeforeGraphic: 0
+    delayTime: 0
+    teleportPosition: {x: 0, y: 0}
+    teleportSceneName: 
+    onStepTrigger:
+      m_PersistentCalls:
+        m_Calls: []
+  - type: 0
+    text: Everything you caught today is waiting in your inventory, ready to use
+      as ingredients.
+    textFadeTime: 0
+    audioToPlay: {fileID: 0}
+    graphicToShow: {fileID: 0}
+    graphicFadeTime: 0
+    clearTextBeforeGraphic: 0
+    delayTime: 0
+    teleportPosition: {x: 0, y: 0}
+    teleportSceneName: 
+    onStepTrigger:
+      m_PersistentCalls:
+        m_Calls: []
+  - type: 0
+    text: "Keep an eye on your coins and the day counter so you always know how you\u2019re
+      doing."
+    textFadeTime: 0
+    audioToPlay: {fileID: 0}
+    graphicToShow: {fileID: 0}
+    graphicFadeTime: 0
+    clearTextBeforeGraphic: 0
+    delayTime: 0
+    teleportPosition: {x: 0, y: 0}
+    teleportSceneName: 
+    onStepTrigger:
+      m_PersistentCalls:
+        m_Calls: []
+  - type: 1
+    text: 
+    textFadeTime: 0
+    audioToPlay: {fileID: 0}
+    graphicToShow: {fileID: 0}
+    graphicFadeTime: 0
+    clearTextBeforeGraphic: 0
+    delayTime: 0
+    teleportPosition: {x: 0, y: 0}
+    teleportSceneName: 
+    onStepTrigger:
+      m_PersistentCalls:
+        m_Calls: []
+  - type: 0
+    text: "[Mention your QoL features here, e.g. \u201COpen your recipes any time,
+      and pause whenever you need a breather.\u201D]"
+    textFadeTime: 0
+    audioToPlay: {fileID: 0}
+    graphicToShow: {fileID: 0}
+    graphicFadeTime: 0
+    clearTextBeforeGraphic: 0
+    delayTime: 0
+    teleportPosition: {x: 0, y: 0}
+    teleportSceneName: 
+    onStepTrigger:
+      m_PersistentCalls:
+        m_Calls: []
+  - type: 0
+    text: "When you\u2019re ready, open the restaurant for service. The customers
+      are waiting!"
+    textFadeTime: 0
+    audioToPlay: {fileID: 0}
+    graphicToShow: {fileID: 0}
+    graphicFadeTime: 0
+    clearTextBeforeGraphic: 0
+    delayTime: 0
+    teleportPosition: {x: 0, y: 0}
+    teleportSceneName: 
+    onStepTrigger:
+      m_PersistentCalls:
+        m_Calls: []
+  onCutsceneEnd:
+    m_PersistentCalls:
+      m_Calls: []
