@@ -10,8 +10,8 @@ namespace Sushi.UI
     ///
     /// The plates are free-standing sprites, no layout group needed. The layout
     /// you author in the scene is the COLLAPSED layout. While the cooking panel
-    /// is open, the panel and the whole plate container scale up together by
-    /// "Expand Multiplier", so the plates keep their positions relative to each other.
+    /// is open, the whole panel scales up uniformly by "Expand Multiplier", so the
+    /// plates keep their positions and proportions.
     ///
     /// The cap itself lives in WeightCapacityRule.maxSushi: set it to the number
     /// of plates so the player can't cook more sushi than fits.
@@ -54,12 +54,9 @@ namespace Sushi.UI
         [SerializeField, Min(0f)] private float autoFoodPadding = 6f;
 
         [Header("Expand While Cooking")]
-        [Tooltip("The panel background that grows (HotPlateSushiPanel). Its anchors must NOT be stretched. " +
-                 "Give its sprite a Sliced Image Type so the border doesn't stretch.")]
+        [Tooltip("The whole panel (HotPlateSushiPanel). It is scaled up uniformly while cooking, " +
+                 "so the plates can't stretch. Nothing is resized, only scaled.")]
         [SerializeField] private RectTransform panel;
-
-        [Tooltip("The object that holds Plate01..04 (the 'Plates' object). It scales up with the panel.")]
-        [SerializeField] private RectTransform plateContainer;
 
         [Tooltip("The cooking panel (Cooking.stoveUIPanel). The table expands whenever it is open.")]
         [SerializeField] private GameObject followPanel;
@@ -72,8 +69,7 @@ namespace Sushi.UI
         [Tooltip("Optional extras (a title, a table decoration) shown only while expanded.")]
         [SerializeField] private GameObject[] showOnlyWhenExpanded;
 
-        private Vector2 collapsedPanelSize;
-        private Vector3 collapsedContainerScale = Vector3.one;
+        private Vector3 collapsedPanelScale = Vector3.one;
         private float amount; // 0 = collapsed, 1 = expanded
 
         private void Awake()
@@ -87,8 +83,7 @@ namespace Sushi.UI
             if (visualRoot != null && startHidden) visualRoot.SetActive(false);
 
             // Whatever you authored in the scene is the collapsed state.
-            if (panel != null) collapsedPanelSize = panel.sizeDelta;
-            if (plateContainer != null) collapsedContainerScale = plateContainer.localScale;
+            if (panel != null) collapsedPanelScale = panel.localScale;
 
             if (plates == null || plates.Length == 0)
             {
@@ -184,10 +179,7 @@ namespace Sushi.UI
             float scale = Mathf.Lerp(1f, expandMultiplier, t);
 
             if (panel != null)
-                panel.sizeDelta = collapsedPanelSize * scale;
-
-            if (plateContainer != null)
-                plateContainer.localScale = collapsedContainerScale * scale;
+                panel.localScale = collapsedPanelScale * scale;
 
             if (showOnlyWhenExpanded == null) return;
             bool extras = amount > 0f;
