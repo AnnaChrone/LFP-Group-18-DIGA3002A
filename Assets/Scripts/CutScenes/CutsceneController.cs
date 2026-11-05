@@ -18,6 +18,8 @@ public class CutsceneController : MonoBehaviour
     public GameObject cutscenePanel;
     public Image backgroundImage;
     public TMP_Text cutsceneText;
+    [Tooltip("Optional: your 'Press [SPACE] to continue' text. It is placed along the bottom of each cutscene's text area.")]
+    public TMP_Text promptText;
     public Image graphicImage;          // optional
     public AudioSource cutsceneAudio;   // optional
 
@@ -81,6 +83,10 @@ public class CutsceneController : MonoBehaviour
     private void Update()
     {
         if (!IsPlaying) return;
+
+        // Only show the prompt when pressing Space will actually do something
+        if (promptText != null)
+            promptText.enabled = isWaitingForInput && !isTypingLine;
 
         if (ContinuePressed())
         {
@@ -159,14 +165,43 @@ public class CutsceneController : MonoBehaviour
         if (backgroundImage != null && cutscene.backgroundSprite != null)
             backgroundImage.sprite = cutscene.backgroundSprite;
 
-        // Move the text into this cutscene's speech bubble / text area
-        RectTransform textRect = cutsceneText.rectTransform;
-        textRect.anchorMin = cutscene.textAreaMin;
-        textRect.anchorMax = cutscene.textAreaMax;
-        textRect.offsetMin = Vector2.zero;
-        textRect.offsetMax = Vector2.zero;
+        ApplyTextLayout(cutscene);
 
         ProcessCurrentStep();
+    }
+
+    [Header("Text Layout")]
+    public float autoSizeMin = 18f;
+    public float autoSizeMax = 40f;
+    [Tooltip("How much of the screen height (0-1) the 'Press SPACE' strip takes at the bottom of the text area.")]
+    public float promptStripHeight = 0.07f;
+
+    private static void SetRect(RectTransform rt, Vector2 min, Vector2 max)
+    {
+        rt.anchorMin = min;
+        rt.anchorMax = max;
+        rt.offsetMin = Vector2.zero;
+        rt.offsetMax = Vector2.zero;
+    }
+
+    // Puts the text (and the prompt) inside this cutscene's speech bubble.
+    private void ApplyTextLayout(CutsceneData cutscene)
+    {
+        Vector2 min = cutscene.textAreaMin;
+        Vector2 max = cutscene.textAreaMax;
+        float strip = promptText != null ? promptStripHeight : 0f;
+
+        cutsceneText.alignment = TextAlignmentOptions.Center;   // centered both ways
+        cutsceneText.enableAutoSizing = true;
+        cutsceneText.fontSizeMin = autoSizeMin;
+        cutsceneText.fontSizeMax = autoSizeMax;
+        SetRect(cutsceneText.rectTransform, new Vector2(min.x, min.y + strip), max);
+
+        if (promptText != null)
+        {
+            promptText.alignment = TextAlignmentOptions.Center;
+            SetRect(promptText.rectTransform, min, new Vector2(max.x, min.y + strip));
+        }
     }
 
     public void PlayCombatEnding(Action onComplete = null)

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Panel04_NewDay
   m_EditorClassIdentifier: Assembly-CSharp::CutsceneData
   backgroundSprite: {fileID: 21300000, guid: 21484cd5c49595c43a747856e9fc7157, type: 3}
-  textAreaMin: {x: 0.08, y: 0.2}
-  textAreaMax: {x: 0.43, y: 0.54}
+  textAreaMin: {x: 0.09, y: 0.2}
+  textAreaMax: {x: 0.63, y: 0.78}
   steps:
   - type: 0
     text: Another night done, and not bad for your first service!

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Panel05_Win
   m_EditorClassIdentifier: Assembly-CSharp::CutsceneData
   backgroundSprite: {fileID: 21300000, guid: 699ac971466346a4a84346dd2d72ee1f, type: 3}
-  textAreaMin: {x: 0.08, y: 0.2}
+  textAreaMin: {x: 0.09, y: 0.18}
   textAreaMax: {x: 0.43, y: 0.54}
   steps:
   - type: 0

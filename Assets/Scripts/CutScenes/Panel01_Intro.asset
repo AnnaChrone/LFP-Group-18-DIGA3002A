@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Panel01_Intro
   m_EditorClassIdentifier: Assembly-CSharp::CutsceneData
   backgroundSprite: {fileID: 21300000, guid: c8e9e4a1bf880f34794e7da00fd6897c, type: 3}
-  textAreaMin: {x: 0.34, y: 0.3}
-  textAreaMax: {x: 0.94, y: 0.78}
+  textAreaMin: {x: 0.36, y: 0.2}
+  textAreaMax: {x: 0.9, y: 0.78}
   steps:
   - type: 0
     text: Ah, there you are, Kenji! Welcome to the harbour town of [Town Name].

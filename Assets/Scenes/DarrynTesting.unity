@@ -9099,6 +9099,7 @@ MonoBehaviour:
   cutscenePanel: {fileID: 1980030731}
   backgroundImage: {fileID: 873520813}
   cutsceneText: {fileID: 459466485}
+  promptText: {fileID: 850625427}
   graphicImage: {fileID: 0}
   cutsceneAudio: {fileID: 0}
   textFadeInTime: 0.5
@@ -9119,6 +9120,9 @@ MonoBehaviour:
   act2TeleportSceneName: 
   teleportTargetObject: {fileID: 0}
   persistAcrossScenes: 0
+  autoSizeMin: 18
+  autoSizeMax: 40
+  promptStripHeight: 0.07
 --- !u!1 &434022937
 GameObject:
   m_ObjectHideFlags: 0
