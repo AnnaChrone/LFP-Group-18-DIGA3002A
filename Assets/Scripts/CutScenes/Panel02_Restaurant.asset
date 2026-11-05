@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Panel02_Restaurant
   m_EditorClassIdentifier: Assembly-CSharp::CutsceneData
   backgroundSprite: {fileID: 21300000, guid: 9a87ba8e59219e14eb372af8df4a589d, type: 3}
+  textAreaMin: {x: 0.2, y: 0.25}
+  textAreaMax: {x: 0.8, y: 0.78}
   steps:
   - type: 0
     text: "That\u2019s enough fishing for today. The sun has set, and night has fallen

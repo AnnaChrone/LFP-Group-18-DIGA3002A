@@ -11499,7 +11499,6 @@ GameObject:
   - component: {fileID: 553726749}
   - component: {fileID: 553726748}
   - component: {fileID: 553726751}
-  - component: {fileID: 553726750}
   m_Layer: 0
   m_Name: EndCyclePanel
   m_TagString: Untagged
@@ -11565,21 +11564,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 553726746}
   m_CullTransparentMesh: 1
---- !u!114 &553726750
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 553726746}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6972bb7debce01445bf777e09cd1d2ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CutsceneButtonTrigger
-  cutscene: {fileID: 11400000, guid: b3d43ba58bde40a4091d29fa301382bc, type: 2}
-  delay: 0
-  playOnce: 1
 --- !u!114 &553726751
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13630,7 +13614,6 @@ GameObject:
   - component: {fileID: 642746179}
   - component: {fileID: 642746178}
   - component: {fileID: 642746183}
-  - component: {fileID: 642746182}
   m_Layer: 0
   m_Name: StartServicePanel
   m_TagString: Untagged
@@ -13709,21 +13692,6 @@ RectTransform:
   m_AnchoredPosition: {x: -25, y: 0}
   m_SizeDelta: {x: -450, y: -200}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &642746182
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 642746177}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6972bb7debce01445bf777e09cd1d2ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CutsceneButtonTrigger
-  cutscene: {fileID: 11400000, guid: e7d98628a06503c4ebd27bc38216c6a6, type: 2}
-  delay: 0
-  playOnce: 1
 --- !u!114 &642746183
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19505,6 +19473,7 @@ GameObject:
   - component: {fileID: 1017207317}
   - component: {fileID: 1017207316}
   - component: {fileID: 1017207315}
+  - component: {fileID: 1017207318}
   m_Layer: 0
   m_Name: Yes
   m_TagString: Untagged
@@ -19626,6 +19595,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1017207313}
   m_CullTransparentMesh: 1
+--- !u!114 &1017207318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1017207313}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6972bb7debce01445bf777e09cd1d2ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CutsceneButtonTrigger
+  cutscene: {fileID: 11400000, guid: b3d43ba58bde40a4091d29fa301382bc, type: 2}
+  delay: 0
+  playOnce: 1
 --- !u!1 &1018018651
 GameObject:
   m_ObjectHideFlags: 0
@@ -22735,6 +22719,7 @@ GameObject:
   - component: {fileID: 1134211422}
   - component: {fileID: 1134211421}
   - component: {fileID: 1134211420}
+  - component: {fileID: 1134211423}
   m_Layer: 0
   m_Name: Yes
   m_TagString: Untagged
@@ -22856,6 +22841,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1134211418}
   m_CullTransparentMesh: 1
+--- !u!114 &1134211423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1134211418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6972bb7debce01445bf777e09cd1d2ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CutsceneButtonTrigger
+  cutscene: {fileID: 11400000, guid: e7d98628a06503c4ebd27bc38216c6a6, type: 2}
+  delay: 0
+  playOnce: 1
 --- !u!1 &1139710789
 GameObject:
   m_ObjectHideFlags: 0
@@ -38935,7 +38935,6 @@ GameObject:
   - component: {fileID: 2064767187}
   - component: {fileID: 2064767186}
   - component: {fileID: 2064767191}
-  - component: {fileID: 2064767190}
   m_Layer: 0
   m_Name: GoToRestaurantPanel
   m_TagString: Untagged
@@ -39016,21 +39015,6 @@ RectTransform:
   m_AnchoredPosition: {x: -25, y: 0}
   m_SizeDelta: {x: -450, y: -200}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2064767190
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2064767185}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6972bb7debce01445bf777e09cd1d2ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CutsceneButtonTrigger
-  cutscene: {fileID: 11400000, guid: 9d9b9c2f032d48848a3b13d636172bf1, type: 2}
-  delay: 0
-  playOnce: 1
 --- !u!114 &2064767191
 MonoBehaviour:
   m_ObjectHideFlags: 0

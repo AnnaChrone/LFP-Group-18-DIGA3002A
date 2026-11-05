@@ -13,7 +13,101 @@ MonoBehaviour:
   m_Name: Panel05_Win
   m_EditorClassIdentifier: Assembly-CSharp::CutsceneData
   backgroundSprite: {fileID: 21300000, guid: 699ac971466346a4a84346dd2d72ee1f, type: 3}
-  steps: []
+  textAreaMin: {x: 0.08, y: 0.2}
+  textAreaMax: {x: 0.43, y: 0.54}
+  steps:
+  - type: 0
+    text: Kenji... you did it.
+    textFadeTime: 0
+    audioToPlay: {fileID: 0}
+    graphicToShow: {fileID: 0}
+    graphicFadeTime: 0
+    clearTextBeforeGraphic: 0
+    delayTime: 0
+    teleportPosition: {x: 0, y: 0}
+    teleportSceneName: 
+    onStepTrigger:
+      m_PersistentCalls:
+        m_Calls: []
+  - type: 0
+    text: Look at this slip from the bank. Every last coin, paid in full!
+    textFadeTime: 0
+    audioToPlay: {fileID: 0}
+    graphicToShow: {fileID: 0}
+    graphicFadeTime: 0
+    clearTextBeforeGraphic: 0
+    delayTime: 0
+    teleportPosition: {x: 0, y: 0}
+    teleportSceneName: 
+    onStepTrigger:
+      m_PersistentCalls:
+        m_Calls: []
+  - type: 0
+    text: "Kenji\u2019s Sushi will stay open, and it\u2019s all thanks to you."
+    textFadeTime: 0
+    audioToPlay: {fileID: 0}
+    graphicToShow: {fileID: 0}
+    graphicFadeTime: 0
+    clearTextBeforeGraphic: 0
+    delayTime: 0
+    teleportPosition: {x: 0, y: 0}
+    teleportSceneName: 
+    onStepTrigger:
+      m_PersistentCalls:
+        m_Calls: []
+  - type: 1
+    text: 
+    textFadeTime: 0
+    audioToPlay: {fileID: 0}
+    graphicToShow: {fileID: 0}
+    graphicFadeTime: 0
+    clearTextBeforeGraphic: 0
+    delayTime: 0
+    teleportPosition: {x: 0, y: 0}
+    teleportSceneName: 
+    onStepTrigger:
+      m_PersistentCalls:
+        m_Calls: []
+  - type: 0
+    text: "Three generations of this family have worked this shore, and I couldn\u2019t
+      be prouder."
+    textFadeTime: 0
+    audioToPlay: {fileID: 0}
+    graphicToShow: {fileID: 0}
+    graphicFadeTime: 0
+    clearTextBeforeGraphic: 0
+    delayTime: 0
+    teleportPosition: {x: 0, y: 0}
+    teleportSceneName: 
+    onStepTrigger:
+      m_PersistentCalls:
+        m_Calls: []
+  - type: 1
+    text: 
+    textFadeTime: 0
+    audioToPlay: {fileID: 0}
+    graphicToShow: {fileID: 0}
+    graphicFadeTime: 0
+    clearTextBeforeGraphic: 0
+    delayTime: 0
+    teleportPosition: {x: 0, y: 0}
+    teleportSceneName: 
+    onStepTrigger:
+      m_PersistentCalls:
+        m_Calls: []
+  - type: 0
+    text: Thank you for playing!
+    textFadeTime: 0
+    audioToPlay: {fileID: 0}
+    graphicToShow: {fileID: 0}
+    graphicFadeTime: 0
+    clearTextBeforeGraphic: 0
+    delayTime: 0
+    teleportPosition: {x: 0, y: 0}
+    teleportSceneName: 
+    onStepTrigger:
+      m_PersistentCalls:
+        m_Calls: []
   onCutsceneEnd:
     m_PersistentCalls:
       m_Calls: []

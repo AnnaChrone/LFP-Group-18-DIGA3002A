@@ -13,7 +13,104 @@ MonoBehaviour:
   m_Name: Panel04_NewDay
   m_EditorClassIdentifier: Assembly-CSharp::CutsceneData
   backgroundSprite: {fileID: 21300000, guid: 21484cd5c49595c43a747856e9fc7157, type: 3}
-  steps: []
+  textAreaMin: {x: 0.08, y: 0.2}
+  textAreaMax: {x: 0.43, y: 0.54}
+  steps:
+  - type: 0
+    text: Another night done, and not bad for your first service!
+    textFadeTime: 0
+    audioToPlay: {fileID: 0}
+    graphicToShow: {fileID: 0}
+    graphicFadeTime: 0
+    clearTextBeforeGraphic: 0
+    delayTime: 0
+    teleportPosition: {x: 0, y: 0}
+    teleportSceneName: 
+    onStepTrigger:
+      m_PersistentCalls:
+        m_Calls: []
+  - type: 0
+    text: Before you go, take a look at [the Book]. It keeps track of [your recipes,
+      earnings and progress].
+    textFadeTime: 0
+    audioToPlay: {fileID: 0}
+    graphicToShow: {fileID: 0}
+    graphicFadeTime: 0
+    clearTextBeforeGraphic: 0
+    delayTime: 0
+    teleportPosition: {x: 0, y: 0}
+    teleportSceneName: 
+    onStepTrigger:
+      m_PersistentCalls:
+        m_Calls: []
+  - type: 1
+    text: 
+    textFadeTime: 0
+    audioToPlay: {fileID: 0}
+    graphicToShow: {fileID: 0}
+    graphicFadeTime: 0
+    clearTextBeforeGraphic: 0
+    delayTime: 0
+    teleportPosition: {x: 0, y: 0}
+    teleportSceneName: 
+    onStepTrigger:
+      m_PersistentCalls:
+        m_Calls: []
+  - type: 0
+    text: "Remember why we\u2019re doing this. We owe the bank [amount], and the
+      deadline is [N days / the end of the season]."
+    textFadeTime: 0
+    audioToPlay: {fileID: 0}
+    graphicToShow: {fileID: 0}
+    graphicFadeTime: 0
+    clearTextBeforeGraphic: 0
+    delayTime: 0
+    teleportPosition: {x: 0, y: 0}
+    teleportSceneName: 
+    onStepTrigger:
+      m_PersistentCalls:
+        m_Calls: []
+  - type: 0
+    text: Save up enough coins, then press Payout to settle the debt and save the
+      restaurant.
+    textFadeTime: 0
+    audioToPlay: {fileID: 0}
+    graphicToShow: {fileID: 0}
+    graphicFadeTime: 0
+    clearTextBeforeGraphic: 0
+    delayTime: 0
+    teleportPosition: {x: 0, y: 0}
+    teleportSceneName: 
+    onStepTrigger:
+      m_PersistentCalls:
+        m_Calls: []
+  - type: 1
+    text: 
+    textFadeTime: 0
+    audioToPlay: {fileID: 0}
+    graphicToShow: {fileID: 0}
+    graphicFadeTime: 0
+    clearTextBeforeGraphic: 0
+    delayTime: 0
+    teleportPosition: {x: 0, y: 0}
+    teleportSceneName: 
+    onStepTrigger:
+      m_PersistentCalls:
+        m_Calls: []
+  - type: 0
+    text: "For now, get some rest. When you\u2019re ready, start a new day and head
+      back to the water."
+    textFadeTime: 0
+    audioToPlay: {fileID: 0}
+    graphicToShow: {fileID: 0}
+    graphicFadeTime: 0
+    clearTextBeforeGraphic: 0
+    delayTime: 0
+    teleportPosition: {x: 0, y: 0}
+    teleportSceneName: 
+    onStepTrigger:
+      m_PersistentCalls:
+        m_Calls: []
   onCutsceneEnd:
     m_PersistentCalls:
       m_Calls: []
