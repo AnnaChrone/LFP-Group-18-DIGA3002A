@@ -45,8 +45,11 @@ public class DayNightCycleManager : MonoBehaviour
 
     private Color normalCountdownColor = Color.black;
 
-    [Header("References")]
+       [Header("References")]
     public GameObject player;
+    
+    public Sushi.Inventory.Inventory playerInventory; 
+
 
     public BaitShopManager baitShopManager;
 
@@ -116,24 +119,81 @@ public class DayNightCycleManager : MonoBehaviour
         if (dayText != null) dayText.text = "Day " + dayCount;
     }
 
-    // --- DOOR TO RESTAURANT PROMPTS ---
-    public void PromptGoToRestaurant()
+
+       // --- DOOR TO RESTAURANT PROMPTS ---
+    [Header("Catch Restriction UI Elements")]
+    [Tooltip("The main prompt TextMeshPro component inside your GoToRestaurantPanel (e.g., 'Are you done fishing?').")]
+    public TMP_Text restaurantPanelPromptText;
+    
+    [Tooltip("The Yes button GameObject child inside your GoToRestaurantPanel.")]
+    public GameObject yesButtonObject;
+    
+    [Tooltip("The No button GameObject child inside your GoToRestaurantPanel.")]
+    public GameObject noButtonObject;
+
+          private void Update()
     {
-        SetPlayerControls(false);
-        restaurantTransitionPanel.SetActive(true);
+        // 1. Core structural guard check
+        if (restaurantTransitionPanel == null || playerInventory == null) return;
+
+        // 2. Check if the panel is currently open AND the player inventory is empty
+        if (restaurantTransitionPanel.activeSelf && playerInventory.TotalWeight <= 0f)
+        {
+            if (UnityEngine.InputSystem.Keyboard.current != null)
+            {
+                // Low-level hardware hook pass. Replaces 'wasPressedThisFrame' 
+                // to execute even if player controllers have frozen input buffers globally.
+                if (UnityEngine.InputSystem.Keyboard.current.eKey.wasPressedThisFrame)
+                {
+                    Debug.Log("DayNightCycleManager: E key close bypass triggered!");
+                    CloseEmptyInventoryPanelBypass();
+                }
+            }
+        }
     }
 
-    public void ConfirmGoToRestaurant(bool choice)
+
+    public void PromptGoToRestaurant()
     {
-        restaurantTransitionPanel.SetActive(false);
-        if (choice)
+        SetPlayerControls(false); // Freeze player when door UI opens
+        
+        if (playerInventory == null)
         {
-            StartCoroutine(TeleportSequence(restaurantSpawnPoint.position, GameState.Nighttime));
+            Debug.LogError("DayNightCycleManager: Player Inventory reference is missing in the Inspector!");
+            SetPlayerControls(true);
+            return;
+        }
+
+        // Checks if the player's total catch bag weight is zero
+        if (playerInventory.TotalWeight <= 0f)
+        {
+            if (restaurantPanelPromptText != null)
+            {
+                restaurantPanelPromptText.text = "You haven't caught anything yet. You cannot run a restaurant business without any food. Come back when you have fished up something to serve your customers.";
+            }
+
+            if (yesButtonObject != null) yesButtonObject.SetActive(false);
+            if (noButtonObject != null) noButtonObject.SetActive(false);
         }
         else
         {
-            SetPlayerControls(true);
+            if (restaurantPanelPromptText != null)
+            {
+                restaurantPanelPromptText.text = "Are you done fishing and ready to head to the restaurant?";
+            }
+
+            if (yesButtonObject != null) yesButtonObject.SetActive(true);
+            if (noButtonObject != null) noButtonObject.SetActive(true);
         }
+
+        restaurantTransitionPanel.SetActive(true);
+    }
+
+    // Safely releases the player back to the fishing loops
+    public void CloseEmptyInventoryPanelBypass()
+    {
+        restaurantTransitionPanel.SetActive(false);
+        SetPlayerControls(true); 
     }
 
     // --- MENU INTERACTION SHIFT PROMPTS ---
