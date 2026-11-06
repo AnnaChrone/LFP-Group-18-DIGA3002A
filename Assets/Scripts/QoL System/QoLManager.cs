@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using Sushi.UI;
 
 [Serializable]
 public class FloatEvent : UnityEvent<float> { }

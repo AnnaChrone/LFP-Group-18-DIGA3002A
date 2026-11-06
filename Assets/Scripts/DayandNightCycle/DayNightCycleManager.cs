@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 using TMPro;
+using Sushi.UI;
 
 public enum GameState { Daytime, Nighttime, RestaurantService }
 

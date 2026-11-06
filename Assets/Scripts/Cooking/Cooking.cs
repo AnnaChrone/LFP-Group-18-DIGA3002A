@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using Sushi.Data;
 using Sushi.Inventory;
+using Sushi.UI;
 
 [Serializable]
 public struct StoveButtonEntry
@@ -392,7 +393,7 @@ public class Cooking : MonoBehaviour
         if (!added)
         {
             // Shouldn't happen thanks to step 2, but if it does, log and bail.
-            Debug.LogError($"Could not place cooked {recipe.resultItem.name} — ingredients lost.");
+            Debug.LogError($"Could not place cooked {recipe.resultItem.name} ï¿½ ingredients lost.");
             return;
         }
         SoundManager.Instance.PlayCook();

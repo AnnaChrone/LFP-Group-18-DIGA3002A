@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
+using Sushi.UI;
 
 public class NightSummaryManager : MonoBehaviour
 {

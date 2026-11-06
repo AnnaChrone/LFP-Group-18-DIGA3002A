@@ -83,8 +83,8 @@ namespace Sushi.UI
         private Color originalSlipColor = Color.white;
 
         private BudgetTier customerType;
-        private int dynamicGoldPayout;      // original payout for this order
-        public int currentGoldPayout;      // payout after time penalties
+        public int dynamicGoldPayout;      // original payout for this order
+        public int currentGoldPayout;      // payout after time penalties, used by OrderManager on cancellations
 
         private Coroutine orderTimerRoutine;
         private float elapsed;
@@ -236,7 +236,7 @@ namespace Sushi.UI
                 ? $"{dynamicGoldPayout} Gold"
                 : $"<s>{dynamicGoldPayout}</s> {currentGoldPayout} Gold";
         }
-
+        
         private void RefreshInteractPrompt()
         {
             if (interactPromptText == null) return;

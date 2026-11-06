@@ -3,6 +3,7 @@ using UnityEngine;
 using TMPro;
 using Sushi.Data;
 using Sushi.Inventory;
+using Sushi.UI;
 
 public class BaitShopManager : MonoBehaviour
 {
