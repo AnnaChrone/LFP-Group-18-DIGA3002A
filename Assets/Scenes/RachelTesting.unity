@@ -3360,8 +3360,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -75.20771}
-  m_SizeDelta: {x: 700, y: 353.42}
+  m_AnchoredPosition: {x: 0, y: -102.80027}
+  m_SizeDelta: {x: 700, y: 312.237}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &183498596
 MonoBehaviour:
@@ -11967,8 +11967,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: New Text
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 2ea529f5f4772bd4ca7edaae62c48578, type: 2}
+  m_sharedMaterial: {fileID: -8298231502251956221, guid: 2ea529f5f4772bd4ca7edaae62c48578, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -27793,7 +27793,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -119, y: 325.5}
+  m_AnchoredPosition: {x: -119, y: 319}
   m_SizeDelta: {x: 360, y: 83.606}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1477729409
@@ -27818,8 +27818,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Bait Shop
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: a8a9e092e08610d4a85589a2a377fc6d, type: 2}
-  m_sharedMaterial: {fileID: 4309174638318901998, guid: a8a9e092e08610d4a85589a2a377fc6d, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 2ea529f5f4772bd4ca7edaae62c48578, type: 2}
+  m_sharedMaterial: {fileID: -8298231502251956221, guid: 2ea529f5f4772bd4ca7edaae62c48578, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -36639,7 +36639,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 519.75, y: 336.5}
+  m_AnchoredPosition: {x: 454, y: 367}
   m_SizeDelta: {x: 268.332, y: 87.094}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1967168038
@@ -36662,10 +36662,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '[E] - exit BaitShop'
+  m_text: '[E] - ExitMenu'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 2ea529f5f4772bd4ca7edaae62c48578, type: 2}
+  m_sharedMaterial: {fileID: -8298231502251956221, guid: 2ea529f5f4772bd4ca7edaae62c48578, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -36689,8 +36689,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 28
+  m_fontSizeBase: 28
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -38586,7 +38586,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.22901, y: 222.236}
+  m_AnchoredPosition: {x: -0.22901, y: 207}
   m_SizeDelta: {x: 1402.8, y: 121.303}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2039986330
@@ -40037,8 +40037,8 @@ Transform:
   m_GameObject: {fileID: 2107060372}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 31.318514, y: 5.5479097, z: 0}
-  m_LocalScale: {x: 1.5423539, y: 3.2911983, z: 1}
+  m_LocalPosition: {x: 31.0419, y: 5.3004, z: 0}
+  m_LocalScale: {x: 3.143794, y: 2.796266, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1340700787}
@@ -40153,7 +40153,7 @@ SpriteRenderer:
   m_SortingOrder: -1
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.098746866, g: 0.15919523, b: 0.78113204, a: 0.38039216}
+  m_Color: {r: 0.098746866, g: 0.15919523, b: 0.78113204, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

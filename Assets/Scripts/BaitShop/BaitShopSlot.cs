@@ -23,8 +23,8 @@ public class BaitShopSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         iconImage.sprite = data.icon;
         nameText.text = data.displayName;
         
-        // Display the calculated daily price instead of the static file default
-        priceText.text = customPrice + "G";
+        // Displays numeric price value
+        priceText.text = customPrice.ToString();
 
         buyButton.onClick.RemoveAllListeners();
         buyButton.onClick.AddListener(BuyBait);
