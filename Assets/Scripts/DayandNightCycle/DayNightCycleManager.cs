@@ -196,6 +196,20 @@ public class DayNightCycleManager : MonoBehaviour
         SetPlayerControls(true); 
     }
 
+    public void ConfirmGoToRestaurant(bool choice)
+{
+    restaurantTransitionPanel.SetActive(false);
+    if (choice)
+    {
+        StartCoroutine(TeleportSequence(restaurantSpawnPoint.position, GameState.Nighttime));
+    }
+    else
+    {
+        SetPlayerControls(true);
+    }
+}
+
+
     // --- MENU INTERACTION SHIFT PROMPTS ---
     public void PromptStartService()
     {
