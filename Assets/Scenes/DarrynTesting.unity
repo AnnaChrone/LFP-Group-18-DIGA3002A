@@ -7250,7 +7250,7 @@ MonoBehaviour:
   countdownDisplayObject: {fileID: 1277869455}
   warningColor: {r: 1, g: 0, b: 0, a: 1}
   player: {fileID: 1882006328}
-  playerInventory: {fileID: 0}
+  playerInventory: {fileID: 927261000}
   baitShopManager: {fileID: 768408328}
   sushiPlateTable: {fileID: 243976504}
   restaurantPanelPromptText: {fileID: 0}
