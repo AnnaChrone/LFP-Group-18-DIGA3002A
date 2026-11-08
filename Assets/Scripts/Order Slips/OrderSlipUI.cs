@@ -169,6 +169,9 @@ namespace Sushi.UI
                 if (playerInRange) RefreshInteractPrompt();
             }
 
+            // Ignore the E key while a cutscene is playing
+            if (CutsceneController.Instance != null && CutsceneController.Instance.IsPlaying) return;
+
             if (!playerInRange) return;
             if (Keyboard.current == null) return;
             if (!Keyboard.current.eKey.wasPressedThisFrame) return;
@@ -236,7 +239,7 @@ namespace Sushi.UI
                 ? $"{dynamicGoldPayout} Gold"
                 : $"<s>{dynamicGoldPayout}</s> {currentGoldPayout} Gold";
         }
-        
+
         private void RefreshInteractPrompt()
         {
             if (interactPromptText == null) return;

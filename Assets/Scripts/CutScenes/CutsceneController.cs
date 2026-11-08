@@ -33,6 +33,12 @@ public class CutsceneController : MonoBehaviour
     public UnityEvent onAnyCutsceneStart;
     public UnityEvent onAnyCutsceneEnd;
 
+    [Header("Pause Game Time While Playing")]
+    [Tooltip("Freezes Time.timeScale during cutscenes so timers that use scaled time (Time.deltaTime, WaitForSeconds) stop. The previous value is restored afterwards.")]
+    public bool pauseGameTime = true;
+    private float timeScaleBeforeCutscene = 1f;
+    private bool timePausedByUs = false;
+
     [Header("Cutscenes (optional - buttons can hold their own CutsceneData)")]
     public CutsceneData IntroCutscene;
     public CutsceneData Act1Cutscene;
@@ -220,6 +226,13 @@ public class CutsceneController : MonoBehaviour
 
     private void FreezePlayer()
     {
+        if (pauseGameTime && !timePausedByUs)
+        {
+            timeScaleBeforeCutscene = Time.timeScale;
+            Time.timeScale = 0f;
+            timePausedByUs = true;
+        }
+
         disabledByUs.Clear();
         if (disableWhilePlaying == null) return;
 
@@ -233,8 +246,25 @@ public class CutsceneController : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        // Never leave the game frozen if this object is destroyed mid-cutscene.
+        RestoreTime();
+    }
+
+    private void RestoreTime()
+    {
+        if (timePausedByUs)
+        {
+            Time.timeScale = timeScaleBeforeCutscene;
+            timePausedByUs = false;
+        }
+    }
+
     private void UnfreezePlayer()
     {
+        RestoreTime();
+
         foreach (Behaviour b in disabledByUs)
         {
             if (b != null)
