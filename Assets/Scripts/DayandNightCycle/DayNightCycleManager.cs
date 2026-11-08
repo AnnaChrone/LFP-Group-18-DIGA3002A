@@ -169,7 +169,7 @@ public class DayNightCycleManager : MonoBehaviour
         {
             if (restaurantPanelPromptText != null)
             {
-                restaurantPanelPromptText.text = "You haven't caught anything yet. You cannot run a restaurant business without any food. Come back when you have fished up something to serve your customers.";
+                restaurantPanelPromptText.text = "You haven't fished enough yet. You cannot run a restaurant business without any food! Catch something and then come back.";
             }
 
             if (yesButtonObject != null) yesButtonObject.SetActive(false);
