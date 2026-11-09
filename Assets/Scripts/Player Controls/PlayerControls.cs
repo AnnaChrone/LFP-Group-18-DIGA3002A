@@ -18,6 +18,7 @@ public class PlayerControls : MonoBehaviour
     public PauseMenu pauseFunctions;
     public GameObject BaitShopPanel;
     public GameObject QoLShopPanel;
+    public GameObject startMenu;
 
     [SerializeField] private SpriteRenderer playrSprite;
 
@@ -28,6 +29,10 @@ public class PlayerControls : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        if (startMenu != null )
+        {
+            startMenu.SetActive(true);
+        }
     }
 
     void FixedUpdate()
