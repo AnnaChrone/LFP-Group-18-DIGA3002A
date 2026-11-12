@@ -36859,7 +36859,7 @@ Transform:
   m_GameObject: {fileID: 1725341515}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.99241, y: 1.83, z: -10}
+  m_LocalPosition: {x: 0, y: 1.83, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -39037,6 +39037,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FishingManager
   currentState: 0
   catchHandler: {fileID: 927261001}
+  cameraTransform: {fileID: 1725341519}
+  cameraPanDuration: 0.6
+  cameraoffset: -4
   inFishingRange: 0
   busyFishing: 0
   minimumBiteTime: 2

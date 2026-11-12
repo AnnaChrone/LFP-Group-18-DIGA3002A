@@ -12,6 +12,15 @@ public class FishingManager : MonoBehaviour
     [Header("Inventory")]
     public FishingCatchHandler catchHandler;
 
+    [Header("Camera Pan")]
+    public Transform cameraTransform;      // drag your Main Camera in here
+    public float cameraPanDuration = 0.6f;
+    public float cameraoffset = 0f;
+
+
+    private float currentPan = 0f;
+    private Coroutine panRoutine;
+
     [Header("Fishing Range")]
     public bool inFishingRange = false;
     public bool busyFishing = false;
@@ -244,6 +253,8 @@ public class FishingManager : MonoBehaviour
         Debug.Log("Player sat down");
         PressSpace.text = "Press [SPACEBAR] to cast your line";
         PressE.text = "Press E to stop fishing";
+        PanCamera(cameraoffset);
+
     }
 
     private void StandUp()
@@ -257,6 +268,8 @@ public class FishingManager : MonoBehaviour
         baitedRod.SetActive(false);
         PressSpace.text = "";
         PressE.text = "Press E to sit down";
+        PanCamera(0f);
+
     }
 
     private void Cast()
@@ -727,5 +740,38 @@ public class FishingManager : MonoBehaviour
 
         currentState = FishingState.NotFishing;
         busyFishing = false;
+        PanCamera(0f);   // so the camera returns if the day ends mid-fishing
+
+    }
+
+    private void PanCamera(float targetPan)
+    {
+        if (cameraTransform == null) return;
+
+        if (panRoutine != null) StopCoroutine(panRoutine);
+        panRoutine = StartCoroutine(PanCameraRoutine(targetPan));
+    }
+
+    private IEnumerator PanCameraRoutine(float targetPan)
+    {
+        float startPan = currentPan;
+        float t = 0f;
+
+        while (t < cameraPanDuration)
+        {
+            t += Time.deltaTime;
+            float eased = Mathf.SmoothStep(0f, 1f, t / cameraPanDuration);
+            float newPan = Mathf.Lerp(startPan, targetPan, eased);
+
+            // Move by the change since last frame, so it stacks on top of wherever the camera is
+            cameraTransform.position += Vector3.right * (newPan - currentPan);
+            currentPan = newPan;
+
+            yield return null;
+        }
+
+        cameraTransform.position += Vector3.right * (targetPan - currentPan);
+        currentPan = targetPan;
+        panRoutine = null;
     }
 }
