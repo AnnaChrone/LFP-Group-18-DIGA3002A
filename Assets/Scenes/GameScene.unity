@@ -13383,7 +13383,7 @@ MonoBehaviour:
   currentcoins: {fileID: 1410231107}
   CoinMeter: {fileID: 651502135}
   PayButton: {fileID: 789296205}
-  winCoinThreshold: 1
+  winCoinThreshold: 200
 --- !u!114 &604805758
 MonoBehaviour:
   m_ObjectHideFlags: 0
