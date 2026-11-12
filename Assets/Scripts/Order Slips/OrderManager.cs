@@ -319,27 +319,28 @@ namespace Sushi.UI
         }
     }
 
-public bool AcceptOrder(RecipeData recipe, GameObject slipObj)
-{
-if (slipObj == null || acceptedSlips.Contains(slipObj)) return false;
-if (acceptedSlips.Count >= maxActiveOrders)
-{
-Debug.LogWarning($"OrderManager: Can't accept '{recipe.recipeName}' - already at {maxActiveOrders} active order(s).");
-return false;
-}
-acceptedSlips.Add(slipObj);
-RebuildActiveRecipes();
-Debug.Log($"Order accepted: {recipe.recipeName}");
-OnActiveOrderChanged?.Invoke();
-return true;
-}
-public void CompleteOrder(GameObject slipObj)
-{
-acceptedSlips.Remove(slipObj);
-DismissTicket(slipObj);
-RebuildActiveRecipes();
-OnActiveOrderChanged?.Invoke();
-}
+        public bool AcceptOrder(RecipeData recipe, GameObject slipObj)
+        {
+            if (slipObj == null || acceptedSlips.Contains(slipObj)) return false;
+            if (acceptedSlips.Count >= maxActiveOrders)
+            {
+                Debug.LogWarning($"OrderManager: Can't accept '{recipe.recipeName}' - already at {maxActiveOrders} active order(s).");
+                return false;
+            }
+            acceptedSlips.Add(slipObj);
+            RebuildActiveRecipes();
+            Book.Instance?.RegisterRecipe(recipe);   // <-- new
+            Debug.Log($"Order accepted: {recipe.recipeName}");
+            OnActiveOrderChanged?.Invoke();
+            return true;
+        }
+        public void CompleteOrder(GameObject slipObj)
+    {
+    acceptedSlips.Remove(slipObj);
+    DismissTicket(slipObj);
+    RebuildActiveRecipes();
+        OnActiveOrderChanged?.Invoke();
+    }
 public void FailOrder(GameObject slipObj)
 {
 acceptedSlips.Remove(slipObj);

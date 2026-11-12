@@ -32,6 +32,13 @@ public class Book : MonoBehaviour
     [Tooltip("Every bait in the game (standard, corn, worm). Each fish shows the bait with the best odds of catching it.")]
     public List<BaitData> allBaits = new List<BaitData>();
 
+    [Header("Recipes")]
+    [Tooltip("Every recipe in the game, in the order they should appear in the book.")]
+    public List<RecipeData> allRecipes = new List<RecipeData>();
+    [Tooltip("Off: every recipe in the list is always shown. On: a recipe only appears after RegisterRecipe() is called for it.")]
+    public bool showOnlyDiscoveredRecipes = false;
+    public string emptySlotText = "Empty";
+
     /// <summary>One fish entry on a page. Two of these make up a page.</summary>
     [System.Serializable]
     public class FishEntrySlot
@@ -46,6 +53,35 @@ public class Book : MonoBehaviour
         public TextMeshProUGUI weightrange;
     }
 
+    /// <summary>
+    /// One sushi recipe entry on a page. Two of these make up a page.
+    /// Book slot 1 = BOTTOM of the sushi, slot 3 = TOP.
+    /// </summary>
+    [System.Serializable]
+    public class SushiEntrySlot
+    {
+        [Tooltip("Parent object of this entry. Hidden when the slot has no recipe.")]
+        public GameObject root;
+        [Tooltip("The finished sushi.")]
+        public Image icon;
+
+        [Header("Slot 1 (bottom)")]
+        public Image slot1;
+        public TextMeshProUGUI slot1ingred;
+        [Header("Slot 2 (middle)")]
+        public Image slot2;
+        public TextMeshProUGUI slot2ingred;
+        [Header("Slot 3 (top)")]
+        public Image slot3;
+        public TextMeshProUGUI slot3ingred;
+
+        [Header("Text")]
+        [Tooltip("Comma separated list, e.g. 'Rice, Salmon, Seaweed'.")]
+        public TextMeshProUGUI requiredingredients;
+        public TextMeshProUGUI nameText;
+        public TextMeshProUGUI Price;
+    }
+
     [Header("Fish Page Content (2 entries per page)")]
     public FishEntrySlot leftEntry;
     public FishEntrySlot rightEntry;
@@ -53,6 +89,14 @@ public class Book : MonoBehaviour
     public Button nextButton;
     [Tooltip("Optional, e.g. 'Page 1 / 3'.")]
     public TextMeshProUGUI pageNumberText;
+
+    [Header("Sushi Page Content (2 entries per page)")]
+    public SushiEntrySlot leftEntryS;
+    public SushiEntrySlot rightEntryS;
+    public Button prevButtonS;
+    public Button nextButtonS;
+    [Tooltip("Optional, e.g. 'Page 1 / 3'.")]
+    public TextMeshProUGUI pageNumberTextS;
 
     [Header("Sushi Page Content")]
     public Image sushiIcon;
@@ -67,6 +111,10 @@ public class Book : MonoBehaviour
     private readonly List<ItemData> discoveredFish = new List<ItemData>();
     private int currentPage = 0;
 
+    // Recipes unlocked via RegisterRecipe (only used if showOnlyDiscoveredRecipes is on).
+    private readonly HashSet<RecipeData> discoveredRecipes = new HashSet<RecipeData>();
+    private int currentSushiPage = 0;
+
     private void Awake()
     {
         Instance = this;
@@ -77,7 +125,11 @@ public class Book : MonoBehaviour
         if (prevButton != null) prevButton.onClick.AddListener(PrevPage);
         if (nextButton != null) nextButton.onClick.AddListener(NextPage);
 
+        if (prevButtonS != null) prevButtonS.onClick.AddListener(PrevSushiPage);
+        if (nextButtonS != null) nextButtonS.onClick.AddListener(NextSushiPage);
+
         RefreshFishPage();
+        RefreshSushiPage();
     }
 
     // ---------- Catching ----------
@@ -100,7 +152,7 @@ public class Book : MonoBehaviour
 
     public bool HasDiscovered(ItemData fish) => discoveredFish.Contains(fish);
 
-    // ---------- Paging ----------
+    // ---------- Fish paging ----------
 
     private int PageCount => Mathf.Max(1, Mathf.CeilToInt(discoveredFish.Count / (float)EntriesPerPage));
 
@@ -200,6 +252,128 @@ public class Book : MonoBehaviour
         return value.ToString("0.##") + "kg";
     }
 
+    // ---------- Sushi recipes ----------
+
+    /// <summary>
+    /// Optional unlock hook, e.g. call it the first time a recipe is cooked.
+    /// Only matters when showOnlyDiscoveredRecipes is on. Returns true if it was new.
+    /// </summary>
+    public bool RegisterRecipe(RecipeData recipe)
+    {
+        if (recipe == null || !discoveredRecipes.Add(recipe)) return false;
+
+        int index = VisibleRecipes().IndexOf(recipe);
+        if (index >= 0) currentSushiPage = index / EntriesPerPage;
+
+        RefreshSushiPage();
+        return true;
+    }
+
+    private List<RecipeData> VisibleRecipes()
+    {
+        var list = new List<RecipeData>();
+        foreach (RecipeData r in allRecipes)
+        {
+            if (r == null) continue;
+            if (showOnlyDiscoveredRecipes && !discoveredRecipes.Contains(r)) continue;
+            list.Add(r);
+        }
+        return list;
+    }
+
+    public void NextSushiPage()
+    {
+        int pages = Mathf.Max(1, Mathf.CeilToInt(VisibleRecipes().Count / (float)EntriesPerPage));
+        if (currentSushiPage < pages - 1)
+        {
+            currentSushiPage++;
+            RefreshSushiPage();
+        }
+    }
+
+    public void PrevSushiPage()
+    {
+        if (currentSushiPage > 0)
+        {
+            currentSushiPage--;
+            RefreshSushiPage();
+        }
+    }
+
+    private void RefreshSushiPage()
+    {
+        List<RecipeData> recipes = VisibleRecipes();
+        int pages = Mathf.Max(1, Mathf.CeilToInt(recipes.Count / (float)EntriesPerPage));
+        currentSushiPage = Mathf.Clamp(currentSushiPage, 0, pages - 1);
+
+        int first = currentSushiPage * EntriesPerPage;
+        PopulateSushiSlot(leftEntryS, recipes, first);
+        PopulateSushiSlot(rightEntryS, recipes, first + 1);
+
+        if (prevButtonS != null) prevButtonS.interactable = currentSushiPage > 0;
+        if (nextButtonS != null) nextButtonS.interactable = currentSushiPage < pages - 1;
+
+        if (pageNumberTextS != null)
+            pageNumberTextS.text = $"{currentSushiPage + 1} / {pages}";
+    }
+
+    private void PopulateSushiSlot(SushiEntrySlot slot, List<RecipeData> recipes, int index)
+    {
+        if (slot == null) return;
+
+        bool hasRecipe = index >= 0 && index < recipes.Count;
+
+        if (slot.root != null) slot.root.SetActive(hasRecipe);
+        if (!hasRecipe) return;
+
+        RecipeData recipe = recipes[index];
+
+        if (slot.nameText != null) slot.nameText.text = recipe.recipeName;
+        if (slot.Price != null) slot.Price.text = $"{recipe.recipeValue} coins";
+
+        // Finished sushi icon
+        if (slot.icon != null)
+        {
+            ItemData result = recipe.resultItem;
+            slot.icon.sprite = result != null ? result.icon : null;
+            slot.icon.color = result != null ? result.tint : Color.white;
+            slot.icon.enabled = result != null && result.icon != null;
+        }
+
+        // Book slot 1 = bottom, slot 3 = top (RecipeData names them the other way round)
+        ItemData bottom = recipe.slot3BOTTOM;
+        ItemData middle = recipe.slot2MIDDLE;
+        ItemData top = recipe.slot1TOP;
+
+        SetIngredientSlot(slot.slot1, slot.slot1ingred, bottom);
+        SetIngredientSlot(slot.slot2, slot.slot2ingred, middle);
+        SetIngredientSlot(slot.slot3, slot.slot3ingred, top);
+
+        // "Rice, Salmon, Seaweed" (bottom to top, skipping empty slots)
+        if (slot.requiredingredients != null)
+        {
+            var names = new List<string>();
+            if (bottom != null) names.Add(bottom.Label);
+            if (middle != null) names.Add(middle.Label);
+            if (top != null) names.Add(top.Label);
+
+            slot.requiredingredients.text = string.Join(", ", names);
+        }
+    }
+
+    private void SetIngredientSlot(Image image, TextMeshProUGUI label, ItemData item)
+    {
+        if (image != null)
+        {
+            image.sprite = item != null ? item.icon : null;
+            image.color = item != null ? item.tint : Color.white;
+            image.enabled = item != null && item.icon != null;
+        }
+
+        if (label != null)
+            label.text = item != null ? item.Label : emptySlotText;
+    }
+
     // ---------- Book UI ----------
 
     public void toggleBook()
@@ -229,6 +403,8 @@ public class Book : MonoBehaviour
         Sushi.sprite = sushiSelected;
         Win.sprite = WinUnselected;
         Fish.sprite = fishUnselected;
+
+        RefreshSushiPage();
     }
 
     public void openWinPages()
