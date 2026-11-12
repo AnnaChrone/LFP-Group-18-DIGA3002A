@@ -30,8 +30,8 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
   - type: 0
-    text: Before you go, take a look at [the Book]. It keeps track of [your recipes,
-      earnings and progress].
+    text: Before you go, take a look at your handbook. It keeps track of your recipes,
+      earnings and progress.
     textFadeTime: 0
     audioToPlay: {fileID: 0}
     graphicToShow: {fileID: 0}

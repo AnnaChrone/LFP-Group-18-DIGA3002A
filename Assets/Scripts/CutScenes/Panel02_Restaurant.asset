@@ -31,8 +31,7 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
   - type: 0
-    text: Welcome to the restaurant, Kenji! This is where your catch becomes something
-      special.
+    text: Welcome to the restaurant! This is where your catch becomes something special.
     textFadeTime: 0
     audioToPlay: {fileID: 0}
     graphicToShow: {fileID: 0}
@@ -99,8 +98,9 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
   - type: 0
-    text: "[Mention your QoL features here, e.g. \u201COpen your recipes any time,
-      and pause whenever you need a breather.\u201D]"
+    text: As you grow your restaurant, you'll discover new ways to make it thrive.
+      Accept more orders, catch more fish, gain extra time with every server you
+      hire, and experiment with new sushi recipes.
     textFadeTime: 0
     audioToPlay: {fileID: 0}
     graphicToShow: {fileID: 0}
@@ -113,8 +113,8 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
   - type: 0
-    text: "When you\u2019re ready, open the restaurant for service. The customers
-      are waiting!"
+    text: "When you\u2019re ready, open the restaurant for service. Your orders are
+      waiting!"
     textFadeTime: 0
     audioToPlay: {fileID: 0}
     graphicToShow: {fileID: 0}

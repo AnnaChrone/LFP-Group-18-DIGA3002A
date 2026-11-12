@@ -17,7 +17,7 @@ MonoBehaviour:
   textAreaMax: {x: 0.9, y: 0.78}
   steps:
   - type: 0
-    text: Ah, there you are, Kenji! Welcome to the harbour town of [Town Name].
+    text: Ah, there you are! Welcome to the harbour town of Shiosato my grandaughter.!
     textFadeTime: 0
     audioToPlay: {fileID: 0}
     graphicToShow: {fileID: 0}
@@ -44,7 +44,7 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
   - type: 0
-    text: Our family has run a sushi restaurant on this shore for three generations.
+    text: Our family has run this sushi restaurant on this shore for three generations.
     textFadeTime: 0
     audioToPlay: {fileID: 0}
     graphicToShow: {fileID: 0}
@@ -70,8 +70,8 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
   - type: 0
-    text: But times are tough, and the doors may close for good unless we turn things
-      around.
+    text: But times are tough, and the doors of Kenji's Sushi may close for good
+      unless we turn things around.
     textFadeTime: 0
     audioToPlay: {fileID: 0}
     graphicToShow: {fileID: 0}

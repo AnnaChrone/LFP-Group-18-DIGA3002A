@@ -17,7 +17,8 @@ MonoBehaviour:
   textAreaMax: {x: 0.78, y: 0.78}
   steps:
   - type: 0
-    text: Service has begun! Customers will take a seat and place their orders.
+    text: Service has begun! Customers will place their orders and you will receive
+      their order slips.
     textFadeTime: 0
     audioToPlay: {fileID: 0}
     graphicToShow: {fileID: 0}
