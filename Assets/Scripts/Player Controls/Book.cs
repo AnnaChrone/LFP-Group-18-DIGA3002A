@@ -366,9 +366,9 @@ public class Book : MonoBehaviour
         ItemData middle = recipe.slot2MIDDLE;
         ItemData top = recipe.slot1TOP;
 
-        SetIngredientSlot(slot.slot1, slot.slot1ingred, bottom);
-        SetIngredientSlot(slot.slot2, slot.slot2ingred, middle);
-        SetIngredientSlot(slot.slot3, slot.slot3ingred, top);
+        SetIngredientSlot(slot.slot1, slot.slot1ingred, bottom, recipe.slot3Weight);
+        SetIngredientSlot(slot.slot2, slot.slot2ingred, middle, recipe.slot2Weight);
+        SetIngredientSlot(slot.slot3, slot.slot3ingred, top, recipe.slot1Weight);
 
         // "Rice, Salmon, Seaweed" (bottom to top, skipping empty slots)
         if (slot.requiredingredients != null)
@@ -382,7 +382,7 @@ public class Book : MonoBehaviour
         }
     }
 
-    private void SetIngredientSlot(Image image, TextMeshProUGUI label, ItemData item)
+    private void SetIngredientSlot(Image image, TextMeshProUGUI label, ItemData item, float requiredWeight)
     {
         if (image != null)
         {
@@ -392,7 +392,14 @@ public class Book : MonoBehaviour
         }
 
         if (label != null)
-            label.text = item != null ? item.Label : emptySlotText;
+        {
+            if (item == null)
+                label.text = emptySlotText;
+            else if (requiredWeight > 0f)
+                label.text = $"{item.Label} ({FormatKg(requiredWeight)})";
+            else
+                label.text = item.Label; // no minimum set, e.g. rice
+        }
     }
 
     // ---------- Win page (coins) ----------

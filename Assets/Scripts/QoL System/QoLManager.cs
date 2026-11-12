@@ -49,6 +49,8 @@ public class QoLManager : MonoBehaviour
     public WeightCapacityRule WeightStorage;
 
 
+
+
     void Awake()
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
@@ -102,6 +104,13 @@ public class QoLManager : MonoBehaviour
     public void UnlockRecipes(float amount)
     {
         OrderManager.Instance.UnlockUpgradeRecipes();
+    }
+
+    public GameObject QoLPanel;
+    public void CloseQoL()
+    {
+        QoLPanel.SetActive(false);
+
     }
 }
 

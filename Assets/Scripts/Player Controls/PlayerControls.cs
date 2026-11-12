@@ -26,15 +26,36 @@ public class PlayerControls : MonoBehaviour
 
     private bool inStoveRange = false;
     private bool inQoLRange = false;
-
+    private bool panelPauseActive = false;
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        if (startMenu != null )
+        if (startMenu != null)
         {
             startMenu.SetActive(true);
         }
     }
+    private bool AnyPanelOpen()
+    {
+        bool stove = cooking != null && cooking.stoveUIPanel != null && cooking.stoveUIPanel.activeInHierarchy;
+        bool qol = QoLShopPanel != null && QoLShopPanel.activeInHierarchy;
+        bool bait = BaitShopPanel != null && BaitShopPanel.activeInHierarchy;
+        return stove || qol || bait;
+    }
+
+    private void Update()
+    {
+        bool open = AnyPanelOpen();
+        if (open == panelPauseActive) return;
+
+        panelPauseActive = open;
+
+        if (open)
+            Time.timeScale = 0f;
+        else if (!GamePaused)          // don't un-freeze if the pause menu is up
+            Time.timeScale = 1f;
+    }
+   
 
     void FixedUpdate()
     {
@@ -92,6 +113,7 @@ public class PlayerControls : MonoBehaviour
             else
             {
                 QoLShopPanel.SetActive(true);
+                
             }
         }
     }
@@ -122,6 +144,8 @@ public class PlayerControls : MonoBehaviour
             SoundManager.Instance.SetWalking(false);
         }
         pauseFunctions.togglePauseMenu(GamePaused);
+        if (!GamePaused && panelPauseActive) Time.timeScale = 0f;
+
     }
 
     private void OnTriggerEnter2D(Collider2D other)
