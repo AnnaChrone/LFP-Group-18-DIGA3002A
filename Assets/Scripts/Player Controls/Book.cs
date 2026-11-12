@@ -129,7 +129,8 @@ public class Book : MonoBehaviour
 
     private void OnEnable()
     {
-        RefreshWinPage();
+        // Covers the case where this script sits on the book object itself.
+        RefreshAllPages();
     }
 
     void Start()
@@ -145,8 +146,15 @@ public class Book : MonoBehaviour
         RefreshWinPage();
     }
 
+    private bool bookWasOpen = false;
+
     private void Update()
     {
+        // Redraw whenever the book becomes visible, no matter which script opened it.
+        bool isOpen = BookUI != null && BookUI.activeInHierarchy;
+        if (isOpen && !bookWasOpen) RefreshAllPages();
+        bookWasOpen = isOpen;
+
         // Watches OrderManager.counter so it stays correct no matter which script changes the coins.
         int coins = CurrentCoins();
         if (coins != lastShownCoins || winCoinThreshold != lastShownThreshold)
@@ -436,7 +444,18 @@ public class Book : MonoBehaviour
 
     public void toggleBook()
     {
-        BookUI.SetActive(!BookUI.activeInHierarchy);
+        bool opening = !BookUI.activeInHierarchy;
+        BookUI.SetActive(opening);
+
+        if (opening) RefreshAllPages();
+    }
+
+    /// <summary>Re-draws every tab so the book is up to date whenever it opens.</summary>
+    public void RefreshAllPages()
+    {
+        RefreshFishPage();
+        RefreshSushiPage();
+        RefreshWinPage();
     }
 
     public void openFishPages()

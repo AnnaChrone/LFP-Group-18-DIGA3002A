@@ -76,6 +76,22 @@ public class Cooking : MonoBehaviour
     [Tooltip("Optional. Shows e.g. 2/3.")]
     public TMP_Text orderCounterText;
 
+
+    [Header("Quanities")]
+    public TextMeshProUGUI TunaQ;
+    public TextMeshProUGUI SalmonQ;
+    public TextMeshProUGUI PrawnQ;
+    public TextMeshProUGUI SeaweedQ;
+    public TextMeshProUGUI CrabQ;
+
+
+    [Header("Quantity Items")]
+    public ItemData tunaItem;
+    public ItemData salmonItem;
+    public ItemData prawnItem;
+    public ItemData seaweedItem;
+    public ItemData crabItem;
+
     private int viewIndex = 0;
 
     private void Start()
@@ -99,6 +115,21 @@ public class Cooking : MonoBehaviour
     {
         if (playerInventory != null) playerInventory.OnChanged -= RefreshIngredientSourceStates;
         if (orderManager != null) orderManager.OnActiveOrderChanged -= RefreshActiveOrderDisplay;
+    }
+
+    private void RefreshQuantities()
+    {
+        SetQuantity(TunaQ, tunaItem);
+        SetQuantity(SalmonQ, salmonItem);
+        SetQuantity(PrawnQ, prawnItem);
+        SetQuantity(SeaweedQ, seaweedItem);
+        SetQuantity(CrabQ, crabItem);
+    }
+
+    private void SetQuantity(TextMeshProUGUI text, ItemData item)
+    {
+        if (text == null || item == null || playerInventory == null) return;
+        text.text = $"{playerInventory.TotalWeightOf(item):0.##}kg";
     }
 
     public void RefreshMatchedRecipe()
@@ -332,6 +363,7 @@ public class Cooking : MonoBehaviour
     private void RefreshIngredientSourceStates()
     {
         if (playerInventory == null) return;
+        RefreshQuantities();   
 
         foreach (IngredientSourceEntry entry in ingredientSources)
         {
@@ -387,6 +419,7 @@ public class Cooking : MonoBehaviour
         DeductIngredient(recipe.slot1TOP, recipe.slot1Weight);
         DeductIngredient(recipe.slot2MIDDLE, recipe.slot2Weight);
         DeductIngredient(recipe.slot3BOTTOM, recipe.slot3Weight);
+        RefreshQuantities();
 
         // 4. Grant the finished sushi (guaranteed to fit, since we pre-checked)
         bool added = playerInventory.TryAdd(recipe.resultItem);
