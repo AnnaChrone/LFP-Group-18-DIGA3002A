@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Sushi.Data;
+using Sushi.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -98,12 +99,15 @@ public class Book : MonoBehaviour
     [Tooltip("Optional, e.g. 'Page 1 / 3'.")]
     public TextMeshProUGUI pageNumberTextS;
 
-    [Header("Sushi Page Content")]
-    public Image sushiIcon;
-
     [Header("Win Page Content")]
-    public Image Fill;
-    public Button PayoutButton;
+    [Tooltip("Shows 'Current savings: xxx Coins'.")]
+    public TextMeshProUGUI currentcoins;
+    [Tooltip("Max value is set to the win threshold automatically.")]
+    public Slider CoinMeter;
+    [Tooltip("Can't be clicked until savings reach the win threshold.")]
+    public Button PayButton;
+    [Tooltip("Coins needed before the bank can be repaid.")]
+    [Min(1)] public int winCoinThreshold = 200;
 
     private const int EntriesPerPage = 2;
 
@@ -115,9 +119,17 @@ public class Book : MonoBehaviour
     private readonly HashSet<RecipeData> discoveredRecipes = new HashSet<RecipeData>();
     private int currentSushiPage = 0;
 
+    private int lastShownCoins = int.MinValue;
+    private int lastShownThreshold = int.MinValue;
+
     private void Awake()
     {
         Instance = this;
+    }
+
+    private void OnEnable()
+    {
+        RefreshWinPage();
     }
 
     void Start()
@@ -130,6 +142,15 @@ public class Book : MonoBehaviour
 
         RefreshFishPage();
         RefreshSushiPage();
+        RefreshWinPage();
+    }
+
+    private void Update()
+    {
+        // Watches OrderManager.counter so it stays correct no matter which script changes the coins.
+        int coins = CurrentCoins();
+        if (coins != lastShownCoins || winCoinThreshold != lastShownThreshold)
+            RefreshWinPage();
     }
 
     // ---------- Catching ----------
@@ -374,6 +395,36 @@ public class Book : MonoBehaviour
             label.text = item != null ? item.Label : emptySlotText;
     }
 
+    // ---------- Win page (coins) ----------
+
+    private int CurrentCoins()
+    {
+        return OrderManager.Instance != null ? OrderManager.Instance.counter : 0;
+    }
+
+    private void RefreshWinPage()
+    {
+        int coins = CurrentCoins();
+        int threshold = Mathf.Max(1, winCoinThreshold);
+
+        lastShownCoins = coins;
+        lastShownThreshold = winCoinThreshold;
+
+        if (currentcoins != null)
+            currentcoins.text = $"Current savings: {coins} Coins";
+
+        if (CoinMeter != null)
+        {
+            CoinMeter.wholeNumbers = true;
+            CoinMeter.minValue = 0;
+            CoinMeter.maxValue = threshold;
+            CoinMeter.value = Mathf.Clamp(coins, 0, threshold);
+        }
+
+        if (PayButton != null)
+            PayButton.interactable = coins >= threshold;
+    }
+
     // ---------- Book UI ----------
 
     public void toggleBook()
@@ -416,5 +467,7 @@ public class Book : MonoBehaviour
         Win.sprite = WinSelected;
         Sushi.sprite = sushiUnselected;
         Fish.sprite = fishUnselected;
+
+        RefreshWinPage();
     }
 }

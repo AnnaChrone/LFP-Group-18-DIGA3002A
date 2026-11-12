@@ -89,7 +89,7 @@ public class NightSummaryManager : MonoBehaviour
     {
         OverallEarningsCalc();
         OrderManager.Instance.counter -= (nightlyTax + cancellationDeductions);
-
+        OrderManager.Instance.coinCounter.text = OrderManager.Instance.counter.ToString();
 
         TotalOrder.text = "Total Orders Completed: " + NoOfCompleted;
         PopularDish.text = "Most Popular Dish: " + MostPopular;

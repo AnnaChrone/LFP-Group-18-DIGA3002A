@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PlayerControls : MonoBehaviour
 {
@@ -154,5 +155,11 @@ public class PlayerControls : MonoBehaviour
             Debug.Log("Left QoL range — closing UI");
             UiPrompter.Instance.QoLText(inQoLRange);
         }
+    }
+
+    public void ReloadScene()
+    {
+        Time.timeScale = 1f; // in case the game was paused when this runs
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
