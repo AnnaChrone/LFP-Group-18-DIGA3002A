@@ -17,7 +17,7 @@ MonoBehaviour:
   textAreaMax: {x: 0.9, y: 0.78}
   steps:
   - type: 0
-    text: Ah, there you are! Welcome to the harbour town of Shiosato my grandaughter.!
+    text: Ah, there you are! Welcome to the harbour town of Shiosato my grandaughter!
     textFadeTime: 0
     audioToPlay: {fileID: 0}
     graphicToShow: {fileID: 0}

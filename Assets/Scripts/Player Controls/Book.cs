@@ -14,9 +14,9 @@ public class Book : MonoBehaviour
     public Sprite WinSelected;
     public Sprite WinUnselected;
 
-    public SpriteRenderer Fish;
-    public SpriteRenderer Sushi;
-    public SpriteRenderer Win;
+    public Image Fish;
+    public Image Sushi;
+    public Image Win;
 
     [Header("Pages")]
     public GameObject fishPages;
@@ -60,17 +60,38 @@ public class Book : MonoBehaviour
     {
         storedPage.SetActive(false);
         storedPage = fishPages;
+        storedPage.SetActive(true);
+
+
+        Fish.sprite = fishSelected;
+        Sushi.sprite = sushiUnselected;
+        Win.sprite = WinUnselected;
     }
 
     public void openSushiPages()
     {
         storedPage.SetActive(false);
-        storedPage = WinPages;
+        storedPage = sushiPages;
+        storedPage.SetActive(true);
+
+        Sushi.sprite = sushiSelected;
+        Win.sprite = WinUnselected;
+        Fish.sprite = fishUnselected;
+
     }
 
     public void openWinPages()
     {
         storedPage.SetActive(false);
         storedPage = WinPages;
+        storedPage.SetActive(true);
+
+
+        Win.sprite = WinSelected;
+        Sushi.sprite = sushiUnselected;
+        Fish.sprite = fishUnselected;
+
+
+
     }
 }
