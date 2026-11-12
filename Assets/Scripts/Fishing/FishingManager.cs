@@ -612,6 +612,7 @@ public class FishingManager : MonoBehaviour
                 PressSpace.text = "Fish caught!";
 
                 ShowCaughtFishUI(stored.data);
+                Book.Instance?.RegisterCatch(stored.data);
             }
         }
         else
