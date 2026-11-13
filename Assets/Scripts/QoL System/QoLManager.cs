@@ -81,6 +81,7 @@ public class QoLManager : MonoBehaviour
     void SpendPlayerCoins(int amount)
     {
         OrderManager.Instance.counter -= amount;
+        OrderManager.Instance.coinCounter.text = (OrderManager.Instance.counter).ToString();
     }
 
     //Upgrade functions
