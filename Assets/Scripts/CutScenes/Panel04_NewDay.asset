@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63b635c00fb4d2e42aa157e05c52cb9b, type: 3}
   m_Name: Panel04_NewDay
   m_EditorClassIdentifier: Assembly-CSharp::CutsceneData
-  backgroundSprite: {fileID: 21300000, guid: 21484cd5c49595c43a747856e9fc7157, type: 3}
+  backgroundSprite: {fileID: 21300000, guid: 5049d798f1d1685479958772267e0242, type: 3}
   textAreaMin: {x: 0.09, y: 0.2}
   textAreaMax: {x: 0.63, y: 0.78}
   steps:
