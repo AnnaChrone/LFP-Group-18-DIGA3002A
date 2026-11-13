@@ -208,6 +208,7 @@ public class FishingManager : MonoBehaviour
         {
             SitDown();
             busyFishing = true;
+            
         }
         else if (currentState == FishingState.Sitting)
         {

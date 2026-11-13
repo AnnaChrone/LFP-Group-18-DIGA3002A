@@ -49540,9 +49540,9 @@ MonoBehaviour:
   - id: BuyServer
     displayName: Buy server
     description: Buy up to three additional servers (+30sec restaurant time)
-    price: 2
+    price: 80
     icon: {fileID: -1307928076344213211, guid: a0998a2c89d2aa049a059aab6f91464c, type: 3}
-    value: 80
+    value: 30
     onPurchased:
       m_PersistentCalls:
         m_Calls:

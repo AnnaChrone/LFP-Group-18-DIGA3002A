@@ -98,8 +98,8 @@ public class QoLManager : MonoBehaviour
 
     public void AddServer(float amount)
     {
-        DayNightCycleManager.Instance.serviceDuration += amount;
-        Debug.Log($"Added new server +{amount}");
+        DayNightCycleManager.Instance.serviceDuration += 30;
+        Debug.Log($"Added new server +{30}");
     }
 
     public void UnlockRecipes(float amount)
