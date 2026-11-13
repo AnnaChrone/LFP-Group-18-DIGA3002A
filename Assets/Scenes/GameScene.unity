@@ -49541,7 +49541,7 @@ MonoBehaviour:
     displayName: Buy server
     description: Buy up to three additional servers (+30sec restaurant time)
     price: 80
-    icon: {fileID: -1307928076344213211, guid: a0998a2c89d2aa049a059aab6f91464c, type: 3}
+    icon: {fileID: 21300000, guid: 22736c41897da2b4381adef4258f62fe, type: 3}
     value: 30
     onPurchased:
       m_PersistentCalls:
@@ -49565,7 +49565,7 @@ MonoBehaviour:
     displayName: Upgrade Inventory
     description: 'Increase catch inventory '
     price: 50
-    icon: {fileID: -1307928076344213211, guid: a0998a2c89d2aa049a059aab6f91464c, type: 3}
+    icon: {fileID: 21300000, guid: 3ac41aa6b0240a84392ea657d47fbeb9, type: 3}
     value: 5
     onPurchased:
       m_PersistentCalls:
@@ -49589,7 +49589,7 @@ MonoBehaviour:
     displayName: Accept Multiple Orders
     description: Accept up to three orders at once during restaurant service
     price: 150
-    icon: {fileID: -3276687688264177478, guid: 6239ffe51f02fb2448dc94094aba0f2f, type: 3}
+    icon: {fileID: 21300000, guid: 9ed6d644161bea348b5ee6963f566c98, type: 3}
     value: 3
     onPurchased:
       m_PersistentCalls:
@@ -49613,7 +49613,7 @@ MonoBehaviour:
     displayName: Unlock new sushi recipes
     description: Unlock new complex sushi recipes
     price: 100
-    icon: {fileID: -3276687688264177478, guid: 6239ffe51f02fb2448dc94094aba0f2f, type: 3}
+    icon: {fileID: 21300000, guid: 9510c7483b4648c4195cfc7a01d9bdfc, type: 3}
     value: 1
     onPurchased:
       m_PersistentCalls:

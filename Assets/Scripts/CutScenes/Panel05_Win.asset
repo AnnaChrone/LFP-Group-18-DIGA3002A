@@ -17,7 +17,7 @@ MonoBehaviour:
   textAreaMax: {x: 0.43, y: 0.54}
   steps:
   - type: 0
-    text: You did it! Your grandpa Kenji would be proud!
+    text: 'You did it! I am so proud of you! '
     textFadeTime: 0
     audioToPlay: {fileID: 0}
     graphicToShow: {fileID: 0}
