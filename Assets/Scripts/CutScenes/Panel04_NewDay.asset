@@ -30,8 +30,9 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
   - type: 0
-    text: Before you go, take a look at your handbook. It keeps track of your recipes,
-      earnings and progress.
+    text: Before you go, take a look at your information book. It keeps track of
+      the types of fish you've caught, recipes you've made and progress towards saving
+      Kenji's Sushi!
     textFadeTime: 0
     audioToPlay: {fileID: 0}
     graphicToShow: {fileID: 0}
@@ -57,8 +58,8 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
   - type: 0
-    text: "Remember why we\u2019re doing this. We owe the bank [amount], and the
-      deadline is [N days / the end of the season]."
+    text: "Remember why we\u2019re doing this. We owe the bank 500 coins by the end
+      of the season..."
     textFadeTime: 0
     audioToPlay: {fileID: 0}
     graphicToShow: {fileID: 0}
@@ -71,8 +72,8 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
   - type: 0
-    text: Save up enough coins, then press Payout to settle the debt and save the
-      restaurant.
+    text: Save up enough coins, then press the Payout button to settle the debt and
+      save the restaurant!
     textFadeTime: 0
     audioToPlay: {fileID: 0}
     graphicToShow: {fileID: 0}

@@ -98,8 +98,7 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
   - type: 0
-    text: Happy customers pay well and might even tip. Slow or wrong orders will
-      cost you.
+    text: Happy customers pay well and might even tip. Slow orders will cost you.
     textFadeTime: 0
     audioToPlay: {fileID: 0}
     graphicToShow: {fileID: 0}
