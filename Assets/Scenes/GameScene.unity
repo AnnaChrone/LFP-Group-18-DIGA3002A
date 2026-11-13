@@ -3754,7 +3754,7 @@ Transform:
   m_GameObject: {fileID: 133352669}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -14.0959, y: -1.62749, z: 0}
+  m_LocalPosition: {x: -15.8459, y: -1.62749, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -42187,7 +42187,7 @@ Transform:
   m_GameObject: {fileID: 1550153971}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -14.0959, y: -1.62749, z: 0}
+  m_LocalPosition: {x: -15.8459, y: -1.62749, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -44372,6 +44372,10 @@ PrefabInstance:
       propertyPath: catchHandler
       value: 
       objectReference: {fileID: 1761576820}
+    - target: {fileID: 2990667041537998345, guid: c236f3b33ead9f34682e77ba8475e2b6, type: 3}
+      propertyPath: bobberDipAmount
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 2990667041537998345, guid: c236f3b33ead9f34682e77ba8475e2b6, type: 3}
       propertyPath: caughtFishCanvasGroup
       value: 
