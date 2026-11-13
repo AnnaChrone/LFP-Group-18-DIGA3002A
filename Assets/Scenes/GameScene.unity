@@ -13954,7 +13954,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Kenji Sushi LTD must repay 200 coins to the bank or face eviction
+  m_text: Kenji Sushi LTD must repay 500 coins to the bank or face eviction
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a8a9e092e08610d4a85589a2a377fc6d, type: 2}
   m_sharedMaterial: {fileID: 4309174638318901998, guid: a8a9e092e08610d4a85589a2a377fc6d, type: 2}
@@ -22445,7 +22445,7 @@ MonoBehaviour:
   currentcoins: {fileID: 980060403}
   CoinMeter: {fileID: 1180028233}
   PayButton: {fileID: 2024840821}
-  winCoinThreshold: 200
+  winCoinThreshold: 500
 --- !u!114 &1074343043
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39849,7 +39849,7 @@ MonoBehaviour:
     description: Buy up to three additional servers (+30sec restaurant time)
     price: 100
     icon: {fileID: -1307928076344213211, guid: a0998a2c89d2aa049a059aab6f91464c, type: 3}
-    value: 70
+    value: 80
     onPurchased:
       m_PersistentCalls:
         m_Calls:
@@ -39895,7 +39895,7 @@ MonoBehaviour:
   - id: MultipleOrders
     displayName: Accept Multiple Orders
     description: Accept up to three orders at once during restaurant service
-    price: 60
+    price: 150
     icon: {fileID: -3276687688264177478, guid: 6239ffe51f02fb2448dc94094aba0f2f, type: 3}
     value: 3
     onPurchased:
