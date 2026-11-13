@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2279a786881793498e6169ec4a1cb0c, type: 3}
   m_Name: Capacity_Weight
   m_EditorClassIdentifier: Assembly-CSharp::Sushi.Inventory.WeightCapacityRule
-  maxWeight: 10
-  lightestItemWeight: 2
+  baseMaxWeight: 10
+  lightestItemWeight: 0.01
   unitSuffix: kg
+  maxSushi: 4
