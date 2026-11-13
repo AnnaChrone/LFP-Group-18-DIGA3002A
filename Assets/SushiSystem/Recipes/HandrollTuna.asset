@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a2efcab80ffb854dbf87b23d2c872e3, type: 3}
   m_Name: HandrollTuna
   m_EditorClassIdentifier: Assembly-CSharp::Sushi.Data.RecipeData
-  recipeName: Salmon Handroll
+  recipeName: Tuna Handroll
   upgradeRecipe: 1
   slot1TOP: {fileID: 11400000, guid: 7cd3ff561c9b158429637bb0c806498b, type: 2}
   slot1Weight: 0.5
   slot2MIDDLE: {fileID: 11400000, guid: e5b3e4f34792135449dd4cbe2769b234, type: 2}
   slot2Weight: 0.5
   slot3BOTTOM: {fileID: 11400000, guid: 0e7f019abecba294fadd3d379f725530, type: 2}
-  slot3Weight: 0.5
+  slot3Weight: 0.1
   resultItem: {fileID: 11400000, guid: a8d6b9c9e83e9874c8e6cb4510af8a13, type: 2}
   recipeValue: 30

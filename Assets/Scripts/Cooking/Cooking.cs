@@ -525,4 +525,33 @@ public class Cooking : MonoBehaviour
 
         Debug.Log("No recipe matches the current slot arrangement.");
     }
+
+    /// <summary>
+    /// True only if EVERY catchable (non-staple) ingredient in the recipe is in stock
+    /// at its minimum weight. combinedWeight and catchableCount feed the spawn weighting.
+    /// </summary>
+    private bool HasAllCatchables(RecipeData recipe, out float combinedWeight, out int catchableCount)
+    {
+        combinedWeight = 0f;
+        catchableCount = 0;
+
+        return CheckSlot(recipe.slot1TOP, recipe.slot1Weight, ref combinedWeight, ref catchableCount)
+            && CheckSlot(recipe.slot2MIDDLE, recipe.slot2Weight, ref combinedWeight, ref catchableCount)
+            && CheckSlot(recipe.slot3BOTTOM, recipe.slot3Weight, ref combinedWeight, ref catchableCount);
+    }
+
+    private bool CheckSlot(ItemData item, float requiredWeight, ref float combinedWeight, ref int catchableCount)
+    {
+        if (item == null) return true;               // empty slot
+        if (item.isInfiniteStaple) return true;      // rice etc. never blocks an order
+
+        float held = playerInventory.TotalWeightOf(item);
+        if (held <= 0f || held < requiredWeight) return false;
+
+        combinedWeight += held;
+        catchableCount++;
+        return true;
+    }
+
+
 }

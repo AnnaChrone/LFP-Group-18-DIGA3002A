@@ -19,6 +19,6 @@ MonoBehaviour:
   slot2MIDDLE: {fileID: 11400000, guid: e5b3e4f34792135449dd4cbe2769b234, type: 2}
   slot2Weight: 0.5
   slot3BOTTOM: {fileID: 11400000, guid: 0e7f019abecba294fadd3d379f725530, type: 2}
-  slot3Weight: 0.5
+  slot3Weight: 0.1
   resultItem: {fileID: 11400000, guid: 7a09de1067f729747966731862e05664, type: 2}
   recipeValue: 30

@@ -36,6 +36,7 @@ public class SoundManager : MonoBehaviour
     public AudioClip clickSound;    // UI click / open / close
     public AudioClip coinSound;     // coin earned in the restaurant
     public AudioClip cookSound;
+    public AudioClip errorSound;
 
     // --------------------------------------------------------------- Internals
     AudioSource musicSource;
@@ -118,6 +119,9 @@ public class SoundManager : MonoBehaviour
     public void PlayUIClick() => PlayClick();   // kept for older calls
 
     public void PlayCook() => PlayOneShot(cookSound);
+
+    public void PlayError() => PlayOneShot(errorSound);
+
 
     public void PlayCoin() => PlayOneShot(coinSound);
 

@@ -171,6 +171,7 @@ public class BaitShopManager : MonoBehaviour
         }
         else
         {
+            SoundManager.Instance.PlayError();
             Debug.LogWarning("Not enough gold for today's price rates!");
         }
     }

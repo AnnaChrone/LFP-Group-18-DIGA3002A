@@ -105,7 +105,7 @@ namespace Sushi.UI
             }
             spawnedSlips.Clear();
             acceptedSlips.Clear();
-            
+
             for (int i = 0; i < activePlateSlots.Length; i++)
             {
                 activePlateSlots[i] = null;
@@ -115,19 +115,19 @@ namespace Sushi.UI
             OnActiveOrderChanged?.Invoke();
         }
 
-            private void RebuildActiveRecipes()
-    {
-        activeRecipes.Clear();
-        foreach (GameObject slip in acceptedSlips)
+        private void RebuildActiveRecipes()
         {
-            if (slip == null) continue;
-            
-            OrderSlipUI ui = slip.GetComponent<OrderSlipUI>();
-            
-            if (ui != null && ui.AssignedRecipe != null) 
-                activeRecipes.Add(ui.AssignedRecipe);
+            activeRecipes.Clear();
+            foreach (GameObject slip in acceptedSlips)
+            {
+                if (slip == null) continue;
+
+                OrderSlipUI ui = slip.GetComponent<OrderSlipUI>();
+
+                if (ui != null && ui.AssignedRecipe != null)
+                    activeRecipes.Add(ui.AssignedRecipe);
+            }
         }
-    }
 
         private IEnumerator GenerationLoop()
         {
@@ -145,179 +145,122 @@ namespace Sushi.UI
             }
         }
 
-    private void TryCreateTicket()
-    {
-        if (playerInventory == null)
+        private void TryCreateTicket()
         {
-            Debug.LogError("OrderManager: Player Inventory reference is missing in the Inspector!");
-            return;
-        }
-
-        if (globalRecipeBook == null || globalRecipeBook.Count == 0)
-        {
-            Debug.LogWarning("OrderManager: Your Global Recipe Book is empty!");
-            return;
-        }
-
-        if (playerInventory.TotalWeight <= 0f)
-        {
-            Debug.LogWarning("OrderManager: Player inventory is completely empty by weight! No orders can be generated.");
-            return;
-        }
-
-        List<int> freePlateIndices = new List<int>();
-        for (int i = 0; i < activePlateSlots.Length; i++)
-        {
-            if (activePlateSlots[i] == null && plateSpawnPoints[i] != null)
+            if (playerInventory == null)
             {
-                freePlateIndices.Add(i);
+                Debug.LogError("OrderManager: Player Inventory reference is missing in the Inspector!");
+                return;
             }
-        }
 
-        if (freePlateIndices.Count == 0) return;
-
-        List<RecipeData> viableRecipes = new List<RecipeData>();
-        List<float> recipeSpawnWeights = new List<float>();
-        float totalWeightSum = 0f;
-
-        foreach (RecipeData recipe in globalRecipeBook)
-        {
-            if (!IsRecipeAvailable(recipe)) continue;
-
-            // --- STRATEGY OVERHAUL: All required ingredients must be true ---
-            bool satisfiesIngredients = true;
-            float combinedIngredientWeight = 0f;
-            int evaluatedSlotsCount = 0;
-
-            // 1. Check TOP SLOT requirements if it has an item assigned
-            if (recipe.slot1TOP != null)
+            if (globalRecipeBook == null || globalRecipeBook.Count == 0)
             {
-                if (!recipe.slot1TOP.isInfiniteStaple)
+                Debug.LogWarning("OrderManager: Your Global Recipe Book is empty!");
+                return;
+            }
+
+            if (playerInventory.TotalWeight <= 0f)
+            {
+                Debug.LogWarning("OrderManager: Player inventory is completely empty by weight! No orders can be generated.");
+                return;
+            }
+
+            List<int> freePlateIndices = new List<int>();
+            for (int i = 0; i < activePlateSlots.Length; i++)
+            {
+                if (activePlateSlots[i] == null && plateSpawnPoints[i] != null)
                 {
-                    float currentWeight = playerInventory.TotalWeightOf(recipe.slot1TOP);
-                    // Must have the item AND meet the minimum specified weight boundary threshold from ScriptableObject
-                    if (currentWeight <= 0f || currentWeight < recipe.slot1Weight)
-                    {
-                        satisfiesIngredients = false;
-                    }
-                    else
-                    {
-                        combinedIngredientWeight += currentWeight;
-                        evaluatedSlotsCount++;
-                    }
+                    freePlateIndices.Add(i);
                 }
             }
 
-            // 2. Check MIDDLE SLOT requirements if it has an item assigned
-            if (satisfiesIngredients && recipe.slot2MIDDLE != null)
+            if (freePlateIndices.Count == 0) return;
+
+            List<RecipeData> viableRecipes = new List<RecipeData>();
+            List<float> recipeSpawnWeights = new List<float>();
+            float totalWeightSum = 0f;
+
+            foreach (RecipeData recipe in globalRecipeBook)
             {
-                if (!recipe.slot2MIDDLE.isInfiniteStaple)
+                if (!IsRecipeAvailable(recipe)) continue;
+
+                // --- STRATEGY OVERHAUL: All required ingredients must be true ---
+                bool satisfiesIngredients = HasAllCatchables(recipe, out float combinedIngredientWeight, out int evaluatedSlotsCount);
+
+                // Fallback Shortcut: If they don't have the raw ingredients, do they already have the finished plate in stock?
+                bool hasFinishedProduct = recipe.resultItem != null && playerInventory.TotalWeightOf(recipe.resultItem) > 0f;
+
+                // Recipe is valid if they meet ALL raw ingredient requirements OR already have the cooked dish ready to serve
+                bool isRecipeViable = (satisfiesIngredients && evaluatedSlotsCount > 0) || hasFinishedProduct;
+
+                if (isRecipeViable)
                 {
-                    float currentWeight = playerInventory.TotalWeightOf(recipe.slot2MIDDLE);
-                    if (currentWeight <= 0f || currentWeight < recipe.slot2Weight)
-                    {
-                        satisfiesIngredients = false;
-                    }
-                    else
-                    {
-                        combinedIngredientWeight += currentWeight;
-                        evaluatedSlotsCount++;
-                    }
+                    viableRecipes.Add(recipe);
+
+                    // For weighted distribution math, determine an average stock presence modifier metric
+                    float calculatedSpawnWeight = hasFinishedProduct
+                        ? playerInventory.TotalWeightOf(recipe.resultItem)
+                        : (combinedIngredientWeight / Mathf.Max(1, evaluatedSlotsCount));
+
+                    recipeSpawnWeights.Add(calculatedSpawnWeight);
+                    totalWeightSum += calculatedSpawnWeight;
                 }
             }
 
-            // 3. Check BOTTOM SLOT requirements if it has an item assigned
-            if (satisfiesIngredients && recipe.slot3BOTTOM != null)
+            if (viableRecipes.Count == 0 || totalWeightSum <= 0f)
             {
-                if (!recipe.slot3BOTTOM.isInfiniteStaple)
+                Debug.LogWarning("OrderManager: Player has items, but none match the recipe demands based on required combination weights.");
+                return;
+            }
+
+            if (orderSlipPrefab == null)
+            {
+                Debug.LogError("OrderManager: Order Slip Prefab is not assigned!");
+                return;
+            }
+
+            // --- WEIGHTED RANDOM SELECTION SEED LOOP ---
+            float weightRoll = UnityEngine.Random.Range(0f, totalWeightSum);
+            RecipeData selectedRecipe = null;
+            float currentWeightCounter = 0f;
+
+            for (int i = 0; i < viableRecipes.Count; i++)
+            {
+                currentWeightCounter += recipeSpawnWeights[i];
+                if (weightRoll <= currentWeightCounter)
                 {
-                    float currentWeight = playerInventory.TotalWeightOf(recipe.slot3BOTTOM);
-                    if (currentWeight <= 0f || currentWeight < recipe.slot3Weight)
-                    {
-                        satisfiesIngredients = false;
-                    }
-                    else
-                    {
-                        combinedIngredientWeight += currentWeight;
-                        evaluatedSlotsCount++;
-                    }
+                    selectedRecipe = viableRecipes[i];
+                    break;
                 }
             }
 
-            // Fallback Shortcut: If they don't have the raw ingredients, do they already have the finished plate in stock?
-            bool hasFinishedProduct = recipe.resultItem != null && playerInventory.TotalWeightOf(recipe.resultItem) > 0f;
+            if (selectedRecipe == null) selectedRecipe = viableRecipes[viableRecipes.Count - 1];
 
-            // Recipe is valid if they meet ALL raw ingredient requirements OR already have the cooked dish ready to serve
-            bool isRecipeViable = (satisfiesIngredients && evaluatedSlotsCount > 0) || hasFinishedProduct;
+            int chosenPlateIndex = freePlateIndices[UnityEngine.Random.Range(0, freePlateIndices.Count)];
+            Transform spawnTarget = plateSpawnPoints[chosenPlateIndex];
 
-            if (isRecipeViable)
+            BudgetTier chosenCustomerTier = BudgetTier.Standard;
+            float roll = UnityEngine.Random.Range(0f, 100f);
+
+            if (roll < budgetChance)
             {
-                viableRecipes.Add(recipe);
+                chosenCustomerTier = BudgetTier.Budget;
+            }
+            else if (roll >= (100f - vipChance))
+            {
+                chosenCustomerTier = BudgetTier.VIP;
+            }
 
-                // For weighted distribution math, determine an average stock presence modifier metric
-                float calculatedSpawnWeight = hasFinishedProduct 
-                    ? playerInventory.TotalWeightOf(recipe.resultItem) 
-                    : (combinedIngredientWeight / Mathf.Max(1, evaluatedSlotsCount));
+            GameObject newSlip = Instantiate(orderSlipPrefab, spawnTarget.position, Quaternion.identity, spawnTarget);
+            spawnedSlips.Add(newSlip);
+            activePlateSlots[chosenPlateIndex] = newSlip;
 
-                recipeSpawnWeights.Add(calculatedSpawnWeight);
-                totalWeightSum += calculatedSpawnWeight;
+            OrderSlipUI slipUI = newSlip.GetComponent<OrderSlipUI>();
+            if (slipUI != null)
+            {
+                slipUI.InitializeRecipeTicket(selectedRecipe, playerInventory, this, chosenPlateIndex, chosenCustomerTier);
             }
         }
-
-        if (viableRecipes.Count == 0 || totalWeightSum <= 0f)
-        {
-            Debug.LogWarning("OrderManager: Player has items, but none match the recipe demands based on required combination weights.");
-            return;
-        }
-
-        if (orderSlipPrefab == null)
-        {
-            Debug.LogError("OrderManager: Order Slip Prefab is not assigned!");
-            return;
-        }
-
-        // --- WEIGHTED RANDOM SELECTION SEED LOOP ---
-        float weightRoll = UnityEngine.Random.Range(0f, totalWeightSum);
-        RecipeData selectedRecipe = null;
-        float currentWeightCounter = 0f;
-
-        for (int i = 0; i < viableRecipes.Count; i++)
-        {
-            currentWeightCounter += recipeSpawnWeights[i];
-            if (weightRoll <= currentWeightCounter)
-            {
-                selectedRecipe = viableRecipes[i];
-                break;
-            }
-        }
-
-        if (selectedRecipe == null) selectedRecipe = viableRecipes[viableRecipes.Count - 1];
-
-        int chosenPlateIndex = freePlateIndices[UnityEngine.Random.Range(0, freePlateIndices.Count)];
-        Transform spawnTarget = plateSpawnPoints[chosenPlateIndex];
-
-        BudgetTier chosenCustomerTier = BudgetTier.Standard;
-        float roll = UnityEngine.Random.Range(0f, 100f);
-
-        if (roll < budgetChance)
-        {
-            chosenCustomerTier = BudgetTier.Budget;
-        }
-        else if (roll >= (100f - vipChance))
-        {
-            chosenCustomerTier = BudgetTier.VIP;
-        }
-
-        GameObject newSlip = Instantiate(orderSlipPrefab, spawnTarget.position, Quaternion.identity, spawnTarget);
-        spawnedSlips.Add(newSlip);
-        activePlateSlots[chosenPlateIndex] = newSlip;
-
-        OrderSlipUI slipUI = newSlip.GetComponent<OrderSlipUI>();
-        if (slipUI != null)
-        {
-            slipUI.InitializeRecipeTicket(selectedRecipe, playerInventory, this, chosenPlateIndex, chosenCustomerTier);
-        }
-    }
 
         public bool AcceptOrder(RecipeData recipe, GameObject slipObj)
         {
@@ -335,47 +278,75 @@ namespace Sushi.UI
             return true;
         }
         public void CompleteOrder(GameObject slipObj)
-    {
-    acceptedSlips.Remove(slipObj);
-    DismissTicket(slipObj);
-    RebuildActiveRecipes();
-        OnActiveOrderChanged?.Invoke();
+        {
+            acceptedSlips.Remove(slipObj);
+            DismissTicket(slipObj);
+            RebuildActiveRecipes();
+            OnActiveOrderChanged?.Invoke();
+        }
+        public void FailOrder(GameObject slipObj)
+        {
+            acceptedSlips.Remove(slipObj);
+            DismissTicket(slipObj);
+            RebuildActiveRecipes();
+            OnActiveOrderChanged?.Invoke();
+        }
+        public void CancelActiveOrder(GameObject slipObj)
+        {
+            acceptedSlips.Remove(slipObj);
+
+            OrderSlipUI slip = slipObj.GetComponent<OrderSlipUI>();
+
+            if (slip != null)
+                NightSummaryManager.Instance.IncreaseCancellationDeductions(slip.currentGoldPayout);
+
+            RebuildActiveRecipes();
+            Debug.Log("Active order was cancelled.");
+            OnActiveOrderChanged?.Invoke();
+        }
+
+        public void FreeUpPlateSlot(int slotIndex)
+        {
+            if (slotIndex >= 0 && slotIndex < activePlateSlots.Length)
+            {
+                activePlateSlots[slotIndex] = null;
+            }
+        }
+        public void DismissTicket(GameObject slipObj)
+        {
+            if (spawnedSlips.Contains(slipObj))
+            {
+                spawnedSlips.Remove(slipObj);
+                Destroy(slipObj);
+            }
+        }
+
+
+        /// <summary>
+        /// True only if EVERY catchable (non-staple) ingredient in the recipe is in stock
+        /// at its minimum weight. combinedWeight and catchableCount feed the spawn weighting.
+        /// </summary>
+        private bool HasAllCatchables(RecipeData recipe, out float combinedWeight, out int catchableCount)
+        {
+            combinedWeight = 0f;
+            catchableCount = 0;
+
+            return CheckSlot(recipe.slot1TOP, recipe.slot1Weight, ref combinedWeight, ref catchableCount)
+                && CheckSlot(recipe.slot2MIDDLE, recipe.slot2Weight, ref combinedWeight, ref catchableCount)
+                && CheckSlot(recipe.slot3BOTTOM, recipe.slot3Weight, ref combinedWeight, ref catchableCount);
+        }
+
+        private bool CheckSlot(ItemData item, float requiredWeight, ref float combinedWeight, ref int catchableCount)
+        {
+            if (item == null) return true;               // empty slot
+            if (item.isInfiniteStaple) return true;      // rice etc. never blocks an order
+
+            float held = playerInventory.TotalWeightOf(item);
+            if (held <= 0f || held < requiredWeight) return false;
+
+            combinedWeight += held;
+            catchableCount++;
+            return true;
+        }
     }
-public void FailOrder(GameObject slipObj)
-{
-acceptedSlips.Remove(slipObj);
-DismissTicket(slipObj);
-RebuildActiveRecipes();
-OnActiveOrderChanged?.Invoke();
-}
-    public void CancelActiveOrder(GameObject slipObj)
-    {
-        acceptedSlips.Remove(slipObj);
-
-        OrderSlipUI slip = slipObj.GetComponent<OrderSlipUI>();
-        
-        if (slip != null)
-            NightSummaryManager.Instance.IncreaseCancellationDeductions(slip.currentGoldPayout);
-
-        RebuildActiveRecipes();
-        Debug.Log("Active order was cancelled.");
-        OnActiveOrderChanged?.Invoke();
-    }
-
-public void FreeUpPlateSlot(int slotIndex)
-{
-if (slotIndex >= 0 && slotIndex < activePlateSlots.Length)
-{
-activePlateSlots[slotIndex] = null;
-}
-}
-public void DismissTicket(GameObject slipObj)
-{
-if (spawnedSlips.Contains(slipObj))
-{
-spawnedSlips.Remove(slipObj);
-Destroy(slipObj);
-}
-}
-}
 }

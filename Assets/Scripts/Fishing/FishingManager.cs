@@ -277,6 +277,7 @@ public class FishingManager : MonoBehaviour
         if (baitHook == null || baitHook.attachedBait == null)
         {
             Debug.Log("Cannot cast: no bait on the hook!");
+            SoundManager.Instance.PlayError();
             PressSpace.text = "Cannot cast: no bait on the hook!";
             return;
         }
