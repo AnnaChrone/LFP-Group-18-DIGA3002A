@@ -1,0 +1,3536 @@
+fileFormatVersion: 2
+guid: 17bcacbb73554184e973060ee3b7cc6a
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -2357508967548514018
+    second: NEwUIi_0
+  - first:
+      213: 7160634821229743345
+    second: NEwUIi_1
+  - first:
+      213: -1122353996688073730
+    second: NEwUIi_2
+  - first:
+      213: -2828749713908956693
+    second: NEwUIi_3
+  - first:
+      213: -5934290996644609948
+    second: NEwUIi_4
+  - first:
+      213: 5138543304927098051
+    second: NEwUIi_5
+  - first:
+      213: 6962249510952737114
+    second: NEwUIi_6
+  - first:
+      213: -3385766581925758946
+    second: NEwUIi_7
+  - first:
+      213: 7090459580211688954
+    second: NEwUIi_8
+  - first:
+      213: -2115989973603736222
+    second: NEwUIi_9
+  - first:
+      213: -3432453266277962733
+    second: NEwUIi_10
+  - first:
+      213: -4569163236610705194
+    second: NEwUIi_11
+  - first:
+      213: 2784294179652845326
+    second: NEwUIi_12
+  - first:
+      213: 4054000281282524251
+    second: NEwUIi_13
+  - first:
+      213: -3877951126904675490
+    second: NEwUIi_14
+  - first:
+      213: 1100658612946276847
+    second: NEwUIi_15
+  - first:
+      213: -3274225789404627404
+    second: NEwUIi_16
+  - first:
+      213: 2266367877127813005
+    second: NEwUIi_17
+  - first:
+      213: -1888307576082767730
+    second: NEwUIi_18
+  - first:
+      213: 2096070885250403070
+    second: NEwUIi_19
+  - first:
+      213: -7241412173934091448
+    second: NEwUIi_20
+  - first:
+      213: 3554858373161552489
+    second: NEwUIi_21
+  - first:
+      213: 1145267206683819335
+    second: NEwUIi_22
+  - first:
+      213: -8155219274623677472
+    second: NEwUIi_23
+  - first:
+      213: -6937272925430060279
+    second: NEwUIi_24
+  - first:
+      213: -1125910809152446943
+    second: NEwUIi_25
+  - first:
+      213: -252467373507689647
+    second: NEwUIi_26
+  - first:
+      213: -8876165445850648597
+    second: NEwUIi_27
+  - first:
+      213: -5309084623774787254
+    second: NEwUIi_28
+  - first:
+      213: 1718585818117181398
+    second: NEwUIi_29
+  - first:
+      213: -5898814090329842564
+    second: NEwUIi_30
+  - first:
+      213: 8049920202801644291
+    second: NEwUIi_31
+  - first:
+      213: -366889389050438604
+    second: NEwUIi_32
+  - first:
+      213: 5163528687854578150
+    second: NEwUIi_33
+  - first:
+      213: 6866289063416148329
+    second: NEwUIi_34
+  - first:
+      213: 802465914156445804
+    second: NEwUIi_35
+  - first:
+      213: -3976726944494358851
+    second: NEwUIi_36
+  - first:
+      213: 1116092769750784985
+    second: NEwUIi_37
+  - first:
+      213: -1509487575496525952
+    second: NEwUIi_38
+  - first:
+      213: -3811918419618859492
+    second: NEwUIi_39
+  - first:
+      213: 1279759739965733398
+    second: NEwUIi_40
+  - first:
+      213: 6091217708407978944
+    second: NEwUIi_41
+  - first:
+      213: 8974323966341198737
+    second: NEwUIi_42
+  - first:
+      213: 1883078110754121621
+    second: NEwUIi_43
+  - first:
+      213: -2742092019594152290
+    second: NEwUIi_44
+  - first:
+      213: 3423681333875591290
+    second: NEwUIi_45
+  - first:
+      213: -8970972631337976286
+    second: NEwUIi_46
+  - first:
+      213: -7058876925289289222
+    second: NEwUIi_47
+  - first:
+      213: -815441972750986338
+    second: NEwUIi_48
+  - first:
+      213: -6278773229819896154
+    second: NEwUIi_49
+  - first:
+      213: -1525798117927870009
+    second: NEwUIi_50
+  - first:
+      213: 8098493775872192291
+    second: NEwUIi_51
+  - first:
+      213: -1120717536775257969
+    second: NEwUIi_52
+  - first:
+      213: 8078614827432416220
+    second: NEwUIi_53
+  - first:
+      213: -1236429884136666881
+    second: NEwUIi_54
+  - first:
+      213: 3176055009918888426
+    second: NEwUIi_55
+  - first:
+      213: 1164889021317625385
+    second: NEwUIi_56
+  - first:
+      213: -7445819838580618789
+    second: NEwUIi_57
+  - first:
+      213: -2504069482816621981
+    second: NEwUIi_58
+  - first:
+      213: 3770990575599323902
+    second: NEwUIi_59
+  - first:
+      213: -1842441139376417855
+    second: NEwUIi_60
+  - first:
+      213: 767554943416593475
+    second: NEwUIi_61
+  - first:
+      213: 2330679524088422583
+    second: NEwUIi_62
+  - first:
+      213: 5242854357384072512
+    second: NEwUIi_63
+  - first:
+      213: -4389111584770334288
+    second: NEwUIi_64
+  - first:
+      213: 1536586946602850983
+    second: NEwUIi_65
+  - first:
+      213: -4656651706389358372
+    second: NEwUIi_66
+  - first:
+      213: -6002194954205700649
+    second: NEwUIi_67
+  - first:
+      213: 5758877049886427499
+    second: NEwUIi_68
+  - first:
+      213: -1465288972648168099
+    second: NEwUIi_69
+  - first:
+      213: -7045319285685698611
+    second: NEwUIi_70
+  - first:
+      213: -5043415953921710548
+    second: NEwUIi_71
+  - first:
+      213: -7211857329315653558
+    second: NEwUIi_72
+  - first:
+      213: 3219751208347851874
+    second: NEwUIi_73
+  - first:
+      213: 6135445287559611602
+    second: NEwUIi_74
+  - first:
+      213: -1447581666307531633
+    second: NEwUIi_75
+  - first:
+      213: -1404986989191457059
+    second: NEwUIi_76
+  - first:
+      213: -18710159970604284
+    second: NEwUIi_77
+  - first:
+      213: 8968402983983474553
+    second: NEwUIi_78
+  - first:
+      213: -5441702514789683693
+    second: NEwUIi_79
+  - first:
+      213: 317880136329947364
+    second: NEwUIi_80
+  - first:
+      213: -7935411504878902776
+    second: NEwUIi_81
+  - first:
+      213: 5281534375748909075
+    second: NEwUIi_82
+  - first:
+      213: -2552172966364535148
+    second: NEwUIi_83
+  - first:
+      213: 3493549609874663198
+    second: NEwUIi_84
+  - first:
+      213: 3044938863222014033
+    second: NEwUIi_85
+  - first:
+      213: -9109335208012962619
+    second: NEwUIi_86
+  - first:
+      213: -8374420194009002215
+    second: NEwUIi_87
+  - first:
+      213: -6690622447007121011
+    second: NEwUIi_88
+  - first:
+      213: 971559994708379584
+    second: NEwUIi_89
+  - first:
+      213: -3582248719323973778
+    second: NEwUIi_90
+  - first:
+      213: -3594951097429778567
+    second: NEwUIi_91
+  - first:
+      213: -3663648664254716269
+    second: NEwUIi_92
+  - first:
+      213: -2465225087788416855
+    second: NEwUIi_93
+  - first:
+      213: -6661280727322218388
+    second: NEwUIi_94
+  - first:
+      213: 7662261197740980166
+    second: NEwUIi_95
+  - first:
+      213: 6068796069918872170
+    second: NEwUIi_96
+  - first:
+      213: 8071413845334896932
+    second: NEwUIi_97
+  - first:
+      213: 3060832432599556754
+    second: NEwUIi_98
+  - first:
+      213: -3859817432721890123
+    second: NEwUIi_99
+  - first:
+      213: -641515122982354449
+    second: NEwUIi_100
+  - first:
+      213: -8983912709291890944
+    second: NEwUIi_101
+  - first:
+      213: 4110760409655704799
+    second: NEwUIi_102
+  - first:
+      213: -4673036264437500447
+    second: NEwUIi_103
+  - first:
+      213: -2577592263331704319
+    second: NEwUIi_104
+  - first:
+      213: -3909844494585296864
+    second: NEwUIi_105
+  - first:
+      213: 7018737746503684641
+    second: NEwUIi_106
+  - first:
+      213: -7162515118480308232
+    second: NEwUIi_107
+  - first:
+      213: -2458725778011569144
+    second: NEwUIi_108
+  - first:
+      213: 4825390307734291512
+    second: NEwUIi_109
+  - first:
+      213: 1275562350403129288
+    second: NEwUIi_110
+  - first:
+      213: 8071753117996958578
+    second: NEwUIi_111
+  - first:
+      213: 3179337235345270332
+    second: NEwUIi_112
+  - first:
+      213: 6151438142607043706
+    second: NEwUIi_113
+  - first:
+      213: 1054513073815680537
+    second: NEwUIi_114
+  - first:
+      213: -4878940339477400767
+    second: NEwUIi_115
+  - first:
+      213: -8499240363581744339
+    second: NEwUIi_116
+  - first:
+      213: 6164482753189724718
+    second: NEwUIi_117
+  - first:
+      213: -857511080853131880
+    second: NEwUIi_118
+  - first:
+      213: -9001018483046142304
+    second: NEwUIi_119
+  - first:
+      213: -1442402948346101029
+    second: NEwUIi_120
+  - first:
+      213: 8321301040518754050
+    second: NEwUIi_121
+  - first:
+      213: -6602293815018531870
+    second: NEwUIi_122
+  - first:
+      213: -78148477195316147
+    second: NEwUIi_123
+  - first:
+      213: 8085145648733773892
+    second: NEwUIi_124
+  - first:
+      213: -8031520526809804357
+    second: NEwUIi_125
+  - first:
+      213: 1714763332111359083
+    second: NEwUIi_126
+  - first:
+      213: 1232042598302081996
+    second: NEwUIi_127
+  - first:
+      213: 303810975540851419
+    second: NEwUIi_128
+  - first:
+      213: 438332402266376393
+    second: NEwUIi_129
+  - first:
+      213: 2581331297407026637
+    second: NEwUIi_130
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: NEwUIi_0
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 573
+        width: 103
+        height: 24
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e11197aa512784fd0800000000000000
+      internalID: -2357508967548514018
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_1
+      rect:
+        serializedVersion: 2
+        x: 398
+        y: 512
+        width: 82
+        height: 97
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1fc01b56e6faf5360800000000000000
+      internalID: 7160634821229743345
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_2
+      rect:
+        serializedVersion: 2
+        x: 492
+        y: 596
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: efbda2b8cf89c60f0800000000000000
+      internalID: -1122353996688073730
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_3
+      rect:
+        serializedVersion: 2
+        x: 520
+        y: 499
+        width: 246
+        height: 130
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: be108ff5f134eb8d0800000000000000
+      internalID: -2828749713908956693
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_4
+      rect:
+        serializedVersion: 2
+        x: 791
+        y: 466
+        width: 189
+        height: 138
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 460033f97c925ada0800000000000000
+      internalID: -5934290996644609948
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_5
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 542
+        width: 22
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3c4342129e5cf4740800000000000000
+      internalID: 5138543304927098051
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_6
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 542
+        width: 22
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a5999f9ea01ee9060800000000000000
+      internalID: 6962249510952737114
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_7
+      rect:
+        serializedVersion: 2
+        x: 87
+        y: 542
+        width: 22
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e183de77b375301d0800000000000000
+      internalID: -3385766581925758946
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_8
+      rect:
+        serializedVersion: 2
+        x: 134
+        y: 544
+        width: 22
+        height: 24
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: af578ccdb6f566260800000000000000
+      internalID: 7090459580211688954
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_9
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 544
+        width: 22
+        height: 24
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 265af0b745e72a2e0800000000000000
+      internalID: -2115989973603736222
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_10
+      rect:
+        serializedVersion: 2
+        x: 198
+        y: 544
+        width: 22
+        height: 24
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 31c6f53b0f97d50d0800000000000000
+      internalID: -3432453266277962733
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_11
+      rect:
+        serializedVersion: 2
+        x: 254
+        y: 427
+        width: 103
+        height: 143
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6d87b09ae321790c0800000000000000
+      internalID: -4569163236610705194
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_12
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 510
+        width: 22
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e0f3568fdccc3a620800000000000000
+      internalID: 2784294179652845326
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_13
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 510
+        width: 22
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b54bd2dd6c3b24830800000000000000
+      internalID: 4054000281282524251
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_14
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 510
+        width: 22
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e5365801fffbe2ac0800000000000000
+      internalID: -3877951126904675490
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_15
+      rect:
+        serializedVersion: 2
+        x: 118
+        y: 512
+        width: 22
+        height: 24
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fe113ab4d23564f00800000000000000
+      internalID: 1100658612946276847
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_16
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 512
+        width: 22
+        height: 24
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 43e3d1cfdfc9f82d0800000000000000
+      internalID: -3274225789404627404
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_17
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 512
+        width: 22
+        height: 24
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d873f869391c37f10800000000000000
+      internalID: 2266367877127813005
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_18
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 478
+        width: 22
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e8068e4a3426bc5e0800000000000000
+      internalID: -1888307576082767730
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_19
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 478
+        width: 22
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: efa836b5d5db61d10800000000000000
+      internalID: 2096070885250403070
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_20
+      rect:
+        serializedVersion: 2
+        x: 87
+        y: 478
+        width: 22
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 84328749ef5518b90800000000000000
+      internalID: -7241412173934091448
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_21
+      rect:
+        serializedVersion: 2
+        x: 134
+        y: 480
+        width: 22
+        height: 24
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 96a0e1f1bd4655130800000000000000
+      internalID: 3554858373161552489
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_22
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 480
+        width: 22
+        height: 24
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 74dfa43e47ec4ef00800000000000000
+      internalID: 1145267206683819335
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_23
+      rect:
+        serializedVersion: 2
+        x: 198
+        y: 480
+        width: 22
+        height: 24
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0eb03a62747d2de80800000000000000
+      internalID: -8155219274623677472
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_24
+      rect:
+        serializedVersion: 2
+        x: 486
+        y: 447
+        width: 98
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 90b6ec1970bd9bf90800000000000000
+      internalID: -6937272925430060279
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_25
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 446
+        width: 22
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 12e12bb9516ff50f0800000000000000
+      internalID: -1125910809152446943
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_26
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 446
+        width: 22
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 153c2bce24e0f7cf0800000000000000
+      internalID: -252467373507689647
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_27
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 446
+        width: 22
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: befa9701e8681d480800000000000000
+      internalID: -8876165445850648597
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_28
+      rect:
+        serializedVersion: 2
+        x: 118
+        y: 448
+        width: 22
+        height: 24
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a495a65d9a75256b0800000000000000
+      internalID: -5309084623774787254
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_29
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 448
+        width: 22
+        height: 24
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6df06e432b4a9d710800000000000000
+      internalID: 1718585818117181398
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_30
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 448
+        width: 22
+        height: 24
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c7c12dd86d3332ea0800000000000000
+      internalID: -5898814090329842564
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_31
+      rect:
+        serializedVersion: 2
+        x: 799
+        y: 319
+        width: 170
+        height: 138
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3038b3e26cf07bf60800000000000000
+      internalID: 8049920202801644291
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_32
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 414
+        width: 22
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 43cd9c56b0c88eaf0800000000000000
+      internalID: -366889389050438604
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_33
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 414
+        width: 22
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6e96c1bebf988a740800000000000000
+      internalID: 5163528687854578150
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_34
+      rect:
+        serializedVersion: 2
+        x: 87
+        y: 414
+        width: 22
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 961b1162685f94f50800000000000000
+      internalID: 6866289063416148329
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_35
+      rect:
+        serializedVersion: 2
+        x: 134
+        y: 416
+        width: 22
+        height: 24
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c6077ad4f7ee22b00800000000000000
+      internalID: 802465914156445804
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_36
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 416
+        width: 22
+        height: 24
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dbe60b0e9e3dfc8c0800000000000000
+      internalID: -3976726944494358851
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_37
+      rect:
+        serializedVersion: 2
+        x: 198
+        y: 416
+        width: 22
+        height: 24
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9db9065f5782d7f00800000000000000
+      internalID: 1116092769750784985
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_38
+      rect:
+        serializedVersion: 2
+        x: 484
+        y: 399
+        width: 130
+        height: 38
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 087f9a53c093d0be0800000000000000
+      internalID: -1509487575496525952
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_39
+      rect:
+        serializedVersion: 2
+        x: 631
+        y: 399
+        width: 130
+        height: 38
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c1679ddc468591bc0800000000000000
+      internalID: -3811918419618859492
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_40
+      rect:
+        serializedVersion: 2
+        x: 764
+        y: 401
+        width: 18
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 61af08af3be92c110800000000000000
+      internalID: 1279759739965733398
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_41
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 382
+        width: 22
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0cbf93fab3a588450800000000000000
+      internalID: 6091217708407978944
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_42
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 382
+        width: 22
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 193ba0179143b8c70800000000000000
+      internalID: 8974323966341198737
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_43
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 382
+        width: 22
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 59720d39099022a10800000000000000
+      internalID: 1883078110754121621
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_44
+      rect:
+        serializedVersion: 2
+        x: 118
+        y: 384
+        width: 22
+        height: 24
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e9638ae16d122f9d0800000000000000
+      internalID: -2742092019594152290
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_45
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 384
+        width: 22
+        height: 24
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a784ac1a80c538f20800000000000000
+      internalID: 3423681333875591290
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_46
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 384
+        width: 22
+        height: 24
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 22e395b0ce3b08380800000000000000
+      internalID: -8970972631337976286
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_47
+      rect:
+        serializedVersion: 2
+        x: 489
+        y: 356
+        width: 66
+        height: 38
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: af92ee206d4d90e90800000000000000
+      internalID: -7058876925289289222
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_48
+      rect:
+        serializedVersion: 2
+        x: 564
+        y: 364
+        width: 66
+        height: 21
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e93db3f98d7fea4f0800000000000000
+      internalID: -815441972750986338
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_49
+      rect:
+        serializedVersion: 2
+        x: 635
+        y: 356
+        width: 69
+        height: 39
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6ae5a5b83015dd8a0800000000000000
+      internalID: -6278773229819896154
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_50
+      rect:
+        serializedVersion: 2
+        x: 710
+        y: 364
+        width: 68
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7c123fd12b643dae0800000000000000
+      internalID: -1525798117927870009
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_51
+      rect:
+        serializedVersion: 2
+        x: 197
+        y: 336
+        width: 20
+        height: 24
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 32fe2967e21a36070800000000000000
+      internalID: 8098493775872192291
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_52
+      rect:
+        serializedVersion: 2
+        x: 231
+        y: 342
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f80c5fe86596270f0800000000000000
+      internalID: -1120717536775257969
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_53
+      rect:
+        serializedVersion: 2
+        x: 250
+        y: 342
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cd3105a12610d1070800000000000000
+      internalID: 8078614827432416220
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_54
+      rect:
+        serializedVersion: 2
+        x: 274
+        y: 342
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ff84b5e329157dee0800000000000000
+      internalID: -1236429884136666881
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_55
+      rect:
+        serializedVersion: 2
+        x: 293
+        y: 342
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ae9a05d343d931c20800000000000000
+      internalID: 3176055009918888426
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_56
+      rect:
+        serializedVersion: 2
+        x: 315
+        y: 342
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 926b36e94648a2010800000000000000
+      internalID: 1164889021317625385
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_57
+      rect:
+        serializedVersion: 2
+        x: 334
+        y: 342
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bd988d37e422ba890800000000000000
+      internalID: -7445819838580618789
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_58
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 287
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 362b1df8212cf3dd0800000000000000
+      internalID: -2504069482816621981
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_59
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 303
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: efa81fde2ff355430800000000000000
+      internalID: 3770990575599323902
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_60
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 287
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1c317ef9b855e66e0800000000000000
+      internalID: -1842441139376417855
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_61
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 303
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 34ce0f38727e6aa00800000000000000
+      internalID: 767554943416593475
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_62
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 287
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7b0219ebdac385020800000000000000
+      internalID: 2330679524088422583
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_63
+      rect:
+        serializedVersion: 2
+        x: 87
+        y: 303
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 04d8cfc924c52c840800000000000000
+      internalID: 5242854357384072512
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_64
+      rect:
+        serializedVersion: 2
+        x: 124
+        y: 155
+        width: 268
+        height: 154
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0b16636a44eb613c0800000000000000
+      internalID: -4389111584770334288
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_65
+      rect:
+        serializedVersion: 2
+        x: 747
+        y: 294
+        width: 47
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7aad3cecfad035510800000000000000
+      internalID: 1536586946602850983
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_66
+      rect:
+        serializedVersion: 2
+        x: 923
+        y: 297
+        width: 47
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cd812fde1ff306fb0800000000000000
+      internalID: -4656651706389358372
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_67
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 271
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7dd5de97d7be3bca0800000000000000
+      internalID: -6002194954205700649
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_68
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 271
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b6941af3a24abef40800000000000000
+      internalID: 5758877049886427499
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_69
+      rect:
+        serializedVersion: 2
+        x: 87
+        y: 271
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d55420c517f3aabe0800000000000000
+      internalID: -1465288972648168099
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_70
+      rect:
+        serializedVersion: 2
+        x: 419
+        y: 177
+        width: 152
+        height: 120
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dcfbe77ff6ff93e90800000000000000
+      internalID: -7045319285685698611
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_71
+      rect:
+        serializedVersion: 2
+        x: 635
+        y: 260
+        width: 50
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c2665fb39ef220ab0800000000000000
+      internalID: -5043415953921710548
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_72
+      rect:
+        serializedVersion: 2
+        x: 688
+        y: 229
+        width: 50
+        height: 66
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a48d75318f55aeb90800000000000000
+      internalID: -7211857329315653558
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_73
+      rect:
+        serializedVersion: 2
+        x: 747
+        y: 281
+        width: 47
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 26c55be3aaadeac20800000000000000
+      internalID: 3219751208347851874
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_74
+      rect:
+        serializedVersion: 2
+        x: 808
+        y: 260
+        width: 55
+        height: 37
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2d4c5d76bfa752550800000000000000
+      internalID: 6135445287559611602
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_75
+      rect:
+        serializedVersion: 2
+        x: 862
+        y: 229
+        width: 53
+        height: 69
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f8c1f54e42829ebe0800000000000000
+      internalID: -1447581666307531633
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_76
+      rect:
+        serializedVersion: 2
+        x: 923
+        y: 284
+        width: 47
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd6923bf6cb708ce0800000000000000
+      internalID: -1404986989191457059
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_77
+      rect:
+        serializedVersion: 2
+        x: 923
+        y: 271
+        width: 47
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 40be24965378dbff0800000000000000
+      internalID: -18710159970604284
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_78
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 255
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 97763ee4ffa267c70800000000000000
+      internalID: 8968402983983474553
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_79
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 255
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 31e6c98e4603b74b0800000000000000
+      internalID: -5441702514789683693
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_80
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 255
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e8691fbc46596400800000000000000
+      internalID: 317880136329947364
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_81
+      rect:
+        serializedVersion: 2
+        x: 746
+        y: 255
+        width: 48
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8022529a741cfd190800000000000000
+      internalID: -7935411504878902776
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_82
+      rect:
+        serializedVersion: 2
+        x: 747
+        y: 268
+        width: 47
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 318378f2887cb4940800000000000000
+      internalID: 5281534375748909075
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_83
+      rect:
+        serializedVersion: 2
+        x: 922
+        y: 258
+        width: 48
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 496ac76853cd49cd0800000000000000
+      internalID: -2552172966364535148
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_84
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 223
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e17a8cd4cd49b7030800000000000000
+      internalID: 3493549609874663198
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_85
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 239
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 150412963cbc14a20800000000000000
+      internalID: 3044938863222014033
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_86
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 223
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5c4ad6244e3259180800000000000000
+      internalID: -9109335208012962619
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_87
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 239
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 91f4c30043518cb80800000000000000
+      internalID: -8374420194009002215
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_88
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 223
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d81c2e735522623a0800000000000000
+      internalID: -6690622447007121011
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_89
+      rect:
+        serializedVersion: 2
+        x: 87
+        y: 239
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0c7c29aeaacab7d00800000000000000
+      internalID: 971559994708379584
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_90
+      rect:
+        serializedVersion: 2
+        x: 914
+        y: 222
+        width: 62
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e67b893f4cb494ec0800000000000000
+      internalID: -3582248719323973778
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_91
+      rect:
+        serializedVersion: 2
+        x: 915
+        y: 240
+        width: 62
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 97f1cc4160b2c1ec0800000000000000
+      internalID: -3594951097429778567
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_92
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 191
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 396634163fa182dc0800000000000000
+      internalID: -3663648664254716269
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_93
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 207
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9a08dfe08d2c9cdd0800000000000000
+      internalID: -2465225087788416855
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_94
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 191
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c60bdc2b8706e83a0800000000000000
+      internalID: -6661280727322218388
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_95
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 207
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6c73c9386f1d55a60800000000000000
+      internalID: 7662261197740980166
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_96
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 191
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a621dc92fd1b83450800000000000000
+      internalID: 6068796069918872170
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_97
+      rect:
+        serializedVersion: 2
+        x: 87
+        y: 207
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4213b5ec02c630070800000000000000
+      internalID: 8071413845334896932
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_98
+      rect:
+        serializedVersion: 2
+        x: 688
+        y: 133
+        width: 82
+        height: 82
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 292671661e24a7a20800000000000000
+      internalID: 3060832432599556754
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_99
+      rect:
+        serializedVersion: 2
+        x: 864
+        y: 136
+        width: 82
+        height: 82
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b460c0ce7c2f6ac0800000000000000
+      internalID: -3859817432721890123
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_100
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 159
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fe188900561e817f0800000000000000
+      internalID: -641515122982354449
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_101
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 175
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0072a8d5dfab25380800000000000000
+      internalID: -8983912709291890944
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_102
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 159
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fdc744610da5c0930800000000000000
+      internalID: 4110760409655704799
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_103
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 175
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1e53fabb64a062fb0800000000000000
+      internalID: -4673036264437500447
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_104
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 159
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 10291504e7d8a3cd0800000000000000
+      internalID: -2577592263331704319
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_105
+      rect:
+        serializedVersion: 2
+        x: 87
+        y: 175
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0280a3db5217db9c0800000000000000
+      internalID: -3909844494585296864
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_106
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 31
+        width: 98
+        height: 114
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1225af72bc0976160800000000000000
+      internalID: 7018737746503684641
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_107
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 143
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f7cd98c272a99c90800000000000000
+      internalID: -7162515118480308232
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_108
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 143
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 80446898ee9d0edd0800000000000000
+      internalID: -2458725778011569144
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_109
+      rect:
+        serializedVersion: 2
+        x: 87
+        y: 143
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8348d1b3bea37f240800000000000000
+      internalID: 4825390307734291512
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_110
+      rect:
+        serializedVersion: 2
+        x: 130
+        y: 105
+        width: 96
+        height: 45
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8cf04a01335b3b110800000000000000
+      internalID: 1275562350403129288
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_111
+      rect:
+        serializedVersion: 2
+        x: 247
+        y: 105
+        width: 83
+        height: 45
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2734cd0e1b0a40070800000000000000
+      internalID: 8071753117996958578
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_112
+      rect:
+        serializedVersion: 2
+        x: 341
+        y: 105
+        width: 85
+        height: 45
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c366de5ee564f1c20800000000000000
+      internalID: 3179337235345270332
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_113
+      rect:
+        serializedVersion: 2
+        x: 452
+        y: 128
+        width: 34
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a7ca1e3266c4e5550800000000000000
+      internalID: 6151438142607043706
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_114
+      rect:
+        serializedVersion: 2
+        x: 485
+        y: 128
+        width: 34
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 916f9c7bd0262ae00800000000000000
+      internalID: 1054513073815680537
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_115
+      rect:
+        serializedVersion: 2
+        x: 518
+        y: 128
+        width: 34
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 14330296c958a4cb0800000000000000
+      internalID: -4878940339477400767
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_116
+      rect:
+        serializedVersion: 2
+        x: 551
+        y: 128
+        width: 34
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d2b5c049be1ac0a80800000000000000
+      internalID: -8499240363581744339
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_117
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 57
+        width: 130
+        height: 45
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2245e73764ac8550800000000000000
+      internalID: 6164482753189724718
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_118
+      rect:
+        serializedVersion: 2
+        x: 452
+        y: 95
+        width: 34
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 89da9ca17328914f0800000000000000
+      internalID: -857511080853131880
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_119
+      rect:
+        serializedVersion: 2
+        x: 485
+        y: 95
+        width: 34
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0ae2f4d0165f51380800000000000000
+      internalID: -9001018483046142304
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_120
+      rect:
+        serializedVersion: 2
+        x: 518
+        y: 95
+        width: 34
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bd2cad0292e8bfbe0800000000000000
+      internalID: -1442402948346101029
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_121
+      rect:
+        serializedVersion: 2
+        x: 551
+        y: 95
+        width: 34
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 20f653d45333b7370800000000000000
+      internalID: 8321301040518754050
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_122
+      rect:
+        serializedVersion: 2
+        x: 711
+        y: 63
+        width: 162
+        height: 66
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2e3df0571c0ff54a0800000000000000
+      internalID: -6602293815018531870
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_123
+      rect:
+        serializedVersion: 2
+        x: 711
+        y: 31
+        width: 34
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d441901cf5c5aeef0800000000000000
+      internalID: -78148477195316147
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_124
+      rect:
+        serializedVersion: 2
+        x: 759
+        y: 31
+        width: 34
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 440621e6125343070800000000000000
+      internalID: 8085145648733773892
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_125
+      rect:
+        serializedVersion: 2
+        x: 807
+        y: 31
+        width: 34
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bb15e3932ae4a8090800000000000000
+      internalID: -8031520526809804357
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_126
+      rect:
+        serializedVersion: 2
+        x: 855
+        y: 31
+        width: 34
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b6cdc545a201cc710800000000000000
+      internalID: 1714763332111359083
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_127
+      rect:
+        serializedVersion: 2
+        x: 711
+        y: 0
+        width: 34
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cc3e1fb2738191110800000000000000
+      internalID: 1232042598302081996
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_128
+      rect:
+        serializedVersion: 2
+        x: 759
+        y: 0
+        width: 34
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bd23afbf87a573400800000000000000
+      internalID: 303810975540851419
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_129
+      rect:
+        serializedVersion: 2
+        x: 807
+        y: 0
+        width: 34
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9c881aa5ff4451600800000000000000
+      internalID: 438332402266376393
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEwUIi_130
+      rect:
+        serializedVersion: 2
+        x: 855
+        y: 0
+        width: 34
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dc54b85732bb2d320800000000000000
+      internalID: 2581331297407026637
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: fe40ddf6c6a999a47a7605b4ae54938a
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      NEwUIi_0: -2357508967548514018
+      NEwUIi_1: 7160634821229743345
+      NEwUIi_10: -3432453266277962733
+      NEwUIi_100: -641515122982354449
+      NEwUIi_101: -8983912709291890944
+      NEwUIi_102: 4110760409655704799
+      NEwUIi_103: -4673036264437500447
+      NEwUIi_104: -2577592263331704319
+      NEwUIi_105: -3909844494585296864
+      NEwUIi_106: 7018737746503684641
+      NEwUIi_107: -7162515118480308232
+      NEwUIi_108: -2458725778011569144
+      NEwUIi_109: 4825390307734291512
+      NEwUIi_11: -4569163236610705194
+      NEwUIi_110: 1275562350403129288
+      NEwUIi_111: 8071753117996958578
+      NEwUIi_112: 3179337235345270332
+      NEwUIi_113: 6151438142607043706
+      NEwUIi_114: 1054513073815680537
+      NEwUIi_115: -4878940339477400767
+      NEwUIi_116: -8499240363581744339
+      NEwUIi_117: 6164482753189724718
+      NEwUIi_118: -857511080853131880
+      NEwUIi_119: -9001018483046142304
+      NEwUIi_12: 2784294179652845326
+      NEwUIi_120: -1442402948346101029
+      NEwUIi_121: 8321301040518754050
+      NEwUIi_122: -6602293815018531870
+      NEwUIi_123: -78148477195316147
+      NEwUIi_124: 8085145648733773892
+      NEwUIi_125: -8031520526809804357
+      NEwUIi_126: 1714763332111359083
+      NEwUIi_127: 1232042598302081996
+      NEwUIi_128: 303810975540851419
+      NEwUIi_129: 438332402266376393
+      NEwUIi_13: 4054000281282524251
+      NEwUIi_130: 2581331297407026637
+      NEwUIi_14: -3877951126904675490
+      NEwUIi_15: 1100658612946276847
+      NEwUIi_16: -3274225789404627404
+      NEwUIi_17: 2266367877127813005
+      NEwUIi_18: -1888307576082767730
+      NEwUIi_19: 2096070885250403070
+      NEwUIi_2: -1122353996688073730
+      NEwUIi_20: -7241412173934091448
+      NEwUIi_21: 3554858373161552489
+      NEwUIi_22: 1145267206683819335
+      NEwUIi_23: -8155219274623677472
+      NEwUIi_24: -6937272925430060279
+      NEwUIi_25: -1125910809152446943
+      NEwUIi_26: -252467373507689647
+      NEwUIi_27: -8876165445850648597
+      NEwUIi_28: -5309084623774787254
+      NEwUIi_29: 1718585818117181398
+      NEwUIi_3: -2828749713908956693
+      NEwUIi_30: -5898814090329842564
+      NEwUIi_31: 8049920202801644291
+      NEwUIi_32: -366889389050438604
+      NEwUIi_33: 5163528687854578150
+      NEwUIi_34: 6866289063416148329
+      NEwUIi_35: 802465914156445804
+      NEwUIi_36: -3976726944494358851
+      NEwUIi_37: 1116092769750784985
+      NEwUIi_38: -1509487575496525952
+      NEwUIi_39: -3811918419618859492
+      NEwUIi_4: -5934290996644609948
+      NEwUIi_40: 1279759739965733398
+      NEwUIi_41: 6091217708407978944
+      NEwUIi_42: 8974323966341198737
+      NEwUIi_43: 1883078110754121621
+      NEwUIi_44: -2742092019594152290
+      NEwUIi_45: 3423681333875591290
+      NEwUIi_46: -8970972631337976286
+      NEwUIi_47: -7058876925289289222
+      NEwUIi_48: -815441972750986338
+      NEwUIi_49: -6278773229819896154
+      NEwUIi_5: 5138543304927098051
+      NEwUIi_50: -1525798117927870009
+      NEwUIi_51: 8098493775872192291
+      NEwUIi_52: -1120717536775257969
+      NEwUIi_53: 8078614827432416220
+      NEwUIi_54: -1236429884136666881
+      NEwUIi_55: 3176055009918888426
+      NEwUIi_56: 1164889021317625385
+      NEwUIi_57: -7445819838580618789
+      NEwUIi_58: -2504069482816621981
+      NEwUIi_59: 3770990575599323902
+      NEwUIi_6: 6962249510952737114
+      NEwUIi_60: -1842441139376417855
+      NEwUIi_61: 767554943416593475
+      NEwUIi_62: 2330679524088422583
+      NEwUIi_63: 5242854357384072512
+      NEwUIi_64: -4389111584770334288
+      NEwUIi_65: 1536586946602850983
+      NEwUIi_66: -4656651706389358372
+      NEwUIi_67: -6002194954205700649
+      NEwUIi_68: 5758877049886427499
+      NEwUIi_69: -1465288972648168099
+      NEwUIi_7: -3385766581925758946
+      NEwUIi_70: -7045319285685698611
+      NEwUIi_71: -5043415953921710548
+      NEwUIi_72: -7211857329315653558
+      NEwUIi_73: 3219751208347851874
+      NEwUIi_74: 6135445287559611602
+      NEwUIi_75: -1447581666307531633
+      NEwUIi_76: -1404986989191457059
+      NEwUIi_77: -18710159970604284
+      NEwUIi_78: 8968402983983474553
+      NEwUIi_79: -5441702514789683693
+      NEwUIi_8: 7090459580211688954
+      NEwUIi_80: 317880136329947364
+      NEwUIi_81: -7935411504878902776
+      NEwUIi_82: 5281534375748909075
+      NEwUIi_83: -2552172966364535148
+      NEwUIi_84: 3493549609874663198
+      NEwUIi_85: 3044938863222014033
+      NEwUIi_86: -9109335208012962619
+      NEwUIi_87: -8374420194009002215
+      NEwUIi_88: -6690622447007121011
+      NEwUIi_89: 971559994708379584
+      NEwUIi_9: -2115989973603736222
+      NEwUIi_90: -3582248719323973778
+      NEwUIi_91: -3594951097429778567
+      NEwUIi_92: -3663648664254716269
+      NEwUIi_93: -2465225087788416855
+      NEwUIi_94: -6661280727322218388
+      NEwUIi_95: 7662261197740980166
+      NEwUIi_96: 6068796069918872170
+      NEwUIi_97: 8071413845334896932
+      NEwUIi_98: 3060832432599556754
+      NEwUIi_99: -3859817432721890123
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
