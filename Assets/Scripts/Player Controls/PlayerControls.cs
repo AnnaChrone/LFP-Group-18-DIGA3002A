@@ -63,6 +63,10 @@ public class PlayerControls : MonoBehaviour
         {
             rb.linearVelocity = Vector2.zero;
             SoundManager.Instance.SetWalking(false);
+            if (fishingManager.busyFishing)
+            {
+                playrSprite.flipX = false;   // face left
+            }
             return;
         }
 
@@ -73,6 +77,7 @@ public class PlayerControls : MonoBehaviour
     public void OnMovement(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
+        if (fishingManager.busyFishing) return;   // sitting: stay facing left
 
         if (moveInput.x != 0)
             playrSprite.flipX = moveInput.x > 0;
